@@ -25,7 +25,9 @@ class ConfigProvider
     public function getDependenciesConfig()
     {
         return [
+            'abstract_factories' => [
 
+            ]
         ];
     }
 }
