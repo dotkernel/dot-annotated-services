@@ -26,12 +26,21 @@ class AnnotatedServiceFactory
     /** @var  Reader */
     protected $annotationReader;
 
-
+    /**
+     * @param ContainerInterface $container
+     * @param $requestedName
+     * @return null
+     */
     public function __invoke(ContainerInterface $container, $requestedName)
     {
         return $this->createObject($container, $requestedName);
     }
 
+    /**
+     * @param ContainerInterface $container
+     * @param $requestedName
+     * @return null
+     */
     public function createObject(ContainerInterface $container, $requestedName)
     {
         if (! class_exists($requestedName)) {
@@ -42,23 +51,47 @@ class AnnotatedServiceFactory
             ));
         }
 
+        $service = null;
+
         $annotationReader = $this->createAnnotationReader();
         $refClass = new \ReflectionClass($requestedName);
         $constructor = $refClass->getConstructor();
         if ($constructor === null) {
-            return new $requestedName();
+            $service = new $requestedName();
+        } else {
+            $inject = $annotationReader->getMethodAnnotation($constructor, Inject::class);
+            if ($inject === null) {
+                throw new RuntimeException(sprintf(
+                    'You need to use the "%s" annotation in "%s" constructor so that the "%s" can create it.',
+                    Inject::class,
+                    $requestedName,
+                    static::class
+                ));
+            }
+
+            $services = $this->getServicesToInject($container, $inject);
+            $service = new $requestedName(...$services);
         }
 
-        $inject = $annotationReader->getMethodAnnotation($constructor, Inject::class);
-        if ($inject === null) {
-            throw new RuntimeException(sprintf(
-                'You need to use the "%s" annotation in "%s" constructor so that the "%s" can create it.',
-                Inject::class,
-                $requestedName,
-                static::class
-            ));
+        $methods = $refClass->getMethods(\ReflectionMethod::IS_PUBLIC);
+        foreach ($methods as $method) {
+            $inject = $annotationReader->getMethodAnnotation($method, Inject::class);
+            if ($inject) {
+                $services = $this->getServicesToInject($container, $inject);
+                $method->invoke($service, ...$services);
+            }
         }
 
+        return $service;
+    }
+
+    /**
+     * @param ContainerInterface $container
+     * @param Inject $inject
+     * @return array
+     */
+    protected function getServicesToInject(ContainerInterface $container, Inject $inject)
+    {
         $services = [];
         foreach ($inject->getServices() as $serviceKey) {
             $parts = explode('.', $serviceKey);
@@ -78,7 +111,8 @@ class AnnotatedServiceFactory
             $service = $container->get($serviceKey);
             $services[] = empty($parts) ? $service : $this->readKeysFromArray($parts, $service);
         }
-        return new $requestedName(...$services);
+
+        return $services;
     }
 
     /**
