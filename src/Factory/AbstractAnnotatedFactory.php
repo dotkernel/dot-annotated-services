@@ -43,7 +43,14 @@ abstract class AbstractAnnotatedFactory
         } else {
             /** @var Cache $cache */
             $cache = $container->get(AbstractAnnotatedFactory::CACHE_SERVICE);
-            return $this->annotationReader = new CachedReader(new AnnotationReader(), $cache);
+            $debug = false;
+            if ($container->has('config')) {
+                $config = $container->get('config');
+                if (isset($config['debug'])) {
+                    $debug = (bool) $config['debug'];
+                }
+            }
+            return $this->annotationReader = new CachedReader(new AnnotationReader(), $cache, $debug);
         }
     }
 
