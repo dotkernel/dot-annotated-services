@@ -7,7 +7,7 @@
  * Time: 12:03 AM
  */
 
-namespace Dot\AnnotatedServiced\Exception;
+namespace Dot\AnnotatedServices\Exception;
 
 /**
  * Class InvalidArgumentException

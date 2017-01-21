@@ -7,9 +7,9 @@
  * Time: 4:38 PM
  */
 
-namespace Dot\AnnotatedServiced;
+namespace Dot\AnnotatedServices;
 
-use Dot\AnnotatedServiced\Factory\AnnotatedServiceAbstractFactory;
+use Dot\AnnotatedServices\Factory\AnnotatedServiceAbstractFactory;
 
 /**
  * Class ConfigProvider

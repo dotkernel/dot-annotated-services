@@ -7,15 +7,15 @@
  * Time: 12:16 AM
  */
 
-namespace Dot\AnnotatedServiced\Factory;
+namespace Dot\AnnotatedServices\Factory;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\Reader;
-use Dot\AnnotatedServiced\Annotation\Inject;
-use Dot\AnnotatedServiced\Exception\InvalidArgumentException;
+use Dot\AnnotatedServices\Annotation\Inject;
+use Dot\AnnotatedServices\Exception\InvalidArgumentException;
 use Interop\Container\ContainerInterface;
-use Dot\AnnotatedServiced\Exception\RuntimeException;
+use Dot\AnnotatedServices\Exception\RuntimeException;
 
 /**
  * Class AnnotatedServiceFactory

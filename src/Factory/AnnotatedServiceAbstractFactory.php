@@ -7,12 +7,12 @@
  * Time: 12:05 AM
  */
 
-namespace Dot\AnnotatedServiced\Factory;
+namespace Dot\AnnotatedServices\Factory;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\Reader;
-use Dot\AnnotatedServiced\Annotation\Service;
+use Dot\AnnotatedServices\Annotation\Service;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\AbstractFactoryInterface;
 
