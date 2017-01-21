@@ -9,6 +9,8 @@
 
 namespace Dot\AnnotatedServiced;
 
+use Dot\AnnotatedServiced\Factory\AnnotatedServiceAbstractFactory;
+
 /**
  * Class ConfigProvider
  * @package Dot\AnnotatedServiced
@@ -26,7 +28,7 @@ class ConfigProvider
     {
         return [
             'abstract_factories' => [
-
+                AnnotatedServiceAbstractFactory::class,
             ]
         ];
     }

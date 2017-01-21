@@ -9,6 +9,10 @@
 
 namespace Dot\AnnotatedServiced\Factory;
 
+use Doctrine\Common\Annotations\AnnotationReader;
+use Doctrine\Common\Annotations\AnnotationRegistry;
+use Doctrine\Common\Annotations\Reader;
+use Dot\AnnotatedServiced\Annotation\Service;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\AbstractFactoryInterface;
 
@@ -18,15 +22,55 @@ use Zend\ServiceManager\Factory\AbstractFactoryInterface;
  */
 class AnnotatedServiceAbstractFactory implements AbstractFactoryInterface
 {
+    /** @var  Reader */
+    protected $annotationReader;
+
+    /**
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @return bool
+     */
     public function canCreate(ContainerInterface $container, $requestedName)
     {
         if (! class_exists($requestedName)) {
             return false;
         }
+
+        $annotationReader = $this->createAnnotationReader();
+        $refClass = new \ReflectionClass($requestedName);
+
+        $service = $annotationReader->getClassAnnotation($refClass, Service::class);
+        if ($service === null) {
+            return false;
+        }
+
+        return true;
     }
 
+    /**
+     * @param ContainerInterface $container
+     * @param string $requestedName
+     * @param array|null $options
+     * @return mixed
+     */
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
-        // TODO: Implement __invoke() method.
+        $factory = new AnnotatedServiceFactory();
+        $factory->setAnnotationReader($this->createAnnotationReader());
+
+        return $factory->createObject($container, $requestedName);
+    }
+
+    /**
+     * @return AnnotationReader|Reader
+     */
+    protected function createAnnotationReader()
+    {
+        if ($this->annotationReader !== null) {
+            return $this->annotationReader;
+        }
+
+        AnnotationRegistry::registerLoader('class_exists');
+        return $this->annotationReader = new AnnotationReader();
     }
 }

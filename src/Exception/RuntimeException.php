@@ -13,7 +13,7 @@ namespace Dot\AnnotatedServiced\Exception;
  * Class RuntimeException
  * @package Dot\AnnotatedServiced\Exception
  */
-class RuntimeException implements ExceptionInterface
+class RuntimeException extends \RuntimeException implements ExceptionInterface
 {
 
 }

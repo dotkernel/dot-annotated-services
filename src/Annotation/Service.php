@@ -9,10 +9,15 @@
 
 namespace Dot\AnnotatedServiced\Annotation;
 
+use Doctrine\Common\Annotations\Annotation;
+
 /**
  * Class Service
  * Annotates a class as a service which can be created and injected by this library
  * @package Dot\AnnotatedServiced\Annotation
+ *
+ * @Annotation
+ * @Annotation\Target({"CLASS"})
  */
 class Service
 {

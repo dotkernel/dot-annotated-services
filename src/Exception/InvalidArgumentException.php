@@ -13,7 +13,7 @@ namespace Dot\AnnotatedServiced\Exception;
  * Class InvalidArgumentException
  * @package Dot\AnnotatedServiced\Exception
  */
-class InvalidArgumentException implements ExceptionInterface
+class InvalidArgumentException extends \InvalidArgumentException implements ExceptionInterface
 {
 
 }
