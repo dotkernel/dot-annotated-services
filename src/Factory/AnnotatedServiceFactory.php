@@ -9,9 +9,6 @@
 
 namespace Dot\AnnotatedServices\Factory;
 
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\AnnotationRegistry;
-use Doctrine\Common\Annotations\Reader;
 use Dot\AnnotatedServices\Annotation\Inject;
 use Dot\AnnotatedServices\Exception\InvalidArgumentException;
 use Interop\Container\ContainerInterface;
@@ -21,11 +18,8 @@ use Dot\AnnotatedServices\Exception\RuntimeException;
  * Class AnnotatedServiceFactory
  * @package Dot\AnnotatedServiced\Factory
  */
-class AnnotatedServiceFactory
+class AnnotatedServiceFactory extends AbstractAnnotatedFactory
 {
-    /** @var  Reader */
-    protected $annotationReader;
-
     /**
      * @param ContainerInterface $container
      * @param $requestedName
@@ -53,7 +47,7 @@ class AnnotatedServiceFactory
 
         $service = null;
 
-        $annotationReader = $this->createAnnotationReader();
+        $annotationReader = $this->createAnnotationReader($container);
         $refClass = new \ReflectionClass($requestedName);
         $constructor = $refClass->getConstructor();
         if ($constructor === null) {
@@ -135,30 +129,5 @@ class AnnotatedServiceFactory
             $value = $this->readKeysFromArray($keys, $value);
         }
         return $value;
-    }
-
-    /**
-     * @return AnnotationReader|Reader
-     */
-    protected function createAnnotationReader()
-    {
-        //TODO: check if cache is enabled and available
-
-        if ($this->annotationReader !== null) {
-            return $this->annotationReader;
-        }
-
-        AnnotationRegistry::registerLoader('class_exists');
-        return $this->annotationReader = new AnnotationReader();
-    }
-
-    /**
-     * @param Reader $annotationReader
-     * @return $this
-     */
-    public function setAnnotationReader(Reader $annotationReader)
-    {
-        $this->annotationReader = $annotationReader;
-        return $this;
     }
 }

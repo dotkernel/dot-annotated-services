@@ -9,9 +9,6 @@
 
 namespace Dot\AnnotatedServices\Factory;
 
-use Doctrine\Common\Annotations\AnnotationReader;
-use Doctrine\Common\Annotations\AnnotationRegistry;
-use Doctrine\Common\Annotations\Reader;
 use Dot\AnnotatedServices\Annotation\Service;
 use Interop\Container\ContainerInterface;
 use Zend\ServiceManager\Factory\AbstractFactoryInterface;
@@ -20,11 +17,8 @@ use Zend\ServiceManager\Factory\AbstractFactoryInterface;
  * Class AnnotatedServiceAbstractFactory
  * @package Dot\AnnotatedServiced\Factory
  */
-class AnnotatedServiceAbstractFactory implements AbstractFactoryInterface
+class AnnotatedServiceAbstractFactory extends AbstractAnnotatedFactory implements AbstractFactoryInterface
 {
-    /** @var  Reader */
-    protected $annotationReader;
-
     /**
      * @param ContainerInterface $container
      * @param string $requestedName
@@ -36,7 +30,7 @@ class AnnotatedServiceAbstractFactory implements AbstractFactoryInterface
             return false;
         }
 
-        $annotationReader = $this->createAnnotationReader();
+        $annotationReader = $this->createAnnotationReader($container);
         $refClass = new \ReflectionClass($requestedName);
 
         $service = $annotationReader->getClassAnnotation($refClass, Service::class);
@@ -56,21 +50,8 @@ class AnnotatedServiceAbstractFactory implements AbstractFactoryInterface
     public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
     {
         $factory = new AnnotatedServiceFactory();
-        $factory->setAnnotationReader($this->createAnnotationReader());
+        $factory->setAnnotationReader($this->createAnnotationReader($container));
 
         return $factory->createObject($container, $requestedName);
-    }
-
-    /**
-     * @return AnnotationReader|Reader
-     */
-    protected function createAnnotationReader()
-    {
-        if ($this->annotationReader !== null) {
-            return $this->annotationReader;
-        }
-
-        AnnotationRegistry::registerLoader('class_exists');
-        return $this->annotationReader = new AnnotationReader();
     }
 }
