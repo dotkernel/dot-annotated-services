@@ -63,7 +63,11 @@ class AnnotatedServiceFactory extends AbstractAnnotatedFactory
                 ));
             }
 
-            $services = $this->getServicesToInject($container, $inject);
+            $services = [];
+            if ($inject) {
+                $services = $this->getServicesToInject($container, $inject);
+            }
+
             $service = new $requestedName(...$services);
         }
 
