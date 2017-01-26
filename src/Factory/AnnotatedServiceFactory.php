@@ -54,7 +54,7 @@ class AnnotatedServiceFactory extends AbstractAnnotatedFactory
             $service = new $requestedName();
         } else {
             $inject = $annotationReader->getMethodAnnotation($constructor, Inject::class);
-            if ($inject === null) {
+            if ($inject === null && $constructor->getNumberOfRequiredParameters() > 0) {
                 throw new RuntimeException(sprintf(
                     'You need to use the "%s" annotation in "%s" constructor so that the "%s" can create it.',
                     Inject::class,
