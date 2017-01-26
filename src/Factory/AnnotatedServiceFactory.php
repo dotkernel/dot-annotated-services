@@ -100,13 +100,18 @@ class AnnotatedServiceFactory extends AbstractAnnotatedFactory
             } else {
                 $parts = [];
             }
-            if (! $container->has($serviceKey)) {
+
+            if ($container->has($serviceKey)) {
+                $service = $container->get($serviceKey);
+            } elseif (class_exists($serviceKey)) {
+                $service = new $serviceKey();
+            } else {
                 throw new RuntimeException(sprintf(
-                    'Defined injectable service "%s" could not be found in container.',
+                    'Defined injectable service "%s" could not be found in container or as a class.',
                     $serviceKey
                 ));
             }
-            $service = $container->get($serviceKey);
+
             $services[] = empty($parts) ? $service : $this->readKeysFromArray($parts, $service);
         }
 
