@@ -7,14 +7,14 @@
  * Time: 12:16 AM
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Dot\AnnotatedServices\Factory;
 
 use Dot\AnnotatedServices\Annotation\Inject;
 use Dot\AnnotatedServices\Exception\InvalidArgumentException;
-use Interop\Container\ContainerInterface;
 use Dot\AnnotatedServices\Exception\RuntimeException;
+use Interop\Container\ContainerInterface;
 
 /**
  * Class AnnotatedServiceFactory
@@ -37,9 +37,9 @@ class AnnotatedServiceFactory extends AbstractAnnotatedFactory
      * @param $requestedName
      * @return null
      */
-    public function createObject(ContainerInterface $container, $requestedName) : mixed
+    public function createObject(ContainerInterface $container, $requestedName): mixed
     {
-        if (! class_exists($requestedName)) {
+        if (!class_exists($requestedName)) {
             throw new RuntimeException(sprintf(
                 'Annotated factories can only be used with services that are identified by their FQCN. ' .
                 'Provided "%s" service name is not a valid class.',
@@ -90,14 +90,14 @@ class AnnotatedServiceFactory extends AbstractAnnotatedFactory
      * @param Inject $inject
      * @return array
      */
-    protected function getServicesToInject(ContainerInterface $container, Inject $inject) : array
+    protected function getServicesToInject(ContainerInterface $container, Inject $inject): array
     {
         $services = [];
         foreach ($inject->getServices() as $serviceKey) {
             $parts = explode('.', $serviceKey);
             // Even when dots are found, try to find a service with the full name
             // If it is not found, then assume dots are used to get part of an array service
-            if (count($parts) > 1 && ! $container->has($serviceKey)) {
+            if (count($parts) > 1 && !$container->has($serviceKey)) {
                 $serviceKey = array_shift($parts);
             } else {
                 $parts = [];
@@ -125,18 +125,18 @@ class AnnotatedServiceFactory extends AbstractAnnotatedFactory
      * @param $array
      * @return mixed
      */
-    protected function readKeysFromArray(array $keys, $array) : mixed
+    protected function readKeysFromArray(array $keys, $array): mixed
     {
         $key = array_shift($keys);
         // When one of the provided keys is not found, thorw an exception
-        if (! isset($array[$key])) {
+        if (!isset($array[$key])) {
             throw new InvalidArgumentException(sprintf(
                 'The key "%s" provided in the dotted notation could not be found in the array service',
                 $key
             ));
         }
         $value = $array[$key];
-        if (! empty($keys) && (is_array($value) || $value instanceof \ArrayAccess)) {
+        if (!empty($keys) && (is_array($value) || $value instanceof \ArrayAccess)) {
             $value = $this->readKeysFromArray($keys, $value);
         }
         return $value;

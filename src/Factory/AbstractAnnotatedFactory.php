@@ -7,7 +7,7 @@
  * Time: 5:09 PM
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Dot\AnnotatedServices\Factory;
 
@@ -30,10 +30,18 @@ abstract class AbstractAnnotatedFactory
     protected $annotationReader;
 
     /**
+     * @param Reader $annotationReader
+     */
+    public function setAnnotationReader(Reader $annotationReader)
+    {
+        $this->annotationReader = $annotationReader;
+    }
+
+    /**
      * @param ContainerInterface $container
      * @return AnnotationReader|CachedReader|Reader
      */
-    protected function createAnnotationReader(ContainerInterface $container) : Reader
+    protected function createAnnotationReader(ContainerInterface $container): Reader
     {
         if ($this->annotationReader !== null) {
             return $this->annotationReader;
@@ -41,7 +49,7 @@ abstract class AbstractAnnotatedFactory
 
         AnnotationRegistry::registerLoader('class_exists');
 
-        if (! $container->has(AbstractAnnotatedFactory::CACHE_SERVICE)) {
+        if (!$container->has(AbstractAnnotatedFactory::CACHE_SERVICE)) {
             return $this->annotationReader = new AnnotationReader();
         } else {
             /** @var Cache $cache */
@@ -50,18 +58,10 @@ abstract class AbstractAnnotatedFactory
             if ($container->has('config')) {
                 $config = $container->get('config');
                 if (isset($config['debug'])) {
-                    $debug = (bool) $config['debug'];
+                    $debug = (bool)$config['debug'];
                 }
             }
             return $this->annotationReader = new CachedReader(new AnnotationReader(), $cache, $debug);
         }
-    }
-
-    /**
-     * @param Reader $annotationReader
-     */
-    public function setAnnotationReader(Reader $annotationReader)
-    {
-        $this->annotationReader = $annotationReader;
     }
 }

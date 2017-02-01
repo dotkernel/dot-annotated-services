@@ -7,7 +7,7 @@
  * Time: 12:05 AM
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Dot\AnnotatedServices\Factory;
 
@@ -28,7 +28,7 @@ class AnnotatedServiceAbstractFactory extends AbstractAnnotatedFactory implement
      */
     public function canCreate(ContainerInterface $container, $requestedName)
     {
-        if (! class_exists($requestedName)) {
+        if (!class_exists($requestedName)) {
             return false;
         }
 

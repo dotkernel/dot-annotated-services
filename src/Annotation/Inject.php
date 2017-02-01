@@ -7,7 +7,7 @@
  * Time: 4:37 PM
  */
 
-declare(strict_types=1);
+declare(strict_types = 1);
 
 namespace Dot\AnnotatedServices\Annotation;
 
@@ -37,7 +37,7 @@ class Inject
     /**
      * @return array
      */
-    public function getServices() : array
+    public function getServices(): array
     {
         return $this->services;
     }
