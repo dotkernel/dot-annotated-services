@@ -7,6 +7,8 @@
  * Time: 12:05 AM
  */
 
+declare(strict_types=1);
+
 namespace Dot\AnnotatedServices\Factory;
 
 use Dot\AnnotatedServices\Annotation\Service;

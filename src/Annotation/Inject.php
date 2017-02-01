@@ -7,6 +7,8 @@
  * Time: 4:37 PM
  */
 
+declare(strict_types=1);
+
 namespace Dot\AnnotatedServices\Annotation;
 
 use Doctrine\Common\Annotations\Annotation;
@@ -21,17 +23,21 @@ use Doctrine\Common\Annotations\Annotation\Target;
 class Inject
 {
     /** @var  array */
-    private $services;
+    private $services = [];
 
+    /**
+     * Inject constructor.
+     * @param array $values
+     */
     public function __construct(array $values)
     {
         $this->services = isset($values['value']) ? $values['value'] : [];
     }
 
     /**
-     * @return array|mixed
+     * @return array
      */
-    public function getServices()
+    public function getServices() : array
     {
         return $this->services;
     }

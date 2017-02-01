@@ -7,6 +7,8 @@
  * Time: 12:16 AM
  */
 
+declare(strict_types=1);
+
 namespace Dot\AnnotatedServices\Factory;
 
 use Dot\AnnotatedServices\Annotation\Inject;
@@ -35,7 +37,7 @@ class AnnotatedServiceFactory extends AbstractAnnotatedFactory
      * @param $requestedName
      * @return null
      */
-    public function createObject(ContainerInterface $container, $requestedName)
+    public function createObject(ContainerInterface $container, $requestedName) : mixed
     {
         if (! class_exists($requestedName)) {
             throw new RuntimeException(sprintf(
@@ -88,7 +90,7 @@ class AnnotatedServiceFactory extends AbstractAnnotatedFactory
      * @param Inject $inject
      * @return array
      */
-    protected function getServicesToInject(ContainerInterface $container, Inject $inject)
+    protected function getServicesToInject(ContainerInterface $container, Inject $inject) : array
     {
         $services = [];
         foreach ($inject->getServices() as $serviceKey) {
@@ -123,7 +125,7 @@ class AnnotatedServiceFactory extends AbstractAnnotatedFactory
      * @param $array
      * @return mixed
      */
-    protected function readKeysFromArray(array $keys, $array)
+    protected function readKeysFromArray(array $keys, $array) : mixed
     {
         $key = array_shift($keys);
         // When one of the provided keys is not found, thorw an exception

@@ -7,6 +7,8 @@
  * Time: 12:03 AM
  */
 
+declare(strict_types=1);
+
 namespace Dot\AnnotatedServices\Exception;
 
 /**

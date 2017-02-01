@@ -7,6 +7,8 @@
  * Time: 12:11 AM
  */
 
+declare(strict_types=1);
+
 namespace Dot\AnnotatedServices\Annotation;
 
 use Doctrine\Common\Annotations\Annotation;

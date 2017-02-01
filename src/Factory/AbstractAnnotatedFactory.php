@@ -1,10 +1,13 @@
 <?php
 /**
- * Created by PhpStorm.
- * User: n3vra
+ * @copyright: DotKernel
+ * @library: dot-annotated-services
+ * @author: n3vrax
  * Date: 1/21/2017
  * Time: 5:09 PM
  */
+
+declare(strict_types=1);
 
 namespace Dot\AnnotatedServices\Factory;
 
@@ -30,7 +33,7 @@ abstract class AbstractAnnotatedFactory
      * @param ContainerInterface $container
      * @return AnnotationReader|CachedReader|Reader
      */
-    protected function createAnnotationReader(ContainerInterface $container)
+    protected function createAnnotationReader(ContainerInterface $container) : Reader
     {
         if ($this->annotationReader !== null) {
             return $this->annotationReader;
@@ -56,11 +59,9 @@ abstract class AbstractAnnotatedFactory
 
     /**
      * @param Reader $annotationReader
-     * @return $this
      */
     public function setAnnotationReader(Reader $annotationReader)
     {
         $this->annotationReader = $annotationReader;
-        return $this;
     }
 }
