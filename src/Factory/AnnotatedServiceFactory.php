@@ -35,9 +35,9 @@ class AnnotatedServiceFactory extends AbstractAnnotatedFactory
     /**
      * @param ContainerInterface $container
      * @param $requestedName
-     * @return null
+     * @return mixed
      */
-    public function createObject(ContainerInterface $container, $requestedName): mixed
+    public function createObject(ContainerInterface $container, $requestedName)
     {
         if (!class_exists($requestedName)) {
             throw new RuntimeException(sprintf(
@@ -125,7 +125,7 @@ class AnnotatedServiceFactory extends AbstractAnnotatedFactory
      * @param $array
      * @return mixed
      */
-    protected function readKeysFromArray(array $keys, $array): mixed
+    protected function readKeysFromArray(array $keys, $array)
     {
         $key = array_shift($keys);
         // When one of the provided keys is not found, thorw an exception
