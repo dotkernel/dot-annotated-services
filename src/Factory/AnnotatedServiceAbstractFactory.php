@@ -28,6 +28,10 @@ class AnnotatedServiceAbstractFactory extends AbstractAnnotatedFactory implement
      */
     public function canCreate(ContainerInterface $container, $requestedName)
     {
+        if (is_null($requestedName)) {
+            return false;
+        }
+
         if (!class_exists($requestedName)) {
             return false;
         }
