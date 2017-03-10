@@ -1,6 +1,6 @@
 {
   "name": "dotkernel/dot-annotated-services",
-  "description": "Library providing auto-DI on services via annotations, without needing to write factories",
+  "description": "DotKernel service creation component through zend-servicemanager and annotations",
   "authors": [
     {
       "name": "Popa Tiberiu",
