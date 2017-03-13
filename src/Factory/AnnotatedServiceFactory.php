@@ -12,7 +12,7 @@ namespace Dot\AnnotatedServices\Factory;
 use Dot\AnnotatedServices\Annotation\Inject;
 use Dot\AnnotatedServices\Exception\InvalidArgumentException;
 use Dot\AnnotatedServices\Exception\RuntimeException;
-use Interop\Container\ContainerInterface;
+use Psr\Container\ContainerInterface;
 
 /**
  * Class AnnotatedServiceFactory

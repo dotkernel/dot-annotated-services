@@ -1,3 +1,21 @@
+## Unreleased
+
+### Changed
+* updated(where possible) factories to use PSR11 container
+* added documentation in readme file
+
+### Added
+* Nothing
+
+### Deprecated
+* Nothing
+
+### Removed
+* Nothing
+
+### Fixed
+* Nothing
+
 ## 1.0.1 - 2017-03-10
 
 ### Added

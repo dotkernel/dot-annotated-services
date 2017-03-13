@@ -3,7 +3,7 @@
   "description": "DotKernel service creation component through zend-servicemanager and annotations",
   "authors": [
     {
-      "name": "Popa Tiberiu",
+      "name": "n3vrax",
       "email": "tibi@apidemia.com"
     }
   ],
@@ -20,7 +20,7 @@
   ],
   "require": {
     "php": "^7.1",
-    "zendframework/zend-servicemanager": "^3.0",
+    "zendframework/zend-servicemanager": "^3.3",
     "doctrine/annotations": "^1.3",
     "doctrine/cache": "^1.6"
   },
