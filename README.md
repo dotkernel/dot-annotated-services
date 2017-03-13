@@ -80,3 +80,8 @@ class ServiceClass
 ```
 
 And that's it, you don't need to configure the service manager with this class, creation will happen automatically.
+
+
+## Cache annotations
+
+@TODO: write documentation
