@@ -1,6 +1,10 @@
 # dot-annotated-services
 
-DotKernel service creation component through zend-servicemanager and annotations
+DotKernel component used to create services through [Zend Service Manager](https://github.com/zendframework/zend-servicemanager) and inject them with dependencies just using method annotations. It can also create services without the need to write factories. Annotation parsing can be cached, to improve performance.
+
+This package can clean up your code, by getting rid of all the factories you write, sometimes just to inject a dependency or two.
+
+**Requires PHP version >= 7.1**
 
 ## Installation
 
@@ -9,7 +13,7 @@ Run the following command in your project directory
 $ composer require dotkernel/dot-annotated-services
 ```
 
-After installing, add `ConfigProvider` to your configuration.
+After installing, add the `ConfigProvider` class to your configuration aggregate.
 
 ## Usage
 
@@ -84,4 +88,35 @@ And that's it, you don't need to configure the service manager with this class, 
 
 ## Cache annotations
 
-@TODO: write documentation
+This package is built on top of `doctrine/annotation` and `doctrine/cache`.
+In order to cache annotations, you should register a service factory at key `AbstractAnnotatedFactory::CACHE_SERVICE` that should return a valid `Doctrine\Common\Cache\Cache` cache driver. See [Cache Drivers](https://github.com/doctrine/cache/tree/master/lib/Doctrine/Common/Cache) for available implementations offered by doctrine.
+
+Below, we give an example, as defined in our frontend and admin starter applications
+```php
+return [
+    'annotations_cache_dir' => __DIR__ . '/../../data/cache/annotations',
+    'dependencies' => [
+        'factories' => [
+            // used by dot-annotated-services to cache annotations
+            // needs to return a cache instance from Doctrine\Common\Cache
+            AbstractAnnotatedFactory::CACHE_SERVICE => AnnotationsCacheFactory::class,
+        ]
+    ],
+];
+```
+
+```php
+namespace Frontend\App\Factory;
+
+use Doctrine\Common\Cache\FilesystemCache;
+use Psr\Container\ContainerInterface;
+
+class AnnotationsCacheFactory
+{
+    public function __invoke(ContainerInterface $container)
+    {
+        //change this to suite your caching needs
+        return new FilesystemCache($container->get('config')['annotations_cache_dir']);
+    }
+}
+```
