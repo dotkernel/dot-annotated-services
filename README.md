@@ -1,6 +1,6 @@
 # dot-annotated-services
 
-DotKernel component used to create services through [Zend Service Manager](https://github.com/zendframework/zend-servicemanager) and inject them with dependencies just using method annotations. It can also create services without the need to write factories. Annotation parsing can be cached, to improve performance.
+DotKernel component used to create services through [Laminas Service Manager](https://github.com/laminas/laminas-servicemanager) and inject them with dependencies just using method annotations. It can also create services without the need to write factories. Annotation parsing can be cached, to improve performance.
 
 This package can clean up your code, by getting rid of all the factories you write, sometimes just to inject a dependency or two.
 

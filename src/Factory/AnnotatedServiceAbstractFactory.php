@@ -11,7 +11,7 @@ namespace Dot\AnnotatedServices\Factory;
 
 use Dot\AnnotatedServices\Annotation\Service;
 use Interop\Container\ContainerInterface;
-use Zend\ServiceManager\Factory\AbstractFactoryInterface;
+use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
 
 /**
  * Class AnnotatedServiceAbstractFactory

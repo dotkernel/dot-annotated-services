@@ -1,50 +1,51 @@
 {
-  "name": "dotkernel/dot-annotated-services",
-  "description": "DotKernel service creation component through zend-servicemanager and annotations",
-  "authors": [
-    {
-      "name": "DotKerenel Team",
-      "email": "team@dotkernel.com"
+    "name": "dotkernel/dot-annotated-services",
+    "description": "DotKernel service creation component through laminas-servicemanager and annotations",
+    "authors": [
+        {
+            "name": "DotKerenel Team",
+            "email": "team@dotkernel.com"
+        }
+    ],
+    "type": "library",
+    "license": "MIT",
+    "keywords": [
+        "annotations",
+        "services",
+        "factories",
+        "container",
+        "zf2",
+        "zf3",
+        "service-manager"
+    ],
+    "require": {
+        "php": "^7.2",
+        "laminas/laminas-servicemanager": "^3.3",
+        "doctrine/annotations": "^1.6",
+        "doctrine/cache": "^1.7",
+        "laminas/laminas-dependency-plugin": "^1.0"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^4.7",
+        "squizlabs/php_codesniffer": "^2.5"
+    },
+    "autoload": {
+        "psr-4": {
+            "Dot\\AnnotatedServices\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "DotTest\\AnnotatedServices\\": "tests"
+        }
+    },
+    "suggest": {
+        "doctrine/cache": "To cache the result of processing the annotations and speed-up your application"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "2.0-dev",
+            "dev-develop": "2.1-dev"
+        }
     }
-  ],
-  "type": "library",
-  "license": "MIT",
-  "keywords": [
-    "annotations",
-    "services",
-    "factories",
-    "container",
-    "zf2",
-    "zf3",
-    "service-manager"
-  ],
-  "require": {
-    "php": "^7.1",
-    "zendframework/zend-servicemanager": "^3.3",
-    "doctrine/annotations": "^1.6",
-    "doctrine/cache": "^1.7"
-  },
-  "require-dev": {
-    "phpunit/phpunit": "^4.7",
-    "squizlabs/php_codesniffer": "^2.5"
-  },
-  "autoload": {
-    "psr-4": {
-      "Dot\\AnnotatedServices\\": "src"
-    }
-  },
-  "autoload-dev": {
-    "psr-4": {
-      "DotTest\\AnnotatedServices\\": "tests"
-    }
-  },
-  "suggest": {
-    "doctrine/cache": "To cache the result of processing the annotations and speed-up your application"
-  },
-  "extra": {
-    "branch-alias": {
-      "dev-master": "1.1-dev",
-      "dev-develop": "1.2-dev"
-    }
-  }
 }

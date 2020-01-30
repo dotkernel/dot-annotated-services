@@ -1,3 +1,21 @@
+## 2.0.0 - 2020-01-30
+
+### Changed
+* Laminas and Mezzio migration.
+
+### Added
+* Nothing
+
+### Deprecated
+* Nothing
+
+### Removed
+* Support
+
+### Fixed
+* Nothing
+
+
 ## 1.1.1 - 2018-05-03
 
 ### Changed
