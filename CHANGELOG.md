@@ -82,3 +82,19 @@ Initial tagged release
 
 ### Fixed
 * Nothing
+
+## 3.0.0 - 2020-04-12
+
+Updated packages and php versions
+
+### Added
+* Everything
+
+### Deprecated
+* Nothing
+
+### Removed
+* Nothing
+
+### Fixed
+* Nothing
