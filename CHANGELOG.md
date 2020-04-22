@@ -98,3 +98,19 @@ Updated packages and php versions
 
 ### Fixed
 * Nothing
+
+## 3.0.1 - 2020-04-22
+
+Updated phpunit and php_codesniffer package versions
+
+### Added
+* Everything
+
+### Deprecated
+* Nothing
+
+### Removed
+* Nothing
+
+### Fixed
+* Nothing
