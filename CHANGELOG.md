@@ -1,3 +1,51 @@
+## 3.0.2 - 2020-04-23
+
+Updated keywords
+
+### Added
+* Everything
+
+### Deprecated
+* Nothing
+
+### Removed
+* Nothing
+
+### Fixed
+* Nothing
+
+## 3.0.1 - 2020-04-22
+
+Updated phpunit and php_codesniffer package versions
+
+### Added
+* Everything
+
+### Deprecated
+* Nothing
+
+### Removed
+* Nothing
+
+### Fixed
+* Nothing
+
+## 3.0.0 - 2020-04-12
+
+Updated packages and php versions
+
+### Added
+* Everything
+
+### Deprecated
+* Nothing
+
+### Removed
+* Nothing
+
+### Fixed
+* Nothing
+
 ## 2.0.0 - 2020-01-30
 
 ### Changed
@@ -70,38 +118,6 @@
 ## 1.0.0 - 2017-03-07
 
 Initial tagged release
-
-### Added
-* Everything
-
-### Deprecated
-* Nothing
-
-### Removed
-* Nothing
-
-### Fixed
-* Nothing
-
-## 3.0.0 - 2020-04-12
-
-Updated packages and php versions
-
-### Added
-* Everything
-
-### Deprecated
-* Nothing
-
-### Removed
-* Nothing
-
-### Fixed
-* Nothing
-
-## 3.0.1 - 2020-04-22
-
-Updated phpunit and php_codesniffer package versions
 
 ### Added
 * Everything

@@ -14,8 +14,8 @@
         "services",
         "factories",
         "container",
-        "zf2",
-        "zf3",
+        "laminas",
+        "mezzio",
         "service-manager"
     ],
     "require": {
