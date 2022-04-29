@@ -4,8 +4,6 @@ DotKernel component used to create services through [Laminas Service Manager](ht
 
 This package can clean up your code, by getting rid of all the factories you write, sometimes just to inject a dependency or two.
 
-**Requires PHP version >= ~7.4.0 or ~8.0.0 or ~8.1.0**
-
 ![OSS Lifecycle](https://img.shields.io/osslifecycle/dotkernel/dot-annotated-services)
 ![PHP from Packagist (specify version)](https://img.shields.io/packagist/php-v/dotkernel/dot-annotated-services/3.2.0)
 
