@@ -1,3 +1,39 @@
+## 3.2.1 - 2022-07-01
+
+### Changed
+* Downgraded package doctrine/cache to v1 to fix conflict
+
+### Added
+* Nothing
+
+### Deprecated
+* Nothing
+
+### Removed
+* Nothing
+
+### Fixed
+* Conflict for doctrine/common v2 (requires doctrine/cache v1)
+
+
+## 3.2.0 - 2022-04-29
+
+### Changed
+* Added PHP 8.0 and 8.1 compatibility
+
+### Added
+* Nothing
+
+### Deprecated
+* Nothing
+
+### Removed
+* Nothing
+
+### Fixed
+* Nothing
+
+
 ## 3.1.0 - 2020-11-02
 
 ### Changed
