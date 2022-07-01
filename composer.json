@@ -23,7 +23,7 @@
         "php": "~7.4.0 || ~8.0.0 || ~8.1.0",
         "laminas/laminas-servicemanager": "^3.10",
         "doctrine/annotations": "^1.13",
-        "doctrine/cache": "^2.1",
+        "doctrine/cache": "^1.13",
         "laminas/laminas-dependency-plugin": "^2.2"
     },
     "require-dev": {
