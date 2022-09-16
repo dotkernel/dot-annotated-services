@@ -24,7 +24,7 @@
         "laminas/laminas-servicemanager": "^3.10",
         "doctrine/annotations": "^1.13",
         "doctrine/cache": "^1.13",
-        "laminas/laminas-dependency-plugin": "^2.2"
+        "doctrine/orm" : "^2.11"
     },
     "require-dev": {
         "phpunit/phpunit": "^9.5",
@@ -41,6 +41,7 @@
         }
     },
     "suggest": {
-        "doctrine/cache": "To cache the result of processing the annotations and speed-up your application"
+        "doctrine/cache": "To cache the result of processing the annotations and speed-up your application.",
+        "doctrine/orm": "To be able to inject doctrine repositories."
     }
 }

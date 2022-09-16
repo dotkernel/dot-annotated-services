@@ -12,7 +12,12 @@ namespace Dot\AnnotatedServices\Factory;
 use Dot\AnnotatedServices\Annotation\Inject;
 use Dot\AnnotatedServices\Exception\InvalidArgumentException;
 use Dot\AnnotatedServices\Exception\RuntimeException;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
+use ReflectionClass;
+use ReflectionException;
+use ReflectionMethod;
 
 /**
  * Class AnnotatedServiceFactory
@@ -23,7 +28,10 @@ class AnnotatedServiceFactory extends AbstractAnnotatedFactory
     /**
      * @param ContainerInterface $container
      * @param $requestedName
-     * @return null
+     * @return mixed
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
      */
     public function __invoke(ContainerInterface $container, $requestedName)
     {
@@ -34,33 +42,31 @@ class AnnotatedServiceFactory extends AbstractAnnotatedFactory
      * @param ContainerInterface $container
      * @param $requestedName
      * @return mixed
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
      */
     public function createObject(ContainerInterface $container, $requestedName)
     {
         if (!class_exists($requestedName)) {
-            throw new RuntimeException(sprintf(
-                'Annotated factories can only be used with services that are identified by their FQCN. ' .
-                'Provided "%s" service name is not a valid class.',
-                $requestedName
-            ));
+            throw RuntimeException::classNotFound($requestedName);
         }
 
         $service = null;
 
         $annotationReader = $this->createAnnotationReader($container);
-        $refClass = new \ReflectionClass($requestedName);
+        $refClass = new ReflectionClass($requestedName);
         $constructor = $refClass->getConstructor();
         if ($constructor === null) {
             $service = new $requestedName();
         } else {
             $inject = $annotationReader->getMethodAnnotation($constructor, Inject::class);
             if ($inject === null && $constructor->getNumberOfRequiredParameters() > 0) {
-                throw new RuntimeException(sprintf(
-                    'You need to use the "%s" annotation in "%s" constructor so that the "%s" can create it.',
+                throw RuntimeException::annotationNotFound(
                     Inject::class,
                     $requestedName,
                     static::class
-                ));
+                );
             }
 
             $services = [];
@@ -71,7 +77,7 @@ class AnnotatedServiceFactory extends AbstractAnnotatedFactory
             $service = new $requestedName(...$services);
         }
 
-        $methods = $refClass->getMethods(\ReflectionMethod::IS_PUBLIC);
+        $methods = $refClass->getMethods(ReflectionMethod::IS_PUBLIC);
         foreach ($methods as $method) {
             $inject = $annotationReader->getMethodAnnotation($method, Inject::class);
             if ($inject) {
@@ -87,6 +93,8 @@ class AnnotatedServiceFactory extends AbstractAnnotatedFactory
      * @param ContainerInterface $container
      * @param Inject $inject
      * @return array
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     protected function getServicesToInject(ContainerInterface $container, Inject $inject): array
     {
@@ -106,10 +114,7 @@ class AnnotatedServiceFactory extends AbstractAnnotatedFactory
             } elseif (class_exists($serviceKey)) {
                 $service = new $serviceKey();
             } else {
-                throw new RuntimeException(sprintf(
-                    'Defined injectable service "%s" could not be found in container or as a class.',
-                    $serviceKey
-                ));
+                throw RuntimeException::classNotFound($serviceKey);
             }
 
             $services[] = empty($parts) ? $service : $this->readKeysFromArray($parts, $service);
@@ -126,7 +131,7 @@ class AnnotatedServiceFactory extends AbstractAnnotatedFactory
     protected function readKeysFromArray(array $keys, $array)
     {
         $key = array_shift($keys);
-        // When one of the provided keys is not found, thorw an exception
+        // When one of the provided keys is not found, throw an exception
         if (!isset($array[$key])) {
             throw new InvalidArgumentException(sprintf(
                 'The key "%s" provided in the dotted notation could not be found in the array service',
