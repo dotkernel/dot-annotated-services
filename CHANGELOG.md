@@ -1,3 +1,38 @@
+## 4.0.0 - 2022-09-19
+
+### Changed
+* Added new feature to inject doctrine repositories
+
+### Added
+* AnnotatedRepositoryFactory.php
+
+### Deprecated
+* Nothing
+
+### Removed
+* Nothing
+
+### Fixed
+* Nothing
+
+## 3.2.0 - 2022-04-29
+
+### Changed
+* Added PHP 8.0 and 8.1 compatibility
+
+### Added
+* Nothing
+
+### Deprecated
+* Nothing
+
+### Removed
+* Nothing
+
+### Fixed
+* Nothing
+
+
 ## 3.2.1 - 2022-07-01
 
 ### Changed
