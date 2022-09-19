@@ -105,9 +105,7 @@ class AnnotatedServiceFactoryTest extends TestCase
         $inject = new Inject(['test']);
         $this->annotationReader->method('getMethodAnnotation')->willReturn($inject);
 
-        $this->subject
-            ->method('createAnnotationReader')
-            ->willReturn($this->annotationReader);
+        $this->subject->method('createAnnotationReader')->willReturn($this->annotationReader);
         $this->subject->method('getReflectionClass')->willReturn($refClass);
 
         $service = $this->subject->__invoke($this->container, $requestedName);

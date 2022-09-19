@@ -71,6 +71,34 @@ which will inject `$container->get('config')['debug'];`
 
 You can use the inject annotation on setters too, they will be called at creation time and injected with the configured dependencies.
 
+### Using the AnnotatedRepositoryFactory 
+You can register doctrine repositories and inject them using the AnnotatedRepositoryFactory as below:
+```php
+return [
+    'factories' => [
+        ExampleRepository::class => AnnotatedRepositoryFactory::class,
+    ],
+];
+```
+
+The next step is to add the `@Entity` annotation in the repository class.
+
+The `name` field has to be the fully qualified class name.
+
+Every repository should extend `Doctrine\ORM\EntityRepository`.
+```php
+use Doctrine\ORM\EntityRepository;
+
+/**
+ * @Entity(name="App\Entity\Example")
+ */
+class ExampleRepository extends EntityRepository
+{
+
+}
+```
+
+
 ### Using the abstract factory
 
 Using this approach, no service manager configuration is required. It uses the registered abstract factory to create annotated services.
