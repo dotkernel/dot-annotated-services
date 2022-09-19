@@ -14,7 +14,9 @@ use Doctrine\Common\Annotations\AnnotationRegistry;
 use Doctrine\Common\Annotations\CachedReader;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Cache\Cache;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 
 /**
  * Class AbstractAnnotatedFactory
@@ -37,7 +39,9 @@ abstract class AbstractAnnotatedFactory
 
     /**
      * @param ContainerInterface $container
-     * @return AnnotationReader|CachedReader|Reader
+     * @return Reader
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
      */
     protected function createAnnotationReader(ContainerInterface $container): Reader
     {

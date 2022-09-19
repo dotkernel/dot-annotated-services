@@ -55,8 +55,9 @@ class AnnotatedServiceFactory extends AbstractAnnotatedFactory
         $service = null;
 
         $annotationReader = $this->createAnnotationReader($container);
-        $refClass = new ReflectionClass($requestedName);
+        $refClass = $this->getReflectionClass($requestedName);
         $constructor = $refClass->getConstructor();
+
         if ($constructor === null) {
             $service = new $requestedName();
         } else {
@@ -143,5 +144,15 @@ class AnnotatedServiceFactory extends AbstractAnnotatedFactory
             $value = $this->readKeysFromArray($keys, $value);
         }
         return $value;
+    }
+
+    /**
+     * @param string $requestedName
+     * @return ReflectionClass
+     * @throws ReflectionException
+     */
+    protected function getReflectionClass(string $requestedName): ReflectionClass
+    {
+        return new ReflectionClass($requestedName);
     }
 }

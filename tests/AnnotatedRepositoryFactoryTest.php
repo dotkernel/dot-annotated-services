@@ -7,7 +7,6 @@ use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Dot\AnnotatedServices\Annotation\Entity;
 use Dot\AnnotatedServices\Exception\RuntimeException;
-use DotTest\AnnotatedServices\Stubs\TestRepository;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
 use Dot\AnnotatedServices\Factory\AnnotatedRepositoryFactory as Subject;
@@ -55,30 +54,26 @@ class AnnotatedRepositoryFactoryTest extends TestCase
 
     public function testCreateObjectThrowsExceptionAnnotationNotFound()
     {
-        $requestedName = TestRepository::class;
-
+        $repository = $this->createMock(EntityRepository::class);
         $this->annotationReader->method('getClassAnnotation')->willReturn(null);
 
-        $this->subject
-            ->method('createAnnotationReader')
-            ->willReturn($this->annotationReader);
+        $this->subject->method('createAnnotationReader')->willReturn($this->annotationReader);
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage(RuntimeException::annotationNotFound(
             Entity::class,
-            $requestedName,
+            get_class($repository),
             get_class($this->subject)
         )->getMessage());
 
-        $this->subject->__invoke($this->container, $requestedName);
+        $this->subject->__invoke($this->container, get_class($repository));
     }
 
     public function testCreateObjectReturnsEntityRepository()
     {
-        $requestedName = TestRepository::class;
+        $repository = $this->createMock(EntityRepository::class);
         $annotation = new Entity('test');
         $entityManager = $this->createMock(EntityManagerInterface::class);
-        $repository =  $this->createMock(TestRepository::class);
 
         $entityManager->method('getRepository')->willReturn($repository);
 
@@ -92,7 +87,7 @@ class AnnotatedRepositoryFactoryTest extends TestCase
             ->method('createAnnotationReader')
             ->willReturn($this->annotationReader);
 
-        $object = $this->subject->__invoke($this->container, $requestedName);
+        $object = $this->subject->__invoke($this->container, get_class($repository));
 
         $this->assertInstanceOf(EntityRepository::class, $object);
     }
