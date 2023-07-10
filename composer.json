@@ -20,7 +20,7 @@
         "service-manager"
     ],
     "require": {
-        "php": "~8.1.0",
+        "php": "~8.1.0 || ~8.2.0",
         "laminas/laminas-servicemanager": "^3.10",
         "doctrine/annotations": "^1.13",
         "doctrine/cache": "^1.13",
