@@ -1,14 +1,14 @@
 <?php
+
 /**
  * @see https://github.com/dotkernel/dot-annotated-services/ for the canonical source repository
- * @copyright Copyright (c) 2017 Apidemia (https://www.apidemia.com)
- * @license https://github.com/dotkernel/dot-annotated-services/blob/master/LICENSE.md MIT License
  */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Dot\AnnotatedServices\Factory;
 
+use ArrayAccess;
 use Dot\AnnotatedServices\Annotation\Inject;
 use Dot\AnnotatedServices\Exception\InvalidArgumentException;
 use Dot\AnnotatedServices\Exception\RuntimeException;
@@ -19,44 +19,43 @@ use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
 
-/**
- * Class AnnotatedServiceFactory
- * @package Dot\AnnotatedServiced\Factory
- */
+use function array_shift;
+use function class_exists;
+use function count;
+use function explode;
+use function is_array;
+use function sprintf;
+
 class AnnotatedServiceFactory extends AbstractAnnotatedFactory
 {
     /**
-     * @param ContainerInterface $container
-     * @param $requestedName
      * @return mixed
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      * @throws ReflectionException
      */
-    public function __invoke(ContainerInterface $container, $requestedName)
+    public function __invoke(ContainerInterface $container, string $requestedName)
     {
         return $this->createObject($container, $requestedName);
     }
 
     /**
-     * @param ContainerInterface $container
-     * @param $requestedName
      * @return mixed
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      * @throws ReflectionException
      */
-    public function createObject(ContainerInterface $container, $requestedName)
+    public function createObject(ContainerInterface $container, string $requestedName)
     {
-        if (!class_exists($requestedName)) {
+        if (! class_exists($requestedName)) {
             throw RuntimeException::classNotFound($requestedName);
         }
 
         $service = null;
 
         $annotationReader = $this->createAnnotationReader($container);
-        $refClass = $this->getReflectionClass($requestedName);
-        $constructor = $refClass->getConstructor();
+        $refClass         = $this->getReflectionClass($requestedName);
+        $constructor      = $refClass->getConstructor();
 
         if ($constructor === null) {
             $service = new $requestedName();
@@ -91,8 +90,6 @@ class AnnotatedServiceFactory extends AbstractAnnotatedFactory
     }
 
     /**
-     * @param ContainerInterface $container
-     * @param Inject $inject
      * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -104,7 +101,7 @@ class AnnotatedServiceFactory extends AbstractAnnotatedFactory
             $parts = explode('.', $serviceKey);
             // Even when dots are found, try to find a service with the full name
             // If it is not found, then assume dots are used to get part of an array service
-            if (count($parts) > 1 && !$container->has($serviceKey)) {
+            if (count($parts) > 1 && ! $container->has($serviceKey)) {
                 $serviceKey = array_shift($parts);
             } else {
                 $parts = [];
@@ -126,29 +123,26 @@ class AnnotatedServiceFactory extends AbstractAnnotatedFactory
 
     /**
      * @param array $keys
-     * @param $array
      * @return mixed
      */
-    protected function readKeysFromArray(array $keys, $array)
+    protected function readKeysFromArray(array $keys, mixed $array)
     {
         $key = array_shift($keys);
         // When one of the provided keys is not found, throw an exception
-        if (!isset($array[$key])) {
+        if (! isset($array[$key])) {
             throw new InvalidArgumentException(sprintf(
                 'The key "%s" provided in the dotted notation could not be found in the array service',
                 $key
             ));
         }
         $value = $array[$key];
-        if (!empty($keys) && (is_array($value) || $value instanceof \ArrayAccess)) {
+        if (! empty($keys) && (is_array($value) || $value instanceof ArrayAccess)) {
             $value = $this->readKeysFromArray($keys, $value);
         }
         return $value;
     }
 
     /**
-     * @param string $requestedName
-     * @return ReflectionClass
      * @throws ReflectionException
      */
     protected function getReflectionClass(string $requestedName): ReflectionClass

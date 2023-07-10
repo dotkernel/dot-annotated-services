@@ -1,6 +1,5 @@
 clover.xml
 coveralls-upload.json
-phpunit.xml
 
 # Created by .ignore support plugin (hsz.mobi)
 ### JetBrains template
@@ -38,3 +37,4 @@ composer.phar
 # You may choose to ignore a library lock file http://getcomposer.org/doc/02-libraries.md#lock-file
 composer.lock
 .phpunit.result.cache
+.phpcs-cache
