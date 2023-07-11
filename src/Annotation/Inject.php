@@ -20,7 +20,7 @@ class Inject
         $this->services = $values['value'] ?? [];
     }
 
-    public function getServices()
+    public function getServices(): array
     {
         return $this->services;
     }
