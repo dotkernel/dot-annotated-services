@@ -28,7 +28,6 @@
     },
     "require-dev": {
         "phpunit/phpunit": "^10.2",
-        "squizlabs/php_codesniffer": "^3.6",
         "vimeo/psalm": "^5.13",
         "laminas/laminas-coding-standard": "^2.5"
     },
@@ -39,7 +38,7 @@
     },
     "autoload-dev": {
         "psr-4": {
-            "DotTest\\AnnotatedServices\\": "tests"
+            "DotTest\\AnnotatedServices\\": "test"
         }
     },
     "scripts": {
@@ -58,6 +57,7 @@
         "doctrine/orm": "To be able to inject doctrine repositories."
     },
     "config": {
+        "sort-packages": true,
         "allow-plugins": {
             "dealerdirect/phpcodesniffer-composer-installer": true
         }

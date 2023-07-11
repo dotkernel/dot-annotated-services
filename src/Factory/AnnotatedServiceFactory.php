@@ -1,9 +1,5 @@
 <?php
 
-/**
- * @see https://github.com/dotkernel/dot-annotated-services/ for the canonical source repository
- */
-
 declare(strict_types=1);
 
 namespace Dot\AnnotatedServices\Factory;
@@ -29,23 +25,21 @@ use function sprintf;
 class AnnotatedServiceFactory extends AbstractAnnotatedFactory
 {
     /**
-     * @return mixed
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      * @throws ReflectionException
      */
-    public function __invoke(ContainerInterface $container, string $requestedName)
+    public function __invoke(ContainerInterface $container, string $requestedName): mixed
     {
         return $this->createObject($container, $requestedName);
     }
 
     /**
-     * @return mixed
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      * @throws ReflectionException
      */
-    public function createObject(ContainerInterface $container, string $requestedName)
+    public function createObject(ContainerInterface $container, string $requestedName): mixed
     {
         if (! class_exists($requestedName)) {
             throw RuntimeException::classNotFound($requestedName);
@@ -123,9 +117,8 @@ class AnnotatedServiceFactory extends AbstractAnnotatedFactory
 
     /**
      * @param array $keys
-     * @return mixed
      */
-    protected function readKeysFromArray(array $keys, mixed $array)
+    protected function readKeysFromArray(array $keys, mixed $array): mixed
     {
         $key = array_shift($keys);
         // When one of the provided keys is not found, throw an exception

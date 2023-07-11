@@ -1,16 +1,12 @@
 <?php
 
-/**
- * @see https://github.com/dotkernel/dot-annotated-services/ for the canonical source repository
- */
-
 declare(strict_types=1);
 
 namespace Dot\AnnotatedServices\Factory;
 
 use Dot\AnnotatedServices\Annotation\Service;
-use interop\container\containerinterface;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
+use Psr\Container\ContainerInterface;
 use ReflectionClass;
 
 use function class_exists;
@@ -19,9 +15,8 @@ class AnnotatedServiceAbstractFactory extends AbstractAnnotatedFactory implement
 {
     /**
      * @param string $requestedName
-     * @return bool
      */
-    public function canCreate(containerinterface $container, $requestedName)
+    public function canCreate(ContainerInterface $container, $requestedName): bool
     {
         if ($requestedName === null) {
             return false;
@@ -45,9 +40,8 @@ class AnnotatedServiceAbstractFactory extends AbstractAnnotatedFactory implement
     /**
      * @param string $requestedName
      * @param array|null $options
-     * @return object
      */
-    public function __invoke(containerinterface $container, $requestedName, ?array $options = null)
+    public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null): object
     {
         $factory = new AnnotatedServiceFactory();
         $factory->setAnnotationReader($this->createAnnotationReader($container));

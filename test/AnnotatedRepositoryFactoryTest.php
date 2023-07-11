@@ -25,8 +25,6 @@ class AnnotatedRepositoryFactoryTest extends TestCase
 
     public function setUp(): void
     {
-        parent::setUp();
-
         $this->container        = $this->createMock(ContainerInterface::class);
         $this->annotationReader = $this->createMock(Reader::class);
         $this->subject          = $this->createPartialMock(Subject::class, ['createAnnotationReader']);
