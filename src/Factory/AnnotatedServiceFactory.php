@@ -84,7 +84,6 @@ class AnnotatedServiceFactory extends AbstractAnnotatedFactory
     }
 
     /**
-     * @return array
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
@@ -115,9 +114,6 @@ class AnnotatedServiceFactory extends AbstractAnnotatedFactory
         return $services;
     }
 
-    /**
-     * @param array $keys
-     */
     protected function readKeysFromArray(array $keys, mixed $array): mixed
     {
         $key = array_shift($keys);

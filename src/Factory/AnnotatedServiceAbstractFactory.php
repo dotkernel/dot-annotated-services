@@ -39,7 +39,6 @@ class AnnotatedServiceAbstractFactory extends AbstractAnnotatedFactory implement
 
     /**
      * @param string $requestedName
-     * @param array|null $options
      */
     public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null): object
     {

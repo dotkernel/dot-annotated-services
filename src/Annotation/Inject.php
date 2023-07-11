@@ -13,21 +13,14 @@ use Doctrine\Common\Annotations\Annotation\Target;
  */
 class Inject
 {
-    /** @var  array */
-    private $services = [];
+    private array $services = [];
 
-    /**
-     * @param array $values
-     */
     public function __construct(array $values)
     {
         $this->services = $values['value'] ?? [];
     }
 
-    /**
-     * @return array
-     */
-    public function getServices(): array
+    public function getServices()
     {
         return $this->services;
     }
