@@ -52,10 +52,6 @@
         "test-coverage": "phpunit --colors=always --coverage-clover clover.xml",
         "static-analysis": "psalm --shepherd --stats"
     },
-    "suggest": {
-        "doctrine/cache": "To cache the result of processing the annotations and speed-up your application.",
-        "doctrine/orm": "To be able to inject doctrine repositories."
-    },
     "config": {
         "sort-packages": true,
         "allow-plugins": {
