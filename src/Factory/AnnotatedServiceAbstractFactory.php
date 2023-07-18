@@ -1,41 +1,33 @@
 <?php
-/**
- * @see https://github.com/dotkernel/dot-annotated-services/ for the canonical source repository
- * @copyright Copyright (c) 2017 Apidemia (https://www.apidemia.com)
- * @license https://github.com/dotkernel/dot-annotated-services/blob/master/LICENSE.md MIT License
- */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Dot\AnnotatedServices\Factory;
 
 use Dot\AnnotatedServices\Annotation\Service;
-use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
+use Psr\Container\ContainerInterface;
+use ReflectionClass;
 
-/**
- * Class AnnotatedServiceAbstractFactory
- * @package Dot\AnnotatedServiced\Factory
- */
+use function class_exists;
+
 class AnnotatedServiceAbstractFactory extends AbstractAnnotatedFactory implements AbstractFactoryInterface
 {
     /**
-     * @param ContainerInterface $container
      * @param string $requestedName
-     * @return bool
      */
-    public function canCreate(ContainerInterface $container, $requestedName)
+    public function canCreate(ContainerInterface $container, $requestedName): bool
     {
-        if (is_null($requestedName)) {
+        if ($requestedName === null) {
             return false;
         }
 
-        if (!class_exists($requestedName)) {
+        if (! class_exists($requestedName)) {
             return false;
         }
 
         $annotationReader = $this->createAnnotationReader($container);
-        $refClass = new \ReflectionClass($requestedName);
+        $refClass         = new ReflectionClass($requestedName);
 
         $service = $annotationReader->getClassAnnotation($refClass, Service::class);
         if ($service === null) {
@@ -46,12 +38,9 @@ class AnnotatedServiceAbstractFactory extends AbstractAnnotatedFactory implement
     }
 
     /**
-     * @param ContainerInterface $container
      * @param string $requestedName
-     * @param array|null $options
-     * @return mixed
      */
-    public function __invoke(ContainerInterface $container, $requestedName, array $options = null)
+    public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null): object
     {
         $factory = new AnnotatedServiceFactory();
         $factory->setAnnotationReader($this->createAnnotationReader($container));

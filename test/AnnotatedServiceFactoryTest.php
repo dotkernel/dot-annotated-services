@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 namespace DotTest\AnnotatedServices;
 
 use Doctrine\Common\Annotations\Reader;
@@ -8,13 +10,11 @@ use Dot\AnnotatedServices\Exception\RuntimeException;
 use Dot\AnnotatedServices\Factory\AnnotatedServiceFactory as Subject;
 use PHPUnit\Framework\TestCase;
 use Psr\Container\ContainerInterface;
-use ReflectionMethod;
 use ReflectionClass;
+use ReflectionMethod;
 
-/**
- * Class AnnotatedServiceFactoryTest
- * @package DotTest\AnnotatedServices
- */
+use function get_class;
+
 class AnnotatedServiceFactoryTest extends TestCase
 {
     private ContainerInterface $container;
@@ -25,13 +25,11 @@ class AnnotatedServiceFactoryTest extends TestCase
 
     public function setUp(): void
     {
-        parent::setUp();
-
-        $this->container = $this->createMock(ContainerInterface::class);
+        $this->container        = $this->createMock(ContainerInterface::class);
         $this->annotationReader = $this->createMock(Reader::class);
-        $this->subject = $this->createPartialMock(Subject::class, [
+        $this->subject          = $this->createPartialMock(Subject::class, [
             'createAnnotationReader',
-            'getReflectionClass'
+            'getReflectionClass',
         ]);
     }
 
@@ -69,7 +67,7 @@ class AnnotatedServiceFactoryTest extends TestCase
     {
         $requestedName = 'TestService';
         $this->getMockBuilder($requestedName)->allowMockingUnknownTypes()->getMock();
-        $refClass = $this->createMock(ReflectionClass::class);
+        $refClass       = $this->createMock(ReflectionClass::class);
         $refConstructor = $this->createMock(ReflectionMethod::class);
 
         $refClass->method('getConstructor')->willReturn($refConstructor);
@@ -95,7 +93,7 @@ class AnnotatedServiceFactoryTest extends TestCase
     {
         $requestedName = 'TestService';
         $this->getMockBuilder($requestedName)->allowMockingUnknownTypes()->getMock();
-        $refClass = $this->createMock(ReflectionClass::class);
+        $refClass       = $this->createMock(ReflectionClass::class);
         $refConstructor = $this->createMock(ReflectionMethod::class);
 
         $refClass->method('getConstructor')->willReturn($refConstructor);
@@ -113,4 +111,3 @@ class AnnotatedServiceFactoryTest extends TestCase
         $this->assertInstanceOf($requestedName, $service);
     }
 }
-

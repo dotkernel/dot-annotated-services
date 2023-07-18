@@ -1,11 +1,6 @@
 <?php
-/**
- * @see https://github.com/dotkernel/dot-annotated-services/ for the canonical source repository
- * @copyright Copyright (c) 2017 Apidemia (https://www.apidemia.com)
- * @license https://github.com/dotkernel/dot-annotated-services/blob/master/LICENSE.md MIT License
- */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Dot\AnnotatedServices\Factory;
 
@@ -18,28 +13,17 @@ use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 
-/**
- * Class AbstractAnnotatedFactory
- * @package Dot\AnnotatedServices\Factory
- */
 abstract class AbstractAnnotatedFactory
 {
-    const CACHE_SERVICE = 'Dot\AnnotatedServices\Cache';
+    protected const CACHE_SERVICE = 'Dot\AnnotatedServices\Cache';
+    protected ?Reader $annotationReader;
 
-    /** @var  Reader */
-    protected $annotationReader;
-
-    /**
-     * @param Reader $annotationReader
-     */
-    public function setAnnotationReader(Reader $annotationReader)
+    public function setAnnotationReader(Reader $annotationReader): void
     {
         $this->annotationReader = $annotationReader;
     }
 
     /**
-     * @param ContainerInterface $container
-     * @return Reader
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
@@ -51,16 +35,16 @@ abstract class AbstractAnnotatedFactory
 
         AnnotationRegistry::registerLoader('class_exists');
 
-        if (!$container->has(AbstractAnnotatedFactory::CACHE_SERVICE)) {
+        if (! $container->has(self::CACHE_SERVICE)) {
             return $this->annotationReader = new AnnotationReader();
         } else {
             /** @var Cache $cache */
-            $cache = $container->get(AbstractAnnotatedFactory::CACHE_SERVICE);
+            $cache = $container->get(self::CACHE_SERVICE);
             $debug = false;
             if ($container->has('config')) {
                 $config = $container->get('config');
                 if (isset($config['debug'])) {
-                    $debug = (bool)$config['debug'];
+                    $debug = (bool) $config['debug'];
                 }
             }
             return $this->annotationReader = new CachedReader(new AnnotationReader(), $cache, $debug);

@@ -1,6 +1,6 @@
 <?php
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Dot\AnnotatedServices\Factory;
 
@@ -11,38 +11,30 @@ use Dot\AnnotatedServices\Exception\RuntimeException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
-use ReflectionException;
 use ReflectionClass;
+use ReflectionException;
 
-/**
- * Class AnnotatedRepositoryFactory
- * @package Dot\AnnotatedServices\Factory
- */
+use function class_exists;
+
 class AnnotatedRepositoryFactory extends AbstractAnnotatedFactory
 {
     /**
-     * @param ContainerInterface $container
-     * @param $requestedName
-     * @return EntityRepository
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      * @throws ReflectionException
      * @throws RuntimeException
      */
-    public function __invoke(ContainerInterface $container, $requestedName): EntityRepository
+    public function __invoke(ContainerInterface $container, string $requestedName): EntityRepository
     {
         return $this->createObject($container, $requestedName);
     }
 
     /**
-     * @param ContainerInterface $container
-     * @param $requestedName
-     * @return EntityRepository
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      * @throws ReflectionException
      */
-    public function createObject(ContainerInterface $container, $requestedName): EntityRepository
+    public function createObject(ContainerInterface $container, string $requestedName): EntityRepository
     {
         if (! class_exists($requestedName)) {
             throw RuntimeException::classNotFound($requestedName);
@@ -54,7 +46,7 @@ class AnnotatedRepositoryFactory extends AbstractAnnotatedFactory
         }
 
         $annotationReader = $this->createAnnotationReader($container);
-        $entity = $annotationReader->getClassAnnotation($reflectionClass, Entity::class);
+        $entity           = $annotationReader->getClassAnnotation($reflectionClass, Entity::class);
         if (! $entity) {
             throw RuntimeException::annotationNotFound(Entity::class, $requestedName, static::class);
         }

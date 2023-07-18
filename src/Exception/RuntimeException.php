@@ -1,18 +1,11 @@
 <?php
-/**
- * @see https://github.com/dotkernel/dot-annotated-services/ for the canonical source repository
- * @copyright Copyright (c) 2017 Apidemia (https://www.apidemia.com)
- * @license https://github.com/dotkernel/dot-annotated-services/blob/master/LICENSE.md MIT License
- */
 
-declare(strict_types = 1);
+declare(strict_types=1);
 
 namespace Dot\AnnotatedServices\Exception;
 
-/**
- * Class RuntimeException
- * @package Dot\AnnotatedServiced\Exception
- */
+use function sprintf;
+
 class RuntimeException extends \RuntimeException implements ExceptionInterface
 {
     public static function classNotFound(string $requestedName): self
@@ -41,10 +34,9 @@ class RuntimeException extends \RuntimeException implements ExceptionInterface
     public static function invalidAnnotation(string $requestedName): self
     {
         return new self(sprintf(
-            'Annotated factories can only be used with services that are identified by their FQCN. ' .
-            'Provided "%s" service name is not a valid class.',
+            'Annotated factories can only be used with services that are identified by their FQCN. '
+            . 'Provided "%s" service name is not a valid class.',
             $requestedName
         ));
     }
 }
-
