@@ -33,12 +33,12 @@
     },
     "autoload": {
         "psr-4": {
-            "Dot\\AnnotatedServices\\": "src"
+            "Dot\\AnnotatedServices\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "DotTest\\AnnotatedServices\\": "test"
+            "DotTest\\AnnotatedServices\\": "test/"
         }
     },
     "scripts": {
