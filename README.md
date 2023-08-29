@@ -5,7 +5,7 @@ DotKernel component used to create services through [Laminas Service Manager](ht
 This package can clean up your code, by getting rid of all the factories you write, sometimes just to inject a dependency or two.
 
 ![OSS Lifecycle](https://img.shields.io/osslifecycle/dotkernel/dot-annotated-services)
-![PHP from Packagist (specify version)](https://img.shields.io/packagist/php-v/dotkernel/dot-annotated-services/4.1.0)
+![PHP from Packagist (specify version)](https://img.shields.io/packagist/php-v/dotkernel/dot-annotated-services/4.1.3)
 
 [![GitHub issues](https://img.shields.io/github/issues/dotkernel/dot-annotated-services)](https://github.com/dotkernel/dot-annotated-services/issues)
 [![GitHub forks](https://img.shields.io/github/forks/dotkernel/dot-annotated-services)](https://github.com/dotkernel/dot-annotated-services/network)
@@ -20,9 +20,9 @@ This package can clean up your code, by getting rid of all the factories you wri
 ## Installation
 
 Run the following command in your project directory
-```bash
-$ composer require dotkernel/dot-annotated-services
-```
+
+    composer require dotkernel/dot-annotated-services
+
 
 After installing, add the `ConfigProvider` class to your configuration aggregate.
 
@@ -43,28 +43,30 @@ return [
 
 The next step is to annotate the service constructor or setters with the service names to inject
 ```php
-use Dot\AnnotatedServices\Annotation\Service;
 use Dot\AnnotatedServices\Annotation\Inject;
 
 /**
- * Service constructor
- * @param Dependency1 $dep1
- * ...
- * 
- * @Inject({Dependency1::class, Dependency2::class, ...})
+ * @Inject({
+ *     Dependency1::class,
+ *     Dependency2::class,
+ *     "config"
+ * })
  */
-public function __construct(Dependency1 $dep1, Dependency2 $dep2, ...)
-{
-    $this->dep1 = $dep1;
-    //...
+public function __construct(
+    protected Dependency1 $dep1,
+    protected Dependency2 $dep2,
+    protected array $config
+) {
 }
 ```
 
 The annotation `@Inject` is telling the factory to inject the services between curly braces.
-Valid service names should be provided, as registerd in the service manager.
+Valid service names should be provided, as registered in the service manager.
 
 To inject an array value from the service manager, you can use dot notation as below
 ```php
+use Dot\AnnotatedServices\Annotation\Inject;
+
 /**
  * @Inject({"config.debug"})
  */
@@ -93,6 +95,7 @@ The `name` field has to be the fully qualified class name.
 Every repository should extend `Doctrine\ORM\EntityRepository`.
 ```php
 use Doctrine\ORM\EntityRepository;
+use Dot\AnnotatedServices\Annotation\Entity;
 
 /**
  * @Entity(name="App\Entity\Example")
@@ -111,7 +114,6 @@ Using this approach, no service manager configuration is required. It uses the r
 In order to tell the abstract factory which services are to be created, you need to annotate the service class with the `@Service` annotation.
 ```php
 use Dot\AnnotatedServices\Annotation\Service;
-use Dot\AnnotatedServices\Annotation\Inject;
 
 /*
  * @Service
