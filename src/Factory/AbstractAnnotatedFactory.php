@@ -7,7 +7,6 @@ namespace Dot\AnnotatedServices\Factory;
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\PsrCachedReader;
 use Doctrine\Common\Annotations\Reader;
-use Doctrine\Common\Cache\Cache;
 use Psr\Cache\CacheItemPoolInterface;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
@@ -15,7 +14,7 @@ use Psr\Container\NotFoundExceptionInterface;
 
 abstract class AbstractAnnotatedFactory
 {
-    const CACHE_SERVICE = CacheItemPoolInterface::class;
+    public const CACHE_SERVICE          = CacheItemPoolInterface::class;
     protected ?Reader $annotationReader = null;
     public function setAnnotationReader(Reader $annotationReader): void
     {
@@ -35,7 +34,7 @@ abstract class AbstractAnnotatedFactory
         if (! $container->has(self::CACHE_SERVICE)) {
             return $this->annotationReader = new AnnotationReader();
         } else {
-            /** @var Cache $cache */
+            /** @var CacheItemPoolInterface $cache */
             $cache = $container->get(self::CACHE_SERVICE);
             $debug = false;
             if ($container->has('config')) {
