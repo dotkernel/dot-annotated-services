@@ -6,7 +6,7 @@ namespace Dot\AnnotatedServices\Factory;
 
 use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\AnnotationRegistry;
-use Doctrine\Common\Annotations\CachedReader;
+use Doctrine\Common\Annotations\PsrCachedReader;
 use Doctrine\Common\Annotations\Reader;
 use Doctrine\Common\Cache\Cache;
 use Psr\Container\ContainerExceptionInterface;
@@ -32,8 +32,6 @@ abstract class AbstractAnnotatedFactory
             return $this->annotationReader;
         }
 
-        AnnotationRegistry::registerLoader('class_exists');
-
         if (! $container->has(self::CACHE_SERVICE)) {
             return $this->annotationReader = new AnnotationReader();
         } else {
@@ -46,7 +44,7 @@ abstract class AbstractAnnotatedFactory
                     $debug = (bool) $config['debug'];
                 }
             }
-            return $this->annotationReader = new CachedReader(new AnnotationReader(), $cache, $debug);
+            return $this->annotationReader = new PsrCachedReader(new AnnotationReader(), $cache, $debug);
         }
     }
 }
