@@ -15,7 +15,7 @@ use Psr\Container\NotFoundExceptionInterface;
 
 abstract class AbstractAnnotatedFactory
 {
-    public const CACHE_SERVICE          = 'Dot\AnnotatedServices\Cache';
+    public const CACHE_SERVICE          = 'Psr\Cache\CacheItemPoolInterface';
     protected ?Reader $annotationReader = null;
     public function setAnnotationReader(Reader $annotationReader): void
     {
