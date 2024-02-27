@@ -40,7 +40,8 @@ return [
 ];
 ```
 
-**Please note, you can use only the fully qualified class name as the service key**
+### NOTE
+> You can use only the fully qualified class name as the service key
 
 The next step is to annotate the service constructor or setters with the service names to inject
 ```php
