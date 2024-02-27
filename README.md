@@ -76,7 +76,8 @@ use Dot\AnnotatedServices\Annotation\Inject;
 
 which will inject `$container->get('config')['debug'];`
 
-**Even if using dot notation, the annotated factory will check first if a service name exists with that name**
+### NOTE 
+> Even if using dot annotation, the annotated factory will check first if a service name exists with that name
 
 You can use the inject annotation on setters too, they will be called at creation time and injected with the configured dependencies.
 
