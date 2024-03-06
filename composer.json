@@ -1,7 +1,7 @@
 {
     "name": "dotkernel/dot-annotated-services",
     "type": "library",
-    "description": "DotKernel service creation component through laminas-servicemanager and annotations",
+    "description": "DotKernel dependency injection component using class attributes.",
     "license": "MIT",
     "homepage": "https://github.com/dotkernel/dot-annotated-services",
     "authors": [
@@ -11,23 +11,20 @@
         }
     ],
     "keywords": [
-        "annotations",
-        "services",
-        "factories",
+        "attribute",
         "container",
-        "laminas",
-        "mezzio",
-        "service-manager"
+        "dependency",
+        "di",
+        "factory",
+        "inject",
+        "service"
     ],
     "require": {
         "php": "~8.1.0 || ~8.2.0 || ~8.3.0",
-        "laminas/laminas-servicemanager": "^3.22.1",
-        "doctrine/annotations": "^1.14.3",
-        "doctrine/cache": "^1.12.1 || ^2.1.1",
-        "doctrine/orm" : "^2.17.3"
+        "doctrine/orm": "^2.0 || ^3.0"
     },
     "require-dev": {
-        "phpunit/phpunit": "^10.5.9",
+        "phpunit/phpunit": "^10.5",
         "vimeo/psalm": "^5.20",
         "laminas/laminas-coding-standard": "^2.5"
     },

@@ -25,13 +25,13 @@ Run the following command in your project directory
     composer require dotkernel/dot-annotated-services
 
 
-After installing, add the `ConfigProvider` class to your configuration aggregate.
+After installing, add the `ConfigProvider` class to your configuration aggregate, usually: `config/config.php`
 
 ## Usage
 
 ### Using the AnnotatedServiceFactory
 
-You can register services in the service manager using the `AnnotatedServiceFactory` as below
+You can register services in the service manager using `AnnotatedServiceFactory` as below:
 ```php
 return [
     'factories' => [
@@ -43,17 +43,15 @@ return [
 ### NOTE
 > You can use only the fully qualified class name as the service key
 
-The next step is to annotate the service constructor or setters with the service names to inject
+The next step is to add the `#[Inject]` attribute to the service constructor with the service FQCNs to inject:
 ```php
-use Dot\AnnotatedServices\Annotation\Inject;
+use Dot\AnnotatedServices\Attribute\Inject;
 
-/**
- * @Inject({
- *     Dependency1::class,
- *     Dependency2::class,
- *     "config"
- * })
- */
+#[Inject(
+    Dependency1::class,
+    Dependency2::class,
+    "config",
+)]
 public function __construct(
     protected Dependency1 $dep1,
     protected Dependency2 $dep2,
@@ -62,105 +60,46 @@ public function __construct(
 }
 ```
 
-The annotation `@Inject` is telling the factory to inject the services between curly braces.
+The `#[Inject]` attribute is telling `AnnotatedServiceFactory` to inject the services specified as parameters.
 Valid service names should be provided, as registered in the service manager.
 
 To inject an array value from the service manager, you can use dot notation as below
 ```php
-use Dot\AnnotatedServices\Annotation\Inject;
+use Dot\AnnotatedServices\Attribute\Inject;
 
-/**
- * @Inject({"config.debug"})
- */
+#[Inject(
+    "config.debug",
+)]
 ```
+which will inject `$container->get('config')['debug'];`.
 
-which will inject `$container->get('config')['debug'];`
 
 ### NOTE 
-> Even if using dot annotation, the annotated factory will check first if a service name exists with that name
+> Even if using dot notation, `AnnotatedServiceFactory` will check first if a service name exists with that name.
 
-You can use the inject annotation on setters too, they will be called at creation time and injected with the configured dependencies.
 
-### Using the AnnotatedRepositoryFactory 
-You can register doctrine repositories and inject them using the AnnotatedRepositoryFactory as below:
+### Using the AttributedRepositoryFactory 
+You can register doctrine repositories and inject them using the `AttributedRepositoryFactory` as below:
 ```php
 return [
     'factories' => [
-        ExampleRepository::class => AnnotatedRepositoryFactory::class,
+        ExampleRepository::class => AttributedRepositoryFactory::class,
     ],
 ];
 ```
 
-The next step is to add the `@Entity` annotation in the repository class.
+The next step is to add the `#[Entity]` annotation in the repository class.
 
 The `name` field has to be the fully qualified class name.
 
 Every repository should extend `Doctrine\ORM\EntityRepository`.
 ```php
+use Api\App\Entity\Example;
 use Doctrine\ORM\EntityRepository;
-use Dot\AnnotatedServices\Annotation\Entity;
+use Dot\AnnotatedServices\Attribute\Entity;
 
-/**
- * @Entity(name="App\Entity\Example")
- */
+#[Entity(name: Example::class)]
 class ExampleRepository extends EntityRepository
 {
-
-}
-```
-
-
-### Using the abstract factory
-
-Using this approach, no service manager configuration is required. It uses the registered abstract factory to create annotated services.
-
-In order to tell the abstract factory which services are to be created, you need to annotate the service class with the `@Service` annotation.
-```php
-use Dot\AnnotatedServices\Annotation\Service;
-
-/*
- * @Service
- */
-class ServiceClass
-{
-    // configure injections as described in the previous section
-}
-```
-
-And that's it, you don't need to configure the service manager with this class, creation will happen automatically.
-
-
-## Cache annotations
-
-This package is built on top of `doctrine/annotation` and `doctrine/cache`.
-In order to cache annotations, you should register a service factory at key `AbstractAnnotatedFactory::CACHE_SERVICE` that should return a valid `Doctrine\Common\Cache\Cache` cache driver. See [Cache Drivers](https://github.com/doctrine/cache/tree/master/lib/Doctrine/Common/Cache) for available implementations offered by doctrine.
-
-Below, we give an example, as defined in our frontend and admin starter applications
-```php
-return [
-    'annotations_cache_dir' => __DIR__ . '/../../data/cache/annotations',
-    'dependencies' => [
-        'factories' => [
-            // used by dot-annotated-services to cache annotations
-            // needs to return a cache instance from Doctrine\Common\Cache
-            AbstractAnnotatedFactory::CACHE_SERVICE => AnnotationsCacheFactory::class,
-        ]
-    ],
-];
-```
-
-```php
-namespace Frontend\App\Factory;
-
-use Doctrine\Common\Cache\FilesystemCache;
-use Psr\Container\ContainerInterface;
-
-class AnnotationsCacheFactory
-{
-    public function __invoke(ContainerInterface $container)
-    {
-        //change this to suite your caching needs
-        return new FilesystemCache($container->get('config')['annotations_cache_dir']);
-    }
 }
 ```
