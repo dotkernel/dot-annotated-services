@@ -30,12 +30,14 @@ class AttributedServiceFactoryTest extends TestCase
     {
         $container = $this->createMock(ContainerInterface::class);
 
+        $subject = 'test';
+
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage(
-            sprintf(RuntimeException::MESSAGE_CLASS_NOT_FOUND, 'test')
+            sprintf(RuntimeException::MESSAGE_CLASS_NOT_FOUND, $subject)
         );
 
-        (new AttributedServiceFactory())($container, 'test');
+        (new AttributedServiceFactory())($container, $subject);
     }
 
     /**
@@ -130,6 +132,31 @@ class AttributedServiceFactoryTest extends TestCase
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
             sprintf(InvalidArgumentException::MESSAGE_MISSING_KEY, 'config.uration.key')
+        );
+
+        (new AttributedServiceFactory())($container, $subject::class);
+    }
+
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws Exception
+     * @throws NotFoundExceptionInterface
+     */
+    public function testWillThrowExceptionIfDependencyNotFound(): void
+    {
+        $container = $this->createMock(ContainerInterface::class);
+
+        $subject = new class
+        {
+            #[Inject('test')]
+            public function __construct(mixed $test = null)
+            {
+            }
+        };
+
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage(
+            sprintf(RuntimeException::MESSAGE_CLASS_NOT_FOUND, 'test')
         );
 
         (new AttributedServiceFactory())($container, $subject::class);
