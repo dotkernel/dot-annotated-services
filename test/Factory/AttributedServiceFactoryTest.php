@@ -96,8 +96,15 @@ class AttributedServiceFactoryTest extends TestCase
     public function testWillThrowExceptionIfDottedServiceNotFound(): void
     {
         $mapping = [
-            'config'  => [],
-            'uration' => [],
+            'config'  => [
+                'uration' => [
+                    'test' => [],
+                ],
+            ],
+            'uration' => [
+                'test' => [],
+            ],
+            'key'     => [],
         ];
 
         $container = $this->createMock(ContainerInterface::class);
@@ -114,7 +121,7 @@ class AttributedServiceFactoryTest extends TestCase
 
         $subject = new class
         {
-            #[Inject('config.key')]
+            #[Inject('config.uration.key')]
             public function __construct(array $config = [])
             {
             }
@@ -122,7 +129,7 @@ class AttributedServiceFactoryTest extends TestCase
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage(
-            sprintf(InvalidArgumentException::MESSAGE_MISSING_KEY, 'config.key')
+            sprintf(InvalidArgumentException::MESSAGE_MISSING_KEY, 'config.uration.key')
         );
 
         (new AttributedServiceFactory())($container, $subject::class);
