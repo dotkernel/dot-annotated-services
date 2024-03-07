@@ -110,3 +110,10 @@ class ExampleRepository extends EntityRepository
 {
 }
 ```
+
+### NOTE
+Starting from version `5.0` of `dot-annotated-services`:
+- services can only be injected using the `#[Inject]` attribute (`@Inject` and `@Service` annotations are no longer supported)
+- repository-entity relation can only be established using the `#[Entity]` attribute (`@Entity` annotation is no longer supported)
+- dependencies injected via the`#[Entity]`/`#[Inject]` attributes are not cached
+- injecting dependencies into property setters is no longer supported
