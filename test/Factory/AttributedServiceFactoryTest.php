@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace DotTest\AnnotatedServices\Factory;
 
 use Dot\AnnotatedServices\Attribute\Inject;
+use Dot\AnnotatedServices\Exception\InvalidArgumentException;
 use Dot\AnnotatedServices\Exception\RuntimeException;
 use Dot\AnnotatedServices\Factory\AttributedServiceFactory;
 use DotTest\AnnotatedServices\TestData\RecursionService;
@@ -82,6 +83,46 @@ class AttributedServiceFactoryTest extends TestCase
                 RuntimeException::MESSAGE_RECURSIVE_INJECT,
                 $subject::class
             )
+        );
+
+        (new AttributedServiceFactory())($container, $subject::class);
+    }
+
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws Exception
+     * @throws NotFoundExceptionInterface
+     */
+    public function testWillThrowExceptionIfDottedServiceNotFound(): void
+    {
+        $mapping = [
+            'config'  => [],
+            'uration' => [],
+        ];
+
+        $container = $this->createMock(ContainerInterface::class);
+        $container->expects($this->any())->method('has')->willReturnCallback(
+            function (string $key) use ($mapping): bool {
+                return array_key_exists($key, $mapping);
+            },
+        );
+        $container->expects($this->any())->method('get')->willReturnCallback(
+            function (string $key) use ($mapping): array {
+                return $mapping[$key] ?? [];
+            },
+        );
+
+        $subject = new class
+        {
+            #[Inject('config.key')]
+            public function __construct(array $config = [])
+            {
+            }
+        };
+
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage(
+            sprintf(InvalidArgumentException::MESSAGE_MISSING_KEY, 'config.key')
         );
 
         (new AttributedServiceFactory())($container, $subject::class);

@@ -24,6 +24,8 @@ use function sprintf;
 
 class AttributedServiceFactory
 {
+    protected string $originalKey;
+
     /**
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
@@ -95,6 +97,8 @@ class AttributedServiceFactory
      */
     protected function getServiceToInject(ContainerInterface $container, string $serviceKey): mixed
     {
+        $this->originalKey = $serviceKey;
+
         /**
          * Even when dots are found, try to find a service with the full name.
          * If it is not found, then assume dots are used to get part of an array service
@@ -121,10 +125,9 @@ class AttributedServiceFactory
     {
         $key = array_shift($keys);
         if (! isset($array[$key])) {
-            throw new InvalidArgumentException(sprintf(
-                'The key "%s" provided in the dotted notation could not be found in the array service.',
-                $key
-            ));
+            throw new InvalidArgumentException(
+                sprintf(InvalidArgumentException::MESSAGE_MISSING_KEY, $this->originalKey)
+            );
         }
 
         $value = $array[$key];
