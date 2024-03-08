@@ -6,23 +6,20 @@ namespace Dot\AnnotatedServices\Factory;
 
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
-use Dot\AnnotatedServices\Annotation\Entity;
+use Dot\AnnotatedServices\Attribute\Entity;
 use Dot\AnnotatedServices\Exception\RuntimeException;
 use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
 use Psr\Container\NotFoundExceptionInterface;
 use ReflectionClass;
-use ReflectionException;
 
 use function class_exists;
 
-class AnnotatedRepositoryFactory extends AbstractAnnotatedFactory
+class AttributedRepositoryFactory
 {
     /**
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
-     * @throws ReflectionException
-     * @throws RuntimeException
      */
     public function __invoke(ContainerInterface $container, string $requestedName): EntityRepository
     {
@@ -32,7 +29,6 @@ class AnnotatedRepositoryFactory extends AbstractAnnotatedFactory
     /**
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
-     * @throws ReflectionException
      */
     public function createObject(ContainerInterface $container, string $requestedName): EntityRepository
     {
@@ -42,16 +38,26 @@ class AnnotatedRepositoryFactory extends AbstractAnnotatedFactory
 
         $reflectionClass = new ReflectionClass($requestedName);
         if (! $reflectionClass->isSubclassOf(EntityRepository::class)) {
-            throw RuntimeException::doesNotExtend(EntityRepository::class);
+            throw RuntimeException::doesNotExtend($requestedName, EntityRepository::class);
         }
 
-        $annotationReader = $this->createAnnotationReader($container);
-        $entity           = $annotationReader->getClassAnnotation($reflectionClass, Entity::class);
-        if (! $entity) {
-            throw RuntimeException::annotationNotFound(Entity::class, $requestedName, static::class);
+        $entityAttribute = $this->findEntityAttribute($reflectionClass);
+        if (! $entityAttribute instanceof Entity) {
+            throw RuntimeException::attributeNotFound(Entity::class, $requestedName, static::class);
         }
 
-        $entityManager = $container->get(EntityManagerInterface::class);
-        return $entityManager->getRepository($entity->getName());
+        return $container->get(EntityManagerInterface::class)->getRepository($entityAttribute->getName());
+    }
+
+    protected function findEntityAttribute(ReflectionClass $reflectionClass): ?Entity
+    {
+        $attributes = $reflectionClass->getAttributes();
+        foreach ($attributes as $attribute) {
+            if ($attribute->getName() === Entity::class) {
+                return $attribute->newInstance();
+            }
+        }
+
+        return null;
     }
 }

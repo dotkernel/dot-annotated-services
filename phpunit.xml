@@ -3,6 +3,7 @@
     <testsuites>
         <testsuite name="dot-annotated-services Test Suite">
             <directory>./test</directory>
+            <exclude>./test/TestData</exclude>
         </testsuite>
     </testsuites>
     <coverage/>
