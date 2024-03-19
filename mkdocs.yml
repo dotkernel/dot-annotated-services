@@ -1,0 +1,28 @@
+docs_dir: docs/book
+site_dir: docs/html
+extra:
+  project: Packages
+  current_version: v4
+  versions:
+    - v4
+nav:
+  - Home: index.md
+  - v4:
+      - Overview: v4/overview.md
+      - Installation: v4/installation.md
+      - Usage: v4/usage.md
+      - Factories: v4/factories.md
+      - Cache: v4/cache.md
+      - Reference:
+          - "Inject class dependencies": v4/factories/service.md
+          - "Inject entity repositories": v4/factories/repository.md
+site_name: dot-annotated-services
+site_description: "DotKernel's dependency injection service"
+repo_url: "https://github.com/dotkernel/dot-annotated-services"
+plugins:
+  - search
+  - redirects:
+      redirect_maps:
+        overview.md: v4/overview.md
+        install.md: v4/installation.md
+        usage.md: v4/usage.md
