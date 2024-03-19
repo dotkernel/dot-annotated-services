@@ -32,14 +32,14 @@ After installing, register `dot-annotated-services` in your project by adding th
 
 ## Usage
 
-### Using the AnnotatedServiceFactory
+### Using the AttributedServiceFactory
 
-You can register services in the service manager using `AnnotatedServiceFactory` as seen in the below example:
+You can register services in the service manager using `AttributedServiceFactory` as seen in the below example:
 
 ```php
 return [
     'factories' => [
-        ServiceClass::class => AnnotatedServiceFactory::class,
+        ServiceClass::class => AttributedServiceFactory::class,
     ],
 ];
 ```
@@ -54,19 +54,19 @@ The next step is to add the `#[Inject]` attribute to the service constructor wit
 use Dot\AnnotatedServices\Attribute\Inject;
 
 #[Inject(
-    Dependency1::class,
-    Dependency2::class,
+    App\Srevice\Dependency1::class,
+    App\Srevice\Dependency2::class,
     "config",
 )]
 public function __construct(
-    protected Dependency1 $dep1,
-    protected Dependency2 $dep2,
+    protected App\Srevice\Dependency1 $dep1,
+    protected App\Srevice\Dependency2 $dep2,
     protected array $config
 ) {
 }
 ```
 
-The `#[Inject]` attribute is telling `AnnotatedServiceFactory` to inject the services specified as parameters.
+The `#[Inject]` attribute is telling `AttributedServiceFactory` to inject the services specified as parameters.
 Valid service names should be provided, as registered in the service manager.
 
 To inject an array value from the service manager, you can use dot notation as below
@@ -82,7 +82,7 @@ which will inject `$container->get('config')['debug'];`.
 
 
 ### NOTE 
-> Even if using dot notation, `AnnotatedServiceFactory` will check first if a service name exists with that name.
+> Even if using dot notation, `AttributedServiceFactory` will check first if a service name exists with that name.
 
 
 ### Using the AttributedRepositoryFactory 
