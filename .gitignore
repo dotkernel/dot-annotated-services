@@ -38,3 +38,5 @@ composer.phar
 composer.lock
 .phpunit.result.cache
 .phpcs-cache
+/documentation-theme/
+/docs/html/
