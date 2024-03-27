@@ -21,8 +21,3 @@ site_description: "DotKernel's dependency injection service"
 repo_url: "https://github.com/dotkernel/dot-annotated-services"
 plugins:
   - search
-  - redirects:
-      redirect_maps:
-        overview.md: v4/overview.md
-        install.md: v4/installation.md
-        usage.md: v4/usage.md
