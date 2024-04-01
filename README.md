@@ -33,13 +33,11 @@ After installing, register `dot-annotated-services` in your project by adding th
 
 You can register services in the service manager using `AttributedServiceFactory` as seen in the below example:
 
-```php
-return [
-    'factories' => [
-        ServiceClass::class => AttributedServiceFactory::class,
-    ],
-];
-```
+    return [
+        'factories' => [
+            ServiceClass::class => AttributedServiceFactory::class,
+        ],
+    ];
 
 ### NOTE
 
@@ -47,52 +45,46 @@ return [
 
 The next step is to add the `#[Inject]` attribute to the service constructor with the service FQCNs to inject:
 
-```php
 use Dot\AnnotatedServices\Attribute\Inject;
 
-#[Inject(
-    App\Srevice\Dependency1::class,
-    App\Srevice\Dependency2::class,
-    "config",
-)]
-public function __construct(
-    protected App\Srevice\Dependency1 $dep1,
-    protected App\Srevice\Dependency2 $dep2,
-    protected array $config
-) {
-}
-```
+    #[Inject(
+        App\Srevice\Dependency1::class,
+        App\Srevice\Dependency2::class,
+        "config",
+    )]
+    public function __construct(
+        protected App\Srevice\Dependency1 $dep1,
+        protected App\Srevice\Dependency2 $dep2,
+        protected array $config
+    ) {
+    }
 
 The `#[Inject]` attribute is telling `AttributedServiceFactory` to inject the services specified as parameters.
 Valid service names should be provided, as registered in the service manager.
 
 To inject an array value from the service manager, you can use dot notation as below
 
-```php
 use Dot\AnnotatedServices\Attribute\Inject;
 
-#[Inject(
-    "config.debug",
-)]
-```
+    #[Inject(
+        "config.debug",
+    )]
 
 which will inject `$container->get('config')['debug'];`.
 
-### NOTE 
+### NOTE
 
 > Even if using dot notation, `AttributedServiceFactory` will check first if a service name exists with that name.
 
-### Using the AttributedRepositoryFactory 
+### Using the AttributedRepositoryFactory
 
 You can register doctrine repositories and inject them using the `AttributedRepositoryFactory` as below:
 
-```php
-return [
-    'factories' => [
-        ExampleRepository::class => AttributedRepositoryFactory::class,
-    ],
-];
-```
+    return [
+        'factories' => [
+            ExampleRepository::class => AttributedRepositoryFactory::class,
+        ],
+    ];
 
 The next step is to add the `#[Entity]` attribute in the repository class.
 
@@ -100,16 +92,14 @@ The `name` field has to be the fully qualified class name.
 
 Every repository should extend `Doctrine\ORM\EntityRepository`.
 
-```php
-use Api\App\Entity\Example;
-use Doctrine\ORM\EntityRepository;
-use Dot\AnnotatedServices\Attribute\Entity;
-
-#[Entity(name: Example::class)]
-class ExampleRepository extends EntityRepository
-{
-}
-```
+    use Api\App\Entity\Example;
+    use Doctrine\ORM\EntityRepository;
+    use Dot\AnnotatedServices\Attribute\Entity;
+    
+    #[Entity(name: Example::class)]
+    class ExampleRepository extends EntityRepository
+    {
+    }
 
 ### NOTE
 
