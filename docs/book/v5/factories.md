@@ -14,7 +14,6 @@ Injects entity repositories into a class.
 - `Psr\Container\NotFoundExceptionInterface` if `Doctrine\ORM\EntityManagerInterface` does not exist in the service container
 - `Psr\Container\ContainerExceptionInterface` if service manager is unable to provide an instance of `Doctrine\ORM\EntityManagerInterface`
 
-
 ## AttributedServiceFactory
 
 Injects class dependencies into classes.

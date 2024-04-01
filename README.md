@@ -17,18 +17,15 @@ This package can clean up your code, by getting rid of all the factories you wri
 
 [![SymfonyInsight](https://insight.symfony.com/projects/a0d7016e-fc3f-46b8-9b36-571ff060d744/big.svg)](https://insight.symfony.com/projects/a0d7016e-fc3f-46b8-9b36-571ff060d744)
 
-
 ## Installation
 
 Install `dot-annotated-services` by running the following command in your project directory:
 
     composer require dotkernel/dot-annotated-services
 
-
 After installing, register `dot-annotated-services` in your project by adding the below line to your configuration aggregate (usually: `config/config.php`):
 
      Dot\AnnotatedServices\ConfigProvider::class,
-
 
 ## Usage
 
@@ -44,8 +41,8 @@ return [
 ];
 ```
 
-
 ### NOTE
+
 > You can use only the fully qualified class name as the service key
 
 The next step is to add the `#[Inject]` attribute to the service constructor with the service FQCNs to inject:
@@ -78,15 +75,17 @@ use Dot\AnnotatedServices\Attribute\Inject;
     "config.debug",
 )]
 ```
+
 which will inject `$container->get('config')['debug'];`.
 
-
 ### NOTE 
+
 > Even if using dot notation, `AttributedServiceFactory` will check first if a service name exists with that name.
 
-
 ### Using the AttributedRepositoryFactory 
+
 You can register doctrine repositories and inject them using the `AttributedRepositoryFactory` as below:
+
 ```php
 return [
     'factories' => [
@@ -100,6 +99,7 @@ The next step is to add the `#[Entity]` attribute in the repository class.
 The `name` field has to be the fully qualified class name.
 
 Every repository should extend `Doctrine\ORM\EntityRepository`.
+
 ```php
 use Api\App\Entity\Example;
 use Doctrine\ORM\EntityRepository;
@@ -112,7 +112,9 @@ class ExampleRepository extends EntityRepository
 ```
 
 ### NOTE
+
 Starting from version `5.0` of `dot-annotated-services`:
+
 - services can only be injected using the `#[Inject]` attribute (`@Inject` and `@Service` annotations are no longer supported)
 - repository-entity relation can only be established using the `#[Entity]` attribute (`@Entity` annotation is no longer supported)
 - dependencies injected via the`#[Entity]`/`#[Inject]` attributes are not cached
