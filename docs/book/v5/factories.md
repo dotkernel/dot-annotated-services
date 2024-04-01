@@ -6,8 +6,8 @@
 
 Injects entity repositories into a class.
 
-
 ### Exceptions thrown
+
 - `Dot\AnnotatedServices\Exception\RuntimeException` if repository does not exist
 - `Dot\AnnotatedServices\Exception\RuntimeException` if repository does not extend `Doctrine\ORM\EntityRepository`
 - `Dot\AnnotatedServices\Exception\RuntimeException` if repository does not have `#[Entity]` attribute
@@ -22,8 +22,8 @@ Injects class dependencies into classes.
 If a dependency is specified using the dot notation, `AttributedServiceFactory` will try to load a service having that specific alias.
 If it does not find one, it will try to load the dependency as a config tree, checking each segment if it's available in the service container.
 
-
 ### Exceptions thrown
+
 - `Dot\AnnotatedServices\Exception\RuntimeException` if service does not exist
 - `Dot\AnnotatedServices\Exception\RuntimeException` if service does not have `#[Inject]` attribute on it's constructor
 - `Dot\AnnotatedServices\Exception\RuntimeException` if service tries to inject itself recursively
