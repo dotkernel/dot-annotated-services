@@ -1,6 +1,5 @@
 docs_dir: docs/book
 site_dir: docs/html/packages
-
 extra:
   project: Packages
   current_version: v5
