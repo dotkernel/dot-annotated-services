@@ -14,6 +14,7 @@ This package can clean up your code, by getting rid of all the factories you wri
 
 [![Build Static](https://github.com/dotkernel/dot-annotated-services/actions/workflows/continuous-integration.yml/badge.svg?branch=5.0)](https://github.com/dotkernel/dot-annotated-services/actions/workflows/continuous-integration.yml)
 [![codecov](https://codecov.io/gh/dotkernel/dot-annotated-services/graph/badge.svg?token=ZBZDEA3LY8)](https://codecov.io/gh/dotkernel/dot-annotated-services)
+[![docs-build](https://github.com/dotkernel/dot-annotated-services/actions/workflows/docs-build.yml/badge.svg)](https://github.com/dotkernel/dot-annotated-services/actions/workflows/docs-build.yml)
 
 [![SymfonyInsight](https://insight.symfony.com/projects/a0d7016e-fc3f-46b8-9b36-571ff060d744/big.svg)](https://insight.symfony.com/projects/a0d7016e-fc3f-46b8-9b36-571ff060d744)
 
