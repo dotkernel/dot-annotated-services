@@ -1,113 +1,169 @@
 <!DOCTYPE html>
 <html lang="en">
-
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="DotKernel's dependency injection service"> 
-
-    
-    
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
         
-    
-    <meta name="docsearch:version" content="5.0.0,latest">
-    <meta name="docsearch:language" content="en">
-    <meta name="docsearch:component" content="dot-annotated-services">
-
-    <link rel="canonical" href="https://docs.dotkernel.org/dot-annotated-services/v5/factories/service/">
-    <link rel="shortcut icon" href="https://docs.dotkernel.org/img/cropped-dk_128-32x32.png">
-
-    <title>Inject class dependencies - dot-annotated-services - DotKernel Docs</title>
-
-    <link rel="stylesheet" href="https://docs.dotkernel.org/css/styles.css">
-    
-</head>
-<body id="page-top" class="packages" data-spy="scroll" data-target=".toc" data-offset="20">
-
-    
-    <nav class="navbar navbar-expand-lg navbar-dark bg-primary">
-    <div class="container">
+        <meta name="description" content="DotKernel's dependency injection service">
         
-        <a class="logo-link navbar-brand" href="https://docs.dotkernel.org/" data-tooltip data-placement="bottom" title="Go to the DotKernel homepage">
-            <img src="https://docs.dotkernel.org/img/dk_logo_white.svg" height="28" alt="DotKernel">
-        </a>
-<!--        <a class="navbar-title" href="https://docs.dotkernel.org/" data-tooltip data-placement="bottom" title="Go to the DotKernel Documentation">-->
-<!--            Documentation-->
-<!--        </a>-->
+        
 
         
-        <button type="button" class="navbar-toggler" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        
+            
+        
+        <meta name="docsearch:version" content="5.0.0,latest">
+        <meta name="docsearch:language" content="en">
+        <meta name="docsearch:component" content="dot-annotated-services">
+
+        
+        <link rel="canonical" href="https://docs.dotkernel.org/dot-annotated-services/v5/factories/service/">
+        
+        
+        <link rel="shortcut icon" href="https://docs.dotkernel.org/img/dk_logomark.svg">
+        
+
+        <title>Inject class dependencies - dot-annotated-services - DotKernel Documentation</title>
+
+        <link rel="stylesheet" href="https://docs.dotkernel.org/css/bootstrap.css">
+        <link rel="stylesheet" href="https://docs.dotkernel.org/css/bootstrap-icons.min.css">
+        <link rel="stylesheet" href="https://docs.dotkernel.org/css/docs.css">
+        <script src="https://docs.dotkernel.org//js/bootstrap.js" defer></script>
+        <script src="https://docs.dotkernel.org//js/docs.js" defer></script>
+        <script src="https://docs.dotkernel.org//js/scripts.js" defer></script>
+    </head>
+    <body data-bs-spy="scroll" data-bs-target=".toc" data-bs-offset="100">
+
+        
+        <nav class="navbar navbar-expand-lg bg-body-tertiary bg-light dk-nav py-3" data-bs-theme="light">
+    <div class="container justify-content-between">
+        <div class="dk-nav-icon d-flex align-items-center">
+            <a class="navbar-brand" href="https://docs.dotkernel.org/">
+                <img src="https://docs.dotkernel.org//img/dk_logomark_white.svg" alt="DotKernel Logo" width="45" height="50" class="d-inline-block align-text-top" />
+            </a>
+
+            <div class="dk-nav-icon-items">
+                <span style="font-size: 12px; line-height: 13px">DotKernel Documentation</span>
+
+                <div class="dropdown" data-bs-theme="light">
+                    <span class="fw-bold dropdown-toggle dk-pkg-name" data-bs-toggle="dropdown" aria-expanded="false">Packages</span>
+                    <ul class="dropdown-menu">
+                        <li class="dropdown-item">
+                            <a href="https://docs.dotkernel.org/api/" class="nav-link d-flex gap-4 align-items-center">
+                                <img src="https://docs.dotkernel.org/img/dk_logomark_3colors.svg" alt="DotKernel Logo" width="45" height="50" class="d-inline-block align-text-top" />
+                                <div>
+                                    <span class="fw-bold d-block">API</span>
+                                    <span>DotKernel API</span>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li class="dropdown-item">
+                            <a href="https://docs.dotkernel.org/admin/" class="nav-link d-flex gap-4 align-items-center">
+                                <img src="https://docs.dotkernel.org/img/dk_logomark.svg" alt="DotKernel Logo" width="45" height="50" class="d-inline-block align-text-top" />
+                                <div>
+                                    <span class="fw-bold d-block">Admin</span>
+                                    <span>DotKernel admin application</span>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li class="dropdown-item">
+                            <a href="https://docs.dotkernel.org/frontend/" class="nav-link d-flex gap-4 align-items-center">
+                                <img src="https://docs.dotkernel.org/img/dk_logomark.svg" alt="DotKernel Logo" width="45" height="50" class="d-inline-block align-text-top" />
+                                <div>
+                                    <span class="fw-bold d-block">Frontend</span>
+                                    <span>DotKernel frontend application</span>
+                                </div>
+                            </a>
+                        </li>
+
+                        <li class="dropdown-item bg-light">
+                            <a href="https://docs.dotkernel.org/packages/" class="nav-link d-flex gap-4 align-items-center">
+                                <img src="https://docs.dotkernel.org/img/dk_logomark.svg" alt="DotKernel Logo" width="45" height="50" class="d-inline-block align-text-top" />
+                                <div>
+                                    <span class="fw-bold d-block">Packages</span>
+                                    <span>DotKernel packages</span>
+                                </div>
+                            </a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
 
-        <div class="collapse navbar-collapse" id="navbarSupportedContent">
-
-            
-            <ul class="navbar-nav ml-auto">
+        <div class="collapse navbar-collapse" id="navbarText">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+<!--                <li class="nav-item">-->
+<!--                    <a href="#" class="nav-link fw-bold text-white" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal" title="Open search">-->
+<!--                        <i class="bi bi-search"></i> Search-->
+<!--                    </a>-->
+<!--                </li>-->
                 <li class="nav-item">
-                    <div class="dropdown sub-project-selector">
-                        <a class="dropdown-toggle nav-link" data-toggle="dropdown" aria-expanded="false">
-                            All Docs
-                        </a>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a href="https://docs.dotkernel.org/frontend/" class="dropdown-item">
-                                <div class="row align-items-center">
-                                    <div class="col-md-2 col-sm-12">
-                                        <img src="https://docs.dotkernel.org/img/dk_logomark.svg" class="dropdown-logo">
-                                    </div>
-                                    <div class="col-md-10 col-sm-12">
-                                        <strong>DotKernel</strong><br>
-                                        DotKernel frontend application
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="https://docs.dotkernel.org/admin/" class="dropdown-item">
-                                <div class="row align-items-center">
-                                    <div class="col-md-2 col-sm-12">
-                                        <img src="https://docs.dotkernel.org/img/dk_logomark.svg" class="dropdown-logo">
-                                    </div>
-                                    <div class="col-md-10 col-sm-12">
-                                        <strong>Admin</strong><br>
-                                        DotKernel admin application
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="https://docs.dotkernel.org/api/" class="dropdown-item">
-                                <div class="row align-items-center">
-                                    <div class="col-md-2 col-sm-12">
-                                        <img src="https://docs.dotkernel.org/img/dk_logomark.svg" class="dropdown-logo">
-                                    </div>
-                                    <div class="col-md-10 col-sm-12">
-                                        <strong>API</strong><br>
-                                        DotKernel API
-                                    </div>
-                                </div>
-                            </a>
-                            <a href="https://docs.dotkernel.org/packages/" class="dropdown-item">
-                                <div class="row align-items-center">
-                                    <div class="col-md-2 col-sm-12">
-                                        <img src="https://docs.dotkernel.org/img/dk_logomark.svg" class="dropdown-logo">
-                                    </div>
-                                    <div class="col-md-10 col-sm-12">
-                                        <strong>Packages</strong><br>
-                                        DotKernel packages
-                                    </div>
-                                </div>
-                            </a>
-                        </div>
-                    </div>
+                    <a class="nav-link fw-bold text-white" href="https://github.com/dotkernel/dot-annotated-services" title="Go to dot-annotated-services repository" target="_blank">
+                        <i class="bi bi-github"></i>
+                        GitHub
+                    </a>
                 </li>
             </ul>
+        </div>
+    </div>
+</nav>
 
+        
+        <div class="container">
+    <nav aria-label="breadcrumb" class="nav_breadcrumb">
+        <ol class="breadcrumb">
             
-            
-            <div class="d-block d-sm-none">
+                <li class="breadcrumb-item"><a href="https://docs.dotkernel.org/">Overview</a></li>
+                <li class="breadcrumb-item"><a href="https://docs.dotkernel.org/packages/">Packages</a></li>
+
                 
+                    <li class="breadcrumb-item"><a href="../../..">dot-annotated-services</a></li>
+
+                    
+                        
+                            
+                            
+                        
+                    
+                        
+                            
+                            
+                                <li class="breadcrumb-item">Reference</li>
+                            
+                        
+                    
+
+                    <li class="breadcrumb-item active" aria-current="page">Inject class dependencies</li>
+                
+            
+        </ol>
+    </nav>
+</div>
+
+        
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 right_sidebar">
+                    
+<!--                    <div class="component-selector">
+    
+    <h5 class="component-selector__subtitle">Find documentation…</h5>
+    <select class="form-control component-selector__control">
+        <option value="/">Overview</option>
+        <optgroup label="Components"></optgroup>
+    </select>
+</div>-->
+                    
     <div class="subnavigation hidden-print">
-        <h4 class="subnavigation__title">
-            <a href="../../..">dot-annotated-services</a>
-        </h4>
+<!--        <h4 class="subnavigation__title">-->
+<!--            <a href="../../..">dot-annotated-services</a>-->
+<!--        </h4>-->
 
         <h5 class="subnavigation__subtitle">Table of Contents</h5>
 
@@ -175,149 +231,44 @@
         </ul>
     </div>
 
-            </div>
-            
+<!--                    -->
+                    
 
-            
-            <div class="d-block d-sm-none">
-                <div class="component-selector">
-    
-    <h5 class="component-selector__subtitle">Find documentation…</h5>
-    <select class="form-control component-selector__control">
-        <option value="/">Overview</option>
-        <optgroup label="Components"></optgroup>
-    </select>
-</div>
-            </div>
-        </div>
-    </div>
-</nav>
-
-    
-    <header class="header">
-    <div class="container">
-        <div class="row">
-
-            
-            <div class="col-8">
-                <h1 class="header__title">
-                    Packages
-
-                    <small class="header__subtitle">dot-annotated-services</small>
-                </h1>
-            </div>
-
-            
-            <div class="col-4 text-right">
-                
-<div class="version-selector">
-    <div class="btn-group">
-        <button type="button" class="btn dropdown-toggle" data-toggle="dropdown" data-display="static" aria-haspopup="true" aria-expanded="false" id="version-selector-dropdown">
-            
-                v5
-            
-        </button>
-        <div class="dropdown-menu dropdown-menu-right dropdown-menu-lg-left" aria-labelledby="version-selector-dropdown">
-            
-                
-                    <a href="../../overview/" class="dropdown-item active">
-                        
-                            v5 (latest)
-                        
-                    </a>
-                
-            
-                
-                    <a href="../../../v4/overview/" class="dropdown-item">
-                        
-                            v4
-                        
-                    </a>
-                
-            
-        </div>
-    </div>
-</div>
-
-
-                <a href="#" class="header__link header__link--search" data-toggle="modal" data-target="#mkdocs_search_modal" title="Open search">
-                    <i class="fa fa-search"></i> Search
-                </a>
-                <a href="https://github.com/dotkernel/dot-annotated-services" class="header__link header__link--github" title="Go to repository of dot-annotated-services" target="_blank">
-                    <i class="fab fa-github"></i> GitHub
-                </a>
-            </div>
-        </div>
-    </div>
-</header>
-
-    
-    <div class="container">
-        <div class="row">
-            <div class="col-md-9 col-sm-12 content" role="main">
-                
-                
+                    
+                    
                     
     
 
     
     
         <div class="toc">
-            <h6 class="toc__headline">On this page</h6>
+            <h6 class="toc__headline fw-bold">On this page</h6>
             <ul class="toc__list">
-                
-                    <li class="toc__entry">
-                        <a href="#prepare-class" class="toc__link nav-link">Prepare class</a>
-                    </li>
-                
-                    <li class="toc__entry">
-                        <a href="#register-class" class="toc__link nav-link">Register class</a>
-                    </li>
-                
+            
+                <li class="toc__entry">
+                    <a href="#prepare-class" class="toc__link nav-link">Prepare class</a>
+                </li>
+            
+                <li class="toc__entry">
+                    <a href="#register-class" class="toc__link nav-link">Register class</a>
+                </li>
+            
             </ul>
         </div>
     
 
-                
-
-                
-                    <nav aria-label="breadcrumb">
-    <ol class="breadcrumb">
-        
-            <li class="breadcrumb-item"><a href="https://docs.dotkernel.org/">Overview</a></li>
-            <li class="breadcrumb-item"><a href="https://docs.dotkernel.org/packages/">Packages</a></li>
-
-            
-                <li class="breadcrumb-item"><a href="../../..">dot-annotated-services</a></li>
-
-                
                     
-                        
-                        
+                </div>
+                <div class="col-md-9 main_docs">
                     
-                
                     
-                        
-                        
-                            <li class="breadcrumb-item">Reference</li>
-                        
-                    
-                
-
-                <li class="breadcrumb-item active" aria-current="page">Inject class dependencies</li>
-            
-        
-    </ol>
-</nav>
-
-
 
 
 
 
     
     
-        <h2 class="chapter__headline">Reference</h2>
+<!--        <h2 class="chapter__headline text-black-50">Reference</h2>-->
     
 
     <h1 id="inject-class-dependencies">Inject class dependencies</h1>
@@ -395,7 +346,7 @@ class ConfigProvider
             
                 <a rel="prev" class="page-nav__link page-nav__link--prev" href="../">
                     <small class="page-nav__label">Previous</small>
-                    <i class="fa fa-chevron-left"></i>
+                    <i class="bi bi-chevron-left"></i>
                     Factories
                 </a>
             
@@ -407,7 +358,7 @@ class ConfigProvider
                 <a rel="next" class="page-nav__link page-nav__link--next" href="../repository/">
                     <small class="page-nav__label">Next</small>
                     Inject entity repositories
-                    <i class="fa fa-chevron-right"></i>
+                    <i class="bi bi-chevron-right"></i>
                 </a>
             
         </li>
@@ -416,190 +367,111 @@ class ConfigProvider
 
 
 
-                
-            </div>
-            <div class="col-md-3 col-sm-12 sidebar">
-                
-                    <div class="component-selector">
-    
-    <h5 class="component-selector__subtitle">Find documentation…</h5>
-    <select class="form-control component-selector__control">
-        <option value="/">Overview</option>
-        <optgroup label="Components"></optgroup>
-    </select>
-</div>
                     
-    <div class="subnavigation hidden-print">
-        <h4 class="subnavigation__title">
-            <a href="../../..">dot-annotated-services</a>
-        </h4>
-
-        <h5 class="subnavigation__subtitle">Table of Contents</h5>
-
-        <ul class="subnavigation__list">
-            
-
-                
-                
-                    
-                        
-    <li class="subnavigation__list-item ">
-        <a href="../../overview/" class="subnavigation__link">Overview</a>
-    </li>
-
-                    
-                        
-    <li class="subnavigation__list-item ">
-        <a href="../../installation/" class="subnavigation__link">Installation</a>
-    </li>
-
-                    
-                        
-    <li class="subnavigation__list-item ">
-        <a href="../../usage/" class="subnavigation__link">Usage</a>
-    </li>
-
-                    
-                        
-    <li class="subnavigation__list-item ">
-        <a href="../" class="subnavigation__link">Factories</a>
-    </li>
-
-                    
-                        
-    <li class="subnavigation__list-item">
-        <span class="subnavigation__headline">Reference</span>
-        <ul class="subnavigation__list">
-            
-                
-    <li class="subnavigation__list-item subnavigation__list-item--active">
-        <a href="./" class="subnavigation__link">Inject class dependencies</a>
-    </li>
-
-            
-                
-    <li class="subnavigation__list-item ">
-        <a href="../repository/" class="subnavigation__link">Inject entity repositories</a>
-    </li>
-
-            
-        </ul>
-    </li>
-
-                    
-                
-            
-
-                
-                
-
-                    
-                    
-                
-            
-        </ul>
-    </div>
-
-                    
-                
+                </div>
             </div>
         </div>
-    </div>
-
-    
-    <footer class="footer">
-    <div class="container">
 
         
-        <div class="row">
-            <div class="col-md-12 text-center">
-                <a class="footer__button" href="#page-top"><i class="fa fa-chevron-up" aria-hidden="true"></i></a>
-            </div>
-        </div>
+        <footer class="footer">
+    <div class="container">
 
         <div class="row">
-            <div class="col-md-12">
-                <h5>DotKernel</h5>
-                <ul>
-                    <li>DotKernel Frontend <a href="https://docs.dotkernel.org/frontend/">DotKernel web starter project suitable for frontend applications</a></li>
-                    <li>DotKernel Admin <a href="https://docs.dotkernel.org/admin/">DotKernel web starter project suitable for admin applications</a></li>
-                    <li>DotKernel API <a href="https://docs.dotkernel.org/api/">DotKernel web starter project suitable for building RESTful APIs</a></li>
-                    <li>DotKernel packages <a href="https://docs.dotkernel.org/packages/">DotKernel packages offering a wide range of tools</a></li>
+            <div class="col-md-9">
+                <div class="footer_head">
+                    <p>DotKernel</p>
+                </div>
+
+                <div class="row">
+                    <div class="col-md-6 dk_widget">
+                        <p>DotKernel Frontend</p>
+                        <a href="https://docs.dotkernel.org/frontend/" target="_blank">
+                            <i class="bi bi-arrow-return-right"></i>
+                            DotKernel web starter project suitable for frontend applications
+                        </a>
+                    </div>
+
+                    <div class="col-md-6 dk_widget">
+                        <p>DotKernel API</p>
+                        <a href="https://docs.dotkernel.org/api/" target="_blank">
+                            <i class="bi bi-arrow-return-right"></i>
+                            DotKernel web starter project suitable for building RESTful APIs
+                        </a>
+                    </div>
+
+                    <div class="col-md-6 dk_widget">
+                        <p>DotKernel Admin</p>
+
+                        <a href="https://docs.dotkernel.org/admin/" target="_blank">
+                            <i class="bi bi-arrow-return-right"></i>
+                            DotKernel web starter project suitable for admin applications
+                        </a>
+                    </div>
+
+                    <div class="col-md-6 dk_widget">
+                        <p>DotKernel Packages</p>
+                        <a href="https://docs.dotkernel.org/packages/" target="_blank">
+                            <i class="bi bi-arrow-return-right"></i>
+                            DotKernel packages offering a wide range of tools
+                        </a>
+                    </div>
+                </div>
+
+            </div>
+
+            <div class="col-md-3">
+                <div class="footer_head">
+                    <p>Support</p>
+                </div>
+                <ul class="support__list">
+                    <li class="support__list-item">
+                        <a href="https://github.com/dotkernel" class="support__link" title="GitHub" target="_blank">
+                            <i class="bi bi-github"></i> GitHub
+                        </a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://dotkernel.slack.com" class="support__link" title="Slack" target="_blank">
+                            <i class="bi bi-slack"></i> Slack
+                        </a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://twitter.com/dotkernel" class="support__link" title="X (Twitter)" target="_blank">
+                            <i class="bi bi-twitter-x"></i> Twitter
+                        </a>
+                    </li>
+
+                    <li class="support__list-item">
+                        <a href="https://www.dotkernel.com/blog/" class="support__link" title="Blog" target="_blank">
+                            <i class="bi bi-file-post"></i> Blog
+                        </a>
+                    </li>
+                    <li class="support__list-item">
+                        <a href="https://www.dotkernel.com/feed/" class="support__link" title="Blog feed" target="_blank">
+                            <i class="bi bi-rss-fill"></i> Feed
+                        </a>
+                    </li>
                 </ul>
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-12">
-                <div class="row">
-
-                    
-                    <div class="col-md-4">
-                        <h4 class="footer__headline">Support</h4>
-                        <ul class="support__list">
-                            <li class="support__list-item">
-                                <a href="https://twitter.com/dotkernel" class="support__link" title="X (Twitter)" target="_blank"><i class="fab fa-twitter"></i></a>
-                            </li>
-                            <li class="support__list-item">
-                                <a href="https://dotkernel.slack.com" class="support__link" title="Chat" target="_blank"><i class="fab fa-slack"></i></a>
-                            </li>
-                            <li class="support__list-item">
-                                <a href="https://github.com/dotkernel" class="support__link" title="Github" target="_blank"><i class="fab fa-github"></i></a>
-                            </li>
-                            <li class="support__list-item">
-                                <a href="https://www.dotkernel.com/blog/" class="support__link" title="Blog" target="_blank"><i class="fas fa-blog"></i></a>
-                            </li>
-                            <li class="support__list-item">
-                                <a href="https://www.dotkernel.com/feed/" class="support__link" title="Blog feed" target="_blank"><i class="fa fa-rss"></i></a>
-                            </li>
-                            <li class="support__list-item">
-                                <a href="https://packagist.org/search/?q=dotkernel/" class="support__link" title="Packagist" target="_blank"><i class="fa fa-packagist"></i></a>
-                            </li>
-                        </ul>
-                    </div>
-
-                    
-                    <div class="col-md-4">
-                        <h4 class="footer__headline">License</h4>
-                        <p>
-                            Code licensed under <a
-                                href="https://github.com/dotkernel/dot-annotated-services/blob/-/LICENSE.md" target="_blank">MIT</a>.
-                        </p>
-                    </div>
-
-                    
-                    <div class="col-md-4">
-                        <h4 class="footer__headline">Copyright</h4>
-                        <p>
-                            &copy; 2024 <a href="https://www.dotkernel.com/" target="_blank">DotKernel</a>
-                        </p>
-                    </div>
-                </div>
-            </div>
+        <div class="footer_copy">
+            &#169; 2024 Dotkernel
         </div>
     </div>
 </footer>
 
-    <script>
-        let base_url = '../../..',
-            project  = "packages",
-            siteName = 'dot-annotated-services';
-    </script>
-    <script src="https://docs.dotkernel.org/js/scripts.js"></script>
-    
-        <script src="../../../search/main.js"></script>
-    
-
-    
-    <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+        <script>
+            let base_url = '../../..',
+                project  = "packages",
+                siteName = 'dot-annotated-services';
+        </script>
+<!--        -->
+<!--        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
                 <h5 class="modal-title">Search</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    <span class="sr-only">Close</span>
-                </button>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <form role="form">
@@ -611,8 +483,6 @@ class ConfigProvider
             </div>
         </div>
     </div>
-</div>
-</body>
-
-
+</div>-->
+    </body>
 </html>
