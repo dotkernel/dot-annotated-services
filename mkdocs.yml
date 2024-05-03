@@ -11,6 +11,7 @@ nav:
   - v5:
       - Overview: v5/overview.md
       - Installation: v5/installation.md
+      - Configuration: v5/configuration.md
       - Usage: v5/usage.md
       - Factories: v5/factories.md
       - Reference:
@@ -19,6 +20,7 @@ nav:
   - v4:
       - Overview: v4/overview.md
       - Installation: v4/installation.md
+      - Configuration: v4/configuration.md
       - Usage: v4/usage.md
       - Factories: v4/factories.md
       - Cache: v4/cache.md
