@@ -28,7 +28,7 @@ nav:
           - "Inject class dependencies": v4/factories/service.md
           - "Inject entity repositories": v4/factories/repository.md
 site_name: dot-annotated-services
-site_description: "DotKernel's dependency injection service"
+site_description: "DotKernel's dependency injection service, using PHP attributes"
 repo_url: "https://github.com/dotkernel/dot-annotated-services"
 plugins:
   - search
