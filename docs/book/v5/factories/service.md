@@ -2,8 +2,8 @@
 
 ## Prepare class
 
-`dot-annotated-services` determines the dependencies by looking at the `@Inject` annotation, added to the constructor of a class.
-Dependencies are specified as one parameter, which is an array of FQCNs.
+`dot-annotated-services` determines the dependencies by looking at the `#[Inject]` attribute, added to the constructor of a class.
+Dependencies are specified as separate parameters of the #[Inject] attribute.
 
 ```php
 <?php
@@ -14,13 +14,11 @@ namespace YourApp\Service;
 
 class Example
 {
-    /**
-     * @Dot\AnnotatedServices\Annotation\Inject({
-     *     YourApp\Repository\Dependency1::class,
-     *     YourApp\Repository\Dependency2::class,
-     *     "config"
-     * })
-     */
+    #[Dot\AnnotatedServices\Attribute\Inject(
+        YourApp\Repository\Dependency1::class,
+        YourApp\Helper\Dependency2::class,
+        "config",
+    )]
     public function __construct(
         protected YourApp\Repository\Dependency1 $dependency1,
         protected YourApp\Helper\Dependency2 $dependency2,
@@ -33,13 +31,11 @@ class Example
 If your class needs the value of a specific configuration key, you can specify the path using dot notation:
 
 ```php
-    /**
-     * @Dot\AnnotatedServices\Annotation\Inject({
-     *     YourApp\Repository\Dependency1::class,
-     *     YourApp\Repository\Dependency2::class,
-     *     "config.example"
-     * })
-     */
+    #[Dot\AnnotatedServices\Attribute\Inject(
+        YourApp\Repository\Dependency1::class,
+        YourApp\Helper\Dependency2::class,
+        "config.example",
+    )]
     public function __construct(
         protected YourApp\Repository\Dependency1 $dependency1,
         protected YourApp\Helper\Dependency2 $dependency2,
@@ -52,7 +48,7 @@ If your class needs the value of a specific configuration key, you can specify t
 
 Open the ConfigProvider of the module where your class resides.
 
-Add a new entry under `factories`, where the key is your class FQCN and the value is `Dot\AnnotatedServices\Factory\AnnotatedServiceFactory::class`.
+Add a new entry under `factories`, where the key is your class FQCN and the value is `Dot\AnnotatedServices\Factory\AttributedServiceFactory::class`.
 
 See below example for a better understanding of the file structure.
 
@@ -76,7 +72,7 @@ class ConfigProvider
     {
         return [
             'factories' => [
-                YourApp\Service\Example::class => Dot\AnnotatedServices\Factory\AnnotatedServiceFactory::class,
+                YourApp\Service\Example::class => Dot\AnnotatedServices\Factory\AttributedServiceFactory::class,
             ],
         ];
     }

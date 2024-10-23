@@ -4,12 +4,23 @@ extra:
   project: Packages
   current_version: v4
   versions:
+    - v5
     - v4
 nav:
   - Home: index.md
+  - v5:
+      - Overview: v5/overview.md
+      - Installation: v5/installation.md
+      - Configuration: v5/configuration.md
+      - Usage: v5/usage.md
+      - Factories: v5/factories.md
+      - Reference:
+          - "Inject class dependencies": v5/factories/service.md
+          - "Inject entity repositories": v5/factories/repository.md
   - v4:
       - Overview: v4/overview.md
       - Installation: v4/installation.md
+      - Configuration: v4/configuration.md
       - Usage: v4/usage.md
       - Factories: v4/factories.md
       - Cache: v4/cache.md
@@ -17,7 +28,7 @@ nav:
           - "Inject class dependencies": v4/factories/service.md
           - "Inject entity repositories": v4/factories/repository.md
 site_name: dot-annotated-services
-site_description: "DotKernel's dependency injection service"
+site_description: "Dotkernel's dependency injection service, based on Doctrine annotations"
 repo_url: "https://github.com/dotkernel/dot-annotated-services"
 plugins:
   - search

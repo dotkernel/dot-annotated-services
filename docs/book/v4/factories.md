@@ -6,14 +6,13 @@
 
 Injects entity repositories into a class.
 
-
 ### Exceptions thrown
-- `Dot\AnnotatedServices\Exception\RuntimeException` if repository does not exist
-- `Dot\AnnotatedServices\Exception\RuntimeException` if repository does not extend `Doctrine\ORM\EntityRepository`
-- `Dot\AnnotatedServices\Exception\RuntimeException` if repository does not have `@Entity` annotation
-- `Psr\Container\NotFoundExceptionInterface` if `Doctrine\ORM\EntityManagerInterface` does not exist in the service container
-- `Psr\Container\ContainerExceptionInterface` if service manager is unable to provide an instance of `Doctrine\ORM\EntityManagerInterface`
 
+* `Dot\AnnotatedServices\Exception\RuntimeException` if repository does not exist
+* `Dot\AnnotatedServices\Exception\RuntimeException` if repository does not extend `Doctrine\ORM\EntityRepository`
+* `Dot\AnnotatedServices\Exception\RuntimeException` if repository does not have `@Entity` annotation
+* `Psr\Container\NotFoundExceptionInterface` if `Doctrine\ORM\EntityManagerInterface` does not exist in the service container
+* `Psr\Container\ContainerExceptionInterface` if service manager is unable to provide an instance of `Doctrine\ORM\EntityManagerInterface`
 
 ## AttributedServiceFactory
 
@@ -24,14 +23,13 @@ If it does not find one, it will try to load the dependency as a config tree, ch
 
 You can use the inject annotation on setters too, they will be called at creation time and injected with the configured dependencies.
 
-
 ### Exceptions thrown
-- `Dot\AnnotatedServices\Exception\RuntimeException` if service does not exist
-- `Dot\AnnotatedServices\Exception\RuntimeException` if service does not have `@Inject` annotation on it's constructor
-- `ReflectionException` on failure of creating a ReflectionClass of the dependency
-- `Psr\Container\NotFoundExceptionInterface` if a dependency does not exist in the service container
-- `Psr\Container\ContainerExceptionInterface` if service manager is unable to provide an instance of a dependency
 
+* `Dot\AnnotatedServices\Exception\RuntimeException` if service does not exist
+* `Dot\AnnotatedServices\Exception\RuntimeException` if service does not have `@Inject` annotation on it's constructor
+* `ReflectionException` on failure of creating a ReflectionClass of the dependency
+* `Psr\Container\NotFoundExceptionInterface` if a dependency does not exist in the service container
+* `Psr\Container\ContainerExceptionInterface` if service manager is unable to provide an instance of a dependency
 
 ## AnnotatedServiceAbstractFactory
 
@@ -66,4 +64,5 @@ class Example
     }
 }
 ```
+
 And that's it, you don't need to configure the service manager with this class, creation will happen automatically.
