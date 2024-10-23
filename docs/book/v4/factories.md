@@ -1,6 +1,6 @@
 # Factories
 
-`dot-annotated-services` is based on 3 reusable factories * `AnnotatedRepositoryFactory`, `AnnotatedServiceFactory` and `AnnotatedServiceAbstractFactory` * able to inject any dependency into a class.
+`dot-annotated-services` is based on 3 reusable factories - `AnnotatedRepositoryFactory`, `AnnotatedServiceFactory` and `AnnotatedServiceAbstractFactory` - able to inject any dependency into a class.
 
 ## AttributedRepositoryFactory
 
