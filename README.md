@@ -4,8 +4,8 @@ DotKernel dependency injection service.
 
 This package can clean up your code, by getting rid of all the factories you write, sometimes just to inject a dependency or two.
 
-![OSS Lifecycle](https://img.shields.io/osslifecycle/dotkernel/dot-annotated-services)
-![PHP from Packagist (specify version)](https://img.shields.io/packagist/php-v/dotkernel/dot-annotated-services/5.1.0)
+![OSS Lifecycle](https://img.shields.io/osslifecycle?file_url=https%3A%2F%2Fgithub.com%2Fdotkernel%2Fdot-annotated-services%2Fblob%2F5.0%2FOSSMETADATA)
+![PHP from Packagist (specify version)](https://img.shields.io/packagist/php-v/dotkernel/dot-annotated-services/5.2.0)
 
 [![GitHub issues](https://img.shields.io/github/issues/dotkernel/dot-annotated-services)](https://github.com/dotkernel/dot-annotated-services/issues)
 [![GitHub forks](https://img.shields.io/github/forks/dotkernel/dot-annotated-services)](https://github.com/dotkernel/dot-annotated-services/network)
@@ -16,17 +16,19 @@ This package can clean up your code, by getting rid of all the factories you wri
 [![codecov](https://codecov.io/gh/dotkernel/dot-annotated-services/graph/badge.svg?token=ZBZDEA3LY8)](https://codecov.io/gh/dotkernel/dot-annotated-services)
 [![docs-build](https://github.com/dotkernel/dot-annotated-services/actions/workflows/docs-build.yml/badge.svg)](https://github.com/dotkernel/dot-annotated-services/actions/workflows/docs-build.yml)
 
-[![SymfonyInsight](https://insight.symfony.com/projects/a0d7016e-fc3f-46b8-9b36-571ff060d744/big.svg)](https://insight.symfony.com/projects/a0d7016e-fc3f-46b8-9b36-571ff060d744)
-
 ## Installation
 
 Install `dot-annotated-services` by running the following command in your project directory:
 
-    composer require dotkernel/dot-annotated-services
+```shell
+composer require dotkernel/dot-annotated-services
+```
 
 After installing, register `dot-annotated-services` in your project by adding the below line to your configuration aggregate (usually: `config/config.php`):
 
-     Dot\AnnotatedServices\ConfigProvider::class,
+```php
+Dot\AnnotatedServices\ConfigProvider::class,
+```
 
 ## Usage
 
@@ -34,11 +36,13 @@ After installing, register `dot-annotated-services` in your project by adding th
 
 You can register services in the service manager using `AttributedServiceFactory` as seen in the below example:
 
-    return [
-        'factories' => [
-            ServiceClass::class => AttributedServiceFactory::class,
-        ],
-    ];
+```php
+return [
+    'factories' => [
+        ServiceClass::class => AttributedServiceFactory::class,
+    ],
+];
+```
 
 ### NOTE
 
@@ -48,17 +52,19 @@ The next step is to add the `#[Inject]` attribute to the service constructor wit
 
 use Dot\AnnotatedServices\Attribute\Inject;
 
-    #[Inject(
-        App\Srevice\Dependency1::class,
-        App\Srevice\Dependency2::class,
-        "config",
-    )]
-    public function __construct(
-        protected App\Srevice\Dependency1 $dep1,
-        protected App\Srevice\Dependency2 $dep2,
-        protected array $config
-    ) {
-    }
+```php
+#[Inject(
+    App\Srevice\Dependency1::class,
+    App\Srevice\Dependency2::class,
+    "config",
+)]
+public function __construct(
+    protected App\Srevice\Dependency1 $dep1,
+    protected App\Srevice\Dependency2 $dep2,
+    protected array $config
+) {
+}
+```
 
 The `#[Inject]` attribute is telling `AttributedServiceFactory` to inject the services specified as parameters.
 Valid service names should be provided, as registered in the service manager.
@@ -67,9 +73,11 @@ To inject an array value from the service manager, you can use dot notation as b
 
 use Dot\AnnotatedServices\Attribute\Inject;
 
-    #[Inject(
-        "config.debug",
-    )]
+```php
+#[Inject(
+    "config.debug",
+)]
+```
 
 which will inject `$container->get('config')['debug'];`.
 
@@ -81,11 +89,13 @@ which will inject `$container->get('config')['debug'];`.
 
 You can register doctrine repositories and inject them using the `AttributedRepositoryFactory` as below:
 
-    return [
-        'factories' => [
-            ExampleRepository::class => AttributedRepositoryFactory::class,
-        ],
-    ];
+```php
+return [
+    'factories' => [
+        ExampleRepository::class => AttributedRepositoryFactory::class,
+    ],
+];
+```
 
 The next step is to add the `#[Entity]` attribute in the repository class.
 
@@ -93,18 +103,20 @@ The `name` field has to be the fully qualified class name.
 
 Every repository should extend `Doctrine\ORM\EntityRepository`.
 
-    use Api\App\Entity\Example;
-    use Doctrine\ORM\EntityRepository;
-    use Dot\AnnotatedServices\Attribute\Entity;
-    
-    #[Entity(name: Example::class)]
-    class ExampleRepository extends EntityRepository
-    {
-    }
+```php
+use Api\App\Entity\Example;
+use Doctrine\ORM\EntityRepository;
+use Dot\AnnotatedServices\Attribute\Entity;
+
+#[Entity(name: Example::class)]
+class ExampleRepository extends EntityRepository
+{
+}
+```
 
 ### NOTE
 
-Starting from version `5.0` of `dot-annotated-services`:
+In version `5.0` of `dot-annotated-services`:
 
 - services can only be injected using the `#[Inject]` attribute (`@Inject` and `@Service` annotations are no longer supported)
 - repository-entity relation can only be established using the `#[Entity]` attribute (`@Entity` annotation is no longer supported)

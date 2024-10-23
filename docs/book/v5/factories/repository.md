@@ -1,6 +1,5 @@
 # Inject entity repositories
 
-
 ## Prepare repository
 
 `dot-annotated-services` determines the entity a repository is related to by looking at the `#[Entity]` attribute, added to the repository class.
@@ -19,7 +18,6 @@ class ExampleRepository extends Doctrine\ORM\EntityRepository
 ```
 
 Each entity repository must extend `Doctrine\ORM\EntityRepository`.
-
 
 ## Register repository
 
