@@ -1,6 +1,5 @@
 # Inject class dependencies
 
-
 ## Prepare class
 
 `dot-annotated-services` determines the dependencies by looking at the `#[Inject]` attribute, added to the constructor of a class.
@@ -44,7 +43,6 @@ If your class needs the value of a specific configuration key, you can specify t
     ) {
     }
 ```
-
 
 ## Register class
 
