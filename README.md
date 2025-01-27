@@ -5,7 +5,7 @@ Dotkernel component used to create services through [Laminas Service Manager](ht
 This package can clean up your code, by getting rid of all the factories you write, sometimes just to inject a dependency or two.
 
 ![OSS Lifecycle](https://img.shields.io/osslifecycle?file_url=https%3A%2F%2Fgithub.com%2Fdotkernel%2Fdot-annotated-services%2Fblob%2F4.0%2FOSSMETADATA)
-![PHP from Packagist (specify version)](https://img.shields.io/packagist/php-v/dotkernel/dot-annotated-services/4.2.0)
+![PHP from Packagist (specify version)](https://img.shields.io/packagist/php-v/dotkernel/dot-annotated-services/4.2.1)
 
 [![GitHub issues](https://img.shields.io/github/issues/dotkernel/dot-annotated-services)](https://github.com/dotkernel/dot-annotated-services/issues)
 [![GitHub forks](https://img.shields.io/github/forks/dotkernel/dot-annotated-services)](https://github.com/dotkernel/dot-annotated-services/network)
