@@ -87,6 +87,6 @@ class AnnotatedRepositoryFactoryTest extends TestCase
 
         $object = $this->subject->__invoke($this->container, $repository::class);
 
-        $this->assertInstanceOf(EntityRepository::class, $object);
+        $this->assertContainsOnlyInstancesOf(EntityRepository::class, [$object]);
     }
 }

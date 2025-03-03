@@ -60,7 +60,7 @@ class AnnotatedServiceFactoryTest extends TestCase
 
         $object = $this->subject->__invoke($this->container, $requestedName);
 
-        $this->assertInstanceOf($requestedName, $object);
+        $this->assertSame($requestedName, $object::class);
     }
 
     public function testThrowsExceptionAnnotationNotFound()
@@ -108,6 +108,6 @@ class AnnotatedServiceFactoryTest extends TestCase
 
         $service = $this->subject->__invoke($this->container, $requestedName);
 
-        $this->assertInstanceOf($requestedName, $service);
+        $this->assertSame($requestedName, $service::class);
     }
 }
