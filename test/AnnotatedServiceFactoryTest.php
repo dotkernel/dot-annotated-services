@@ -8,21 +8,27 @@ use Doctrine\Common\Annotations\Reader;
 use Dot\AnnotatedServices\Annotation\Inject;
 use Dot\AnnotatedServices\Exception\RuntimeException;
 use Dot\AnnotatedServices\Factory\AnnotatedServiceFactory as Subject;
+use PHPUnit\Framework\MockObject\Exception;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use Psr\Container\ContainerExceptionInterface;
 use Psr\Container\ContainerInterface;
+use Psr\Container\NotFoundExceptionInterface;
 use ReflectionClass;
+use ReflectionException;
 use ReflectionMethod;
 
 use function get_class;
 
 class AnnotatedServiceFactoryTest extends TestCase
 {
-    private ContainerInterface $container;
+    private MockObject&ContainerInterface $container;
+    private MockObject&Subject $subject;
+    private MockObject&Reader $annotationReader;
 
-    private Subject $subject;
-
-    private Reader $annotationReader;
-
+    /**
+     * @throws Exception
+     */
     public function setUp(): void
     {
         $this->container        = $this->createMock(ContainerInterface::class);
@@ -33,6 +39,11 @@ class AnnotatedServiceFactoryTest extends TestCase
         ]);
     }
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     */
     public function testThrowsExceptionClassNotFound()
     {
         $requestedName = 'TestService';
@@ -43,9 +54,15 @@ class AnnotatedServiceFactoryTest extends TestCase
         $this->subject->__invoke($this->container, $requestedName);
     }
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws Exception
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     */
     public function testReturnServiceWithNoDependencies()
     {
-        $requestedName = 'TestService';
+        $requestedName = TestClass::class;
         $this->getMockBuilder($requestedName)->allowMockingUnknownTypes()->getMock();
         $refClass = $this->createMock(ReflectionClass::class);
 
@@ -60,12 +77,18 @@ class AnnotatedServiceFactoryTest extends TestCase
 
         $object = $this->subject->__invoke($this->container, $requestedName);
 
-        $this->assertInstanceOf($requestedName, $object);
+        $this->assertSame($requestedName, $object::class);
     }
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws Exception
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     */
     public function testThrowsExceptionAnnotationNotFound()
     {
-        $requestedName = 'TestService';
+        $requestedName = TestClass::class;
         $this->getMockBuilder($requestedName)->allowMockingUnknownTypes()->getMock();
         $refClass       = $this->createMock(ReflectionClass::class);
         $refConstructor = $this->createMock(ReflectionMethod::class);
@@ -89,9 +112,15 @@ class AnnotatedServiceFactoryTest extends TestCase
         $this->subject->__invoke($this->container, $requestedName);
     }
 
+    /**
+     * @throws ContainerExceptionInterface
+     * @throws Exception
+     * @throws NotFoundExceptionInterface
+     * @throws ReflectionException
+     */
     public function testReturnService()
     {
-        $requestedName = 'TestService';
+        $requestedName = TestClass::class;
         $this->getMockBuilder($requestedName)->allowMockingUnknownTypes()->getMock();
         $refClass       = $this->createMock(ReflectionClass::class);
         $refConstructor = $this->createMock(ReflectionMethod::class);
@@ -108,6 +137,6 @@ class AnnotatedServiceFactoryTest extends TestCase
 
         $service = $this->subject->__invoke($this->container, $requestedName);
 
-        $this->assertInstanceOf($requestedName, $service);
+        $this->assertSame($requestedName, $service::class);
     }
 }
