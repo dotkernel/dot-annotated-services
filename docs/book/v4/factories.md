@@ -1,6 +1,6 @@
 # Factories
 
-`dot-annotated-services` is based on 3 reusable factories - `AnnotatedRepositoryFactory`, `AnnotatedServiceFactory` and `AnnotatedServiceAbstractFactory` - able to inject any dependency into a class.
+`dot-annotated-services` is based on three reusable factories - `AnnotatedRepositoryFactory`, `AnnotatedServiceFactory` and `AnnotatedServiceAbstractFactory` - able to inject any dependency into a class.
 
 ## AttributedRepositoryFactory
 
@@ -21,7 +21,7 @@ Injects class dependencies into classes.
 If a dependency is specified using the dot notation, `AttributedServiceFactory` will try to load a service having that specific alias.
 If it does not find one, it will try to load the dependency as a config tree, checking each segment if it's available in the service container.
 
-You can use the inject annotation on setters too, they will be called at creation time and injected with the configured dependencies.
+You can use the `@Inject` annotation on setters too, they will be called at creation time and injected with the configured dependencies.
 
 ### Exceptions thrown
 
@@ -35,7 +35,7 @@ You can use the inject annotation on setters too, they will be called at creatio
 
 Using this approach, no service manager configuration is required. It uses the registered abstract factory to create annotated services.
 
-In order to tell the abstract factory which services are to be created, you need to annotate the service class with the `@Service` annotation.
+To tell the abstract factory which services are to be created, you need to annotate the service class with the `@Service` annotation.
 
 ```php
 <?php
