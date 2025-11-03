@@ -2,9 +2,9 @@
 
 Dotkernel component used to create services through [Laminas Service Manager](https://github.com/laminas/laminas-servicemanager) and inject them with dependencies just using method annotations.
 It can also create services without the need to write factories.
-Annotation parsing can be cached, to improve performance.
+Annotation parsing can be cached to improve performance.
 
-This package can clean up your code, by getting rid of all the factories you write, sometimes just to inject a dependency or two.
+This package can clean up your code by getting rid of all the factories you write, sometimes just to inject a dependency or two.
 
 ## Documentation
 
@@ -13,7 +13,7 @@ Documentation is available at: https://docs.dotkernel.org/dot-annotated-services
 ## Badges
 
 ![OSS Lifecycle](https://img.shields.io/osslifecycle?file_url=https%3A%2F%2Fgithub.com%2Fdotkernel%2Fdot-annotated-services%2Fblob%2F4.0%2FOSSMETADATA)
-![PHP from Packagist (specify version)](https://img.shields.io/packagist/php-v/dotkernel/dot-annotated-services/4.3.0)
+![PHP from Packagist (specify version)](https://img.shields.io/packagist/php-v/dotkernel/dot-annotated-services/4.4.0)
 
 [![GitHub issues](https://img.shields.io/github/issues/dotkernel/dot-annotated-services)](https://github.com/dotkernel/dot-annotated-services/issues)
 [![GitHub forks](https://img.shields.io/github/forks/dotkernel/dot-annotated-services)](https://github.com/dotkernel/dot-annotated-services/network)
@@ -73,7 +73,7 @@ public function __construct(
 The annotation `@Inject` is telling the factory to inject the services between curly braces.
 Valid service names should be provided, as registered in the service manager.
 
-To inject an array value from the service manager, you can use dot notation as below,
+To inject an array value from the service manager, you can use dot notation as below.
 
 ```php
 use Dot\AnnotatedServices\Annotation\Inject;
@@ -87,7 +87,7 @@ which will inject `$container->get('config')['debug'];`
 
 > Even if using dot annotation, the annotated factory will check first if a service name exists with that name.
 
-You can use the inject annotation on setters too, they will be called at creation time and injected with the configured dependencies.
+You can use the `@Inject` annotation on setters too, they will be called at creation time and injected with the configured dependencies.
 
 ### Using the AnnotatedRepositoryFactory
 
@@ -123,7 +123,7 @@ class ExampleRepository extends EntityRepository
 
 Using this approach, no service manager configuration is required. It uses the registered abstract factory to create annotated services.
 
-In order to tell the abstract factory which services are to be created, you need to annotate the service class with the `@Service` annotation.
+To tell the abstract factory which services are to be created, you need to annotate the service class with the `@Service` annotation.
 
 ```php
 use Dot\AnnotatedServices\Annotation\Service;
@@ -142,7 +142,7 @@ And that's it, you don't need to configure the service manager with this class, 
 ## Cache annotations
 
 This package is built on top of `doctrine/annotation` and `doctrine/cache`.
-In order to cache annotations, you should register a service factory at key `AbstractAnnotatedFactory::CACHE_SERVICE` that should return a valid `Doctrine\Common\Cache\Cache` cache driver.
+To cache annotations, you should register a service factory at key `AbstractAnnotatedFactory::CACHE_SERVICE` that should return a valid `Doctrine\Common\Cache\Cache` cache driver.
 See [Cache Drivers](https://github.com/doctrine/cache/tree/master/lib/Doctrine/Common/Cache) for available implementations offered by doctrine.
 
 Below, we give an example, as defined in our frontend and admin starter applications:

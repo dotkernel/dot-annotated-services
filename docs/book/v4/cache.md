@@ -4,11 +4,11 @@
 
 ## Configuration
 
-In order to cache annotations, you should register a service factory at key `AbstractAnnotatedFactory::CACHE_SERVICE` that should return a valid `Doctrine\Common\Cache\Cache` cache driver.
+To cache annotations, you should register a service factory at key `AbstractAnnotatedFactory::CACHE_SERVICE` that should return a valid `Doctrine\Common\Cache\Cache` cache driver.
 See [Cache Drivers](https://github.com/doctrine/cache/tree/1.13.x/lib/Doctrine/Common/Cache) for available implementations offered by doctrine.
 
 See below an example on how you can configure `dot-annotated-services` to cache annotations.
-You can add this configuration values to your application's Doctrine config file:
+You can add this configuration value to your application's Doctrine config file:
 
 ```php
 'annotations_cache_dir' => __DIR__ . '/../../data/cache/annotations',

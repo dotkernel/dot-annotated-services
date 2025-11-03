@@ -27,7 +27,7 @@ Open the ConfigProvider of the module where your repository resides.
 
 Add a new entry under `factories`, where the key is your repository FQCN and the value is `Dot\AnnotatedServices\Factory\AnnotatedRepositoryFactory::class`.
 
-See below example for a better understanding of the file structure.
+See the below example for a better understanding of the file structure.
 
 ```php
 <?php

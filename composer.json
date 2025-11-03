@@ -20,7 +20,7 @@
         "service-manager"
     ],
     "require": {
-        "php": "~8.2.0 || ~8.3.0 || ~8.4.0",
+        "php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
         "doctrine/annotations": "^1.14.3",
         "doctrine/cache": "^1.12.1 || ^2.1.1",
         "doctrine/orm" : "^2.20",
@@ -50,8 +50,8 @@
         ],
         "cs-check": "phpcs",
         "cs-fix": "phpcbf",
-        "test": "phpunit --colors=always",
-        "static-analysis": "phpstan analyse --memory-limit 1G"
+        "static-analysis": "phpstan analyse --memory-limit 1G",
+        "test": "phpunit --colors=always"
     },
     "config": {
         "sort-packages": true,
