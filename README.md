@@ -14,23 +14,24 @@ Documentation is available at: https://docs.dotkernel.org/dot-annotated-services
 
 | Branch | PSR-11   | Docblock Comments | OSS Lifecycle                                                                                                                                           | PHP Version                                                                                                            |
 |--------|----------|-------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------|------------------------------------------------------------------------------------------------------------------------|
+| 6.0    | 1        | Annotations       | ![OSS Lifecycle](https://img.shields.io/osslifecycle?file_url=https%3A%2F%2Fgithub.com%2Fdotkernel%2Fdot-annotated-services%2Fblob%2F6.0%2FOSSMETADATA) | ![PHP from Packagist (specify version)](https://img.shields.io/packagist/php-v/dotkernel/dot-annotated-services/6.0.0) |
 | 5.0    | 1 \|\| 2 | Attributes        | ![OSS Lifecycle](https://img.shields.io/osslifecycle?file_url=https%3A%2F%2Fgithub.com%2Fdotkernel%2Fdot-annotated-services%2Fblob%2F5.0%2FOSSMETADATA) | ![PHP from Packagist (specify version)](https://img.shields.io/packagist/php-v/dotkernel/dot-annotated-services/5.2.0) |
 | 4.0    | 1        | Annotations       | ![OSS Lifecycle](https://img.shields.io/osslifecycle?file_url=https%3A%2F%2Fgithub.com%2Fdotkernel%2Fdot-annotated-services%2Fblob%2F4.0%2FOSSMETADATA) | ![PHP from Packagist (specify version)](https://img.shields.io/packagist/php-v/dotkernel/dot-annotated-services/4.4.0) |
 | 3.0    | 1        | Annotations       | ![OSS Lifecycle](https://img.shields.io/osslifecycle?file_url=https%3A%2F%2Fgithub.com%2Fdotkernel%2Fdot-annotated-services%2Fblob%2F3.0%2FOSSMETADATA) | ![PHP from Packagist (specify version)](https://img.shields.io/packagist/php-v/dotkernel/dot-annotated-services/3.2.1) |
 
 ## Badges
 
-![OSS Lifecycle](https://img.shields.io/osslifecycle?file_url=https%3A%2F%2Fgithub.com%2Fdotkernel%2Fdot-annotated-services%2Fblob%2F4.0%2FOSSMETADATA)
-![PHP from Packagist (specify version)](https://img.shields.io/packagist/php-v/dotkernel/dot-annotated-services/4.4.0)
+![OSS Lifecycle](https://img.shields.io/osslifecycle?file_url=https%3A%2F%2Fgithub.com%2Fdotkernel%2Fdot-annotated-services%2Fblob%2F6.0%2FOSSMETADATA)
+![PHP from Packagist (specify version)](https://img.shields.io/packagist/php-v/dotkernel/dot-annotated-services/6.0.0)
 
 [![GitHub issues](https://img.shields.io/github/issues/dotkernel/dot-annotated-services)](https://github.com/dotkernel/dot-annotated-services/issues)
 [![GitHub forks](https://img.shields.io/github/forks/dotkernel/dot-annotated-services)](https://github.com/dotkernel/dot-annotated-services/network)
 [![GitHub stars](https://img.shields.io/github/stars/dotkernel/dot-annotated-services)](https://github.com/dotkernel/dot-annotated-services/stargazers)
-[![GitHub license](https://img.shields.io/github/license/dotkernel/dot-annotated-services)](https://github.com/dotkernel/dot-annotated-services/blob/4.0/LICENSE.md)
+[![GitHub license](https://img.shields.io/github/license/dotkernel/dot-annotated-services)](https://github.com/dotkernel/dot-annotated-services/blob/6.0/LICENSE.md)
 
-[![Build Static](https://github.com/dotkernel/dot-annotated-services/actions/workflows/continuous-integration.yml/badge.svg?branch=4.0)](https://github.com/dotkernel/dot-annotated-services/actions/workflows/continuous-integration.yml)
+[![Build Static](https://github.com/dotkernel/dot-annotated-services/actions/workflows/continuous-integration.yml/badge.svg?branch=6.0)](https://github.com/dotkernel/dot-annotated-services/actions/workflows/continuous-integration.yml)
 [![codecov](https://codecov.io/gh/dotkernel/dot-annotated-services/graph/badge.svg?token=ZBZDEA3LY8)](https://codecov.io/gh/dotkernel/dot-annotated-services)
-[![PHPStan](https://github.com/dotkernel/dot-annotated-services/actions/workflows/static-analysis.yml/badge.svg?branch=4.0)](https://github.com/dotkernel/dot-annotated-services/actions/workflows/static-analysis.yml)
+[![PHPStan](https://github.com/dotkernel/dot-annotated-services/actions/workflows/static-analysis.yml/badge.svg?branch=6.0)](https://github.com/dotkernel/dot-annotated-services/actions/workflows/static-analysis.yml)
 
 ## Installation
 
@@ -113,7 +114,7 @@ The next step is to add the `@Entity` annotation in the repository class.
 
 The `name` field has to be the fully qualified class name.
 
-Every repository should extend `Doctrine\ORM\EntityRepository`.
+Every repository should extend `Doctrine\ORM\EntityRepository`, and must be the repository class of the entity.
 
 ```php
 use Doctrine\ORM\EntityRepository;
@@ -132,11 +133,12 @@ class ExampleRepository extends EntityRepository
 Using this approach, no service manager configuration is required. It uses the registered abstract factory to create annotated services.
 
 To tell the abstract factory which services are to be created, you need to annotate the service class with the `@Service` annotation.
+The annotation must be in a docblock, which starts with `/**`.
 
 ```php
 use Dot\AnnotatedServices\Annotation\Service;
 
-/*
+/**
  * @Service
  */
 class ServiceClass
@@ -149,11 +151,10 @@ And that's it, you don't need to configure the service manager with this class, 
 
 ## Cache annotations
 
-This package is built on top of `doctrine/annotation` and `doctrine/cache`.
-To cache annotations, you should register a service factory at key `AbstractAnnotatedFactory::CACHE_SERVICE` that should return a valid `Doctrine\Common\Cache\Cache` cache driver.
-See [Cache Drivers](https://github.com/doctrine/cache/tree/master/lib/Doctrine/Common/Cache) for available implementations offered by doctrine.
+This package is built on top of `doctrine/annotations`.
+To cache annotations, you should register a service factory at key `AbstractAnnotatedFactory::CACHE_SERVICE` that should return a valid PSR-6 cache pool, an implementation of `Psr\Cache\CacheItemPoolInterface`.
 
-Below, we give an example, as defined in our frontend and admin starter applications:
+Below, we give an example, using [symfony/cache](https://github.com/symfony/cache):
 
 ```php
 return [
@@ -161,7 +162,7 @@ return [
     'dependencies' => [
         'factories' => [
             // used by dot-annotated-services to cache annotations
-            // needs to return a cache instance from Doctrine\Common\Cache
+            // needs to return a PSR-6 cache pool
             AbstractAnnotatedFactory::CACHE_SERVICE => AnnotationsCacheFactory::class,
         ]
     ],
@@ -171,15 +172,19 @@ return [
 ```php
 namespace Frontend\App\Factory;
 
-use Doctrine\Common\Cache\FilesystemCache;
+use Psr\Cache\CacheItemPoolInterface;
 use Psr\Container\ContainerInterface;
+use Symfony\Component\Cache\Adapter\FilesystemAdapter;
 
 class AnnotationsCacheFactory
 {
-    public function __invoke(ContainerInterface $container)
+    public function __invoke(ContainerInterface $container): CacheItemPoolInterface
     {
         //change this to suite your caching needs
-        return new FilesystemCache($container->get('config')['annotations_cache_dir']);
+        return new FilesystemAdapter(
+            namespace: 'annotations',
+            directory: $container->get('config')['annotations_cache_dir'],
+        );
     }
 }
 ```

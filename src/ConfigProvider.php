@@ -8,6 +8,9 @@ use Dot\AnnotatedServices\Factory\AnnotatedServiceAbstractFactory;
 
 class ConfigProvider
 {
+    /**
+     * @return array{dependencies: array{abstract_factories: list<class-string>}}
+     */
     public function __invoke(): array
     {
         return [
@@ -15,6 +18,9 @@ class ConfigProvider
         ];
     }
 
+    /**
+     * @return array{abstract_factories: list<class-string>}
+     */
     public function getDependenciesConfig(): array
     {
         return [

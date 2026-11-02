@@ -4,47 +4,50 @@ declare(strict_types=1);
 
 namespace Dot\AnnotatedServices\Factory;
 
+use Doctrine\Common\Annotations\AnnotationException;
 use Dot\AnnotatedServices\Annotation\Service;
 use Laminas\ServiceManager\Factory\AbstractFactoryInterface;
+use Override;
 use Psr\Container\ContainerInterface;
 use ReflectionClass;
 
 use function class_exists;
+use function is_string;
 
 class AnnotatedServiceAbstractFactory extends AbstractAnnotatedFactory implements AbstractFactoryInterface
 {
+    private ?AnnotatedServiceFactory $serviceFactory = null;
+
     /**
      * @param string $requestedName
      */
+    #[Override]
     public function canCreate(ContainerInterface $container, $requestedName): bool
     {
-        if ($requestedName === null) {
+        if (! is_string($requestedName) || ! class_exists($requestedName)) {
             return false;
         }
 
-        if (! class_exists($requestedName)) {
+        try {
+            return $this->createAnnotationReader($container)
+                ->getClassAnnotation(new ReflectionClass($requestedName), Service::class) !== null;
+        } catch (AnnotationException) {
             return false;
         }
-
-        $annotationReader = $this->createAnnotationReader($container);
-        $refClass         = new ReflectionClass($requestedName);
-
-        $service = $annotationReader->getClassAnnotation($refClass, Service::class);
-        if ($service === null) {
-            return false;
-        }
-
-        return true;
     }
 
     /**
      * @param string $requestedName
+     * @param array<array-key, mixed>|null $options
      */
+    #[Override]
     public function __invoke(ContainerInterface $container, $requestedName, ?array $options = null): object
     {
-        $factory = new AnnotatedServiceFactory();
-        $factory->setAnnotationReader($this->createAnnotationReader($container));
+        if ($this->serviceFactory === null) {
+            $this->serviceFactory = new AnnotatedServiceFactory();
+            $this->serviceFactory->setAnnotationReader($this->createAnnotationReader($container));
+        }
 
-        return $factory->createObject($container, $requestedName);
+        return $this->serviceFactory->createObject($container, $requestedName);
     }
 }

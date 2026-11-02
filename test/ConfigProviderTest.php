@@ -6,13 +6,16 @@ namespace DotTest\AnnotatedServices;
 
 use Dot\AnnotatedServices\ConfigProvider;
 use Dot\AnnotatedServices\Factory\AnnotatedServiceAbstractFactory;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(ConfigProvider::class)]
 class ConfigProviderTest extends TestCase
 {
+    /** @var array<string, mixed> */
     protected array $config;
 
-    protected function setup(): void
+    protected function setUp(): void
     {
         $this->config = (new ConfigProvider())();
     }
@@ -24,6 +27,7 @@ class ConfigProviderTest extends TestCase
 
     public function testDependenciesHasFactories(): void
     {
+        $this->assertIsArray($this->config['dependencies']);
         $this->assertArrayHasKey('abstract_factories', $this->config['dependencies']);
         $this->assertContainsEquals(
             AnnotatedServiceAbstractFactory::class,

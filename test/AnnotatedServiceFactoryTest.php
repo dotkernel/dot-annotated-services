@@ -4,139 +4,200 @@ declare(strict_types=1);
 
 namespace DotTest\AnnotatedServices;
 
-use Doctrine\Common\Annotations\Reader;
 use Dot\AnnotatedServices\Annotation\Inject;
+use Dot\AnnotatedServices\Exception\ExceptionInterface;
+use Dot\AnnotatedServices\Exception\InvalidArgumentException;
 use Dot\AnnotatedServices\Exception\RuntimeException;
-use Dot\AnnotatedServices\Factory\AnnotatedServiceFactory as Subject;
-use PHPUnit\Framework\MockObject\Exception;
-use PHPUnit\Framework\MockObject\MockObject;
+use Dot\AnnotatedServices\Factory\AnnotatedServiceFactory;
+use DotTest\AnnotatedServices\Fixture\ClassStringService;
+use DotTest\AnnotatedServices\Fixture\ConfigService;
+use DotTest\AnnotatedServices\Fixture\Dependency;
+use DotTest\AnnotatedServices\Fixture\DottedConfigService;
+use DotTest\AnnotatedServices\Fixture\MissingServiceService;
+use DotTest\AnnotatedServices\Fixture\NoConstructorService;
+use DotTest\AnnotatedServices\Fixture\NullKeyService;
+use DotTest\AnnotatedServices\Fixture\OptionalParamsService;
+use DotTest\AnnotatedServices\Fixture\RequiredParamsWithoutInject;
+use DotTest\AnnotatedServices\Fixture\SetterInjectedService;
+use DotTest\AnnotatedServices\Fixture\UnbracedInjectService;
+use Laminas\ServiceManager\ServiceManager;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\ContainerInterface;
-use Psr\Container\NotFoundExceptionInterface;
-use ReflectionClass;
-use ReflectionException;
-use ReflectionMethod;
 
-use function get_class;
-
+#[CoversClass(AnnotatedServiceFactory::class)]
 class AnnotatedServiceFactoryTest extends TestCase
 {
-    private MockObject&ContainerInterface $container;
-    private MockObject&Subject $subject;
-    private MockObject&Reader $annotationReader;
+    private AnnotatedServiceFactory $subject;
 
-    /**
-     * @throws Exception
-     */
-    public function setUp(): void
+    protected function setUp(): void
     {
-        $this->container        = $this->createMock(ContainerInterface::class);
-        $this->annotationReader = $this->createMock(Reader::class);
-        $this->subject          = $this->createPartialMock(Subject::class, [
-            'createAnnotationReader',
-            'getReflectionClass',
-        ]);
+        $this->subject                      = new AnnotatedServiceFactory();
+        SetterInjectedService::$constructed = 0;
+        SetterInjectedService::$staticCalls = 0;
     }
 
     /**
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     * @throws ReflectionException
+     * @param array<string, mixed> $services
      */
-    public function testThrowsExceptionClassNotFound()
+    private function container(array $services = []): ServiceManager
     {
-        $requestedName = 'TestService';
+        return new ServiceManager(['services' => $services]);
+    }
 
+    public function testThrowsExceptionClassNotFound(): void
+    {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage(RuntimeException::classNotFound($requestedName)->getMessage());
+        $this->expectExceptionMessage(RuntimeException::classNotFound('TestService')->getMessage());
 
-        $this->subject->__invoke($this->container, $requestedName);
+        ($this->subject)($this->container(), 'TestService');
     }
 
-    /**
-     * @throws ContainerExceptionInterface
-     * @throws Exception
-     * @throws NotFoundExceptionInterface
-     * @throws ReflectionException
-     */
-    public function testReturnServiceWithNoDependencies()
+    public function testCreatesServiceWithoutConstructor(): void
     {
-        $requestedName = TestClass::class;
-        $this->getMockBuilder($requestedName)->allowMockingUnknownTypes()->getMock();
-        $refClass = $this->createMock(ReflectionClass::class);
+        $service = ($this->subject)($this->container(), NoConstructorService::class);
 
-        $refClass->method('getConstructor')->willReturn(null);
-        $refClass->method('getMethods')->willReturn([]);
-
-        $this->annotationReader->method('getMethodAnnotation')->willReturn(null);
-        $this->subject
-            ->method('createAnnotationReader')
-            ->willReturn($this->annotationReader);
-        $this->subject->method('getReflectionClass')->willReturn($refClass);
-
-        $object = $this->subject->__invoke($this->container, $requestedName);
-
-        $this->assertSame($requestedName, $object::class);
+        $this->assertInstanceOf(NoConstructorService::class, $service);
     }
 
-    /**
-     * @throws ContainerExceptionInterface
-     * @throws Exception
-     * @throws NotFoundExceptionInterface
-     * @throws ReflectionException
-     */
-    public function testThrowsExceptionAnnotationNotFound()
+    public function testThrowsExceptionWhenInjectIsMissingAndConstructorRequiresParameters(): void
     {
-        $requestedName = TestClass::class;
-        $this->getMockBuilder($requestedName)->allowMockingUnknownTypes()->getMock();
-        $refClass       = $this->createMock(ReflectionClass::class);
-        $refConstructor = $this->createMock(ReflectionMethod::class);
-
-        $refClass->method('getConstructor')->willReturn($refConstructor);
-        $refConstructor->method('getNumberOfRequiredParameters')->willReturn(100);
-
-        $this->annotationReader->method('getMethodAnnotation')->willReturn(null);
-        $this->subject
-            ->method('createAnnotationReader')
-            ->willReturn($this->annotationReader);
-        $this->subject->method('getReflectionClass')->willReturn($refClass);
-
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage(RuntimeException::annotationNotFound(
             Inject::class,
-            $requestedName,
-            get_class($this->subject),
+            RequiredParamsWithoutInject::class,
+            AnnotatedServiceFactory::class
         )->getMessage());
 
-        $this->subject->__invoke($this->container, $requestedName);
+        ($this->subject)($this->container(), RequiredParamsWithoutInject::class);
     }
 
-    /**
-     * @throws ContainerExceptionInterface
-     * @throws Exception
-     * @throws NotFoundExceptionInterface
-     * @throws ReflectionException
-     */
-    public function testReturnService()
+    public function testCreatesServiceWithoutInjectWhenAllParametersAreOptional(): void
     {
-        $requestedName = TestClass::class;
-        $this->getMockBuilder($requestedName)->allowMockingUnknownTypes()->getMock();
-        $refClass       = $this->createMock(ReflectionClass::class);
-        $refConstructor = $this->createMock(ReflectionMethod::class);
+        $service = ($this->subject)($this->container(), OptionalParamsService::class);
 
-        $refClass->method('getConstructor')->willReturn($refConstructor);
-        $refClass->method('getMethods')->willReturn([]);
-        $refConstructor->method('getNumberOfRequiredParameters')->willReturn(1);
+        $this->assertInstanceOf(OptionalParamsService::class, $service);
+        $this->assertSame('default', $service->name);
+    }
 
-        $inject = new Inject(['test']);
-        $this->annotationReader->method('getMethodAnnotation')->willReturn($inject);
+    public function testInjectsServiceFromContainer(): void
+    {
+        $config  = ['debug' => true];
+        $service = ($this->subject)($this->container(['config' => $config]), ConfigService::class);
 
-        $this->subject->method('createAnnotationReader')->willReturn($this->annotationReader);
-        $this->subject->method('getReflectionClass')->willReturn($refClass);
+        $this->assertInstanceOf(ConfigService::class, $service);
+        $this->assertSame($config, $service->config);
+    }
 
-        $service = $this->subject->__invoke($this->container, $requestedName);
+    public function testInjectsServiceFromUnbracedAnnotation(): void
+    {
+        $config  = ['debug' => true];
+        $service = ($this->subject)($this->container(['config' => $config]), UnbracedInjectService::class);
 
-        $this->assertSame($requestedName, $service::class);
+        $this->assertInstanceOf(UnbracedInjectService::class, $service);
+        $this->assertSame($config, $service->config);
+    }
+
+    public function testInstantiatesClassStringWhenNotInContainer(): void
+    {
+        $service = ($this->subject)($this->container(), ClassStringService::class);
+
+        $this->assertInstanceOf(ClassStringService::class, $service);
+    }
+
+    public function testPrefersContainerServiceOverClassInstantiation(): void
+    {
+        $dependency = new Dependency();
+        $service    = ($this->subject)(
+            $this->container([Dependency::class => $dependency]),
+            ClassStringService::class
+        );
+
+        $this->assertInstanceOf(ClassStringService::class, $service);
+        $this->assertSame($dependency, $service->dependency);
+    }
+
+    public function testInjectsNestedConfigValueUsingDotNotation(): void
+    {
+        $service = ($this->subject)(
+            $this->container(['config' => ['a' => ['b' => 'value']]]),
+            DottedConfigService::class
+        );
+
+        $this->assertInstanceOf(DottedConfigService::class, $service);
+        $this->assertSame('value', $service->value);
+    }
+
+    public function testInjectsNullValueUsingDotNotation(): void
+    {
+        $service = ($this->subject)($this->container(['config' => ['k' => null]]), NullKeyService::class);
+
+        $this->assertInstanceOf(NullKeyService::class, $service);
+        $this->assertNull($service->value);
+    }
+
+    public function testServiceRegisteredWithDottedNameWinsOverConfigPath(): void
+    {
+        $service = ($this->subject)(
+            $this->container([
+                'config.a.b' => 'from-service',
+                'config'     => ['a' => ['b' => 'from-config']],
+            ]),
+            DottedConfigService::class
+        );
+
+        $this->assertInstanceOf(DottedConfigService::class, $service);
+        $this->assertSame('from-service', $service->value);
+    }
+
+    public function testThrowsExceptionWhenDottedKeyIsMissing(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The key "b" provided in the dotted notation could not be found');
+
+        ($this->subject)($this->container(['config' => ['a' => []]]), DottedConfigService::class);
+    }
+
+    public function testThrowsExceptionWhenDottedPathIsLongerThanTheData(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('The key "b" provided in the dotted notation could not be found');
+
+        ($this->subject)($this->container(['config' => ['a' => 'scalar']]), DottedConfigService::class);
+    }
+
+    public function testThrowsExceptionWhenInjectedServiceDoesNotExist(): void
+    {
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage(RuntimeException::classNotFound('missing_service')->getMessage());
+
+        ($this->subject)($this->container(), MissingServiceService::class);
+    }
+
+    public function testCallsConstructorOnlyOnceAndInjectsSetters(): void
+    {
+        $config  = ['debug' => true];
+        $service = ($this->subject)($this->container(['config' => $config]), SetterInjectedService::class);
+
+        $this->assertInstanceOf(SetterInjectedService::class, $service);
+        $this->assertSame(1, SetterInjectedService::$constructed);
+        $this->assertSame($config, $service->config);
+        $this->assertInstanceOf(Dependency::class, $service->dependency);
+    }
+
+    public function testDoesNotCallAnnotatedStaticMethods(): void
+    {
+        ($this->subject)($this->container(['config' => []]), SetterInjectedService::class);
+
+        $this->assertSame(0, SetterInjectedService::$staticCalls);
+    }
+
+    public function testThrownExceptionsImplementTheExceptionInterface(): void
+    {
+        try {
+            ($this->subject)($this->container(), 'TestService');
+            $this->fail('Exception expected');
+        } catch (ExceptionInterface $exception) {
+            $this->assertInstanceOf(RuntimeException::class, $exception);
+        }
     }
 }

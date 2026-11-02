@@ -14,8 +14,10 @@ use Psr\Container\NotFoundExceptionInterface;
 
 abstract class AbstractAnnotatedFactory
 {
-    public const CACHE_SERVICE          = CacheItemPoolInterface::class;
+    public const string CACHE_SERVICE = CacheItemPoolInterface::class;
+
     protected ?Reader $annotationReader = null;
+
     public function setAnnotationReader(Reader $annotationReader): void
     {
         $this->annotationReader = $annotationReader;
@@ -33,17 +35,16 @@ abstract class AbstractAnnotatedFactory
 
         if (! $container->has(self::CACHE_SERVICE)) {
             return $this->annotationReader = new AnnotationReader();
-        } else {
-            /** @var CacheItemPoolInterface $cache */
-            $cache = $container->get(self::CACHE_SERVICE);
-            $debug = false;
-            if ($container->has('config')) {
-                $config = $container->get('config');
-                if (isset($config['debug'])) {
-                    $debug = (bool) $config['debug'];
-                }
-            }
-            return $this->annotationReader = new PsrCachedReader(new AnnotationReader(), $cache, $debug);
         }
+
+        /** @var CacheItemPoolInterface $cache */
+        $cache = $container->get(self::CACHE_SERVICE);
+        $debug = false;
+        if ($container->has('config')) {
+            $config = $container->get('config');
+            $debug  = isset($config['debug']) && (bool) $config['debug'];
+        }
+
+        return $this->annotationReader = new PsrCachedReader(new AnnotationReader(), $cache, $debug);
     }
 }
