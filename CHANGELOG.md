@@ -23,6 +23,7 @@ Version `6.0.0` continues the annotation-based API of `4.x`.
 - Documentation for 6.0 is available in `docs/book/v6`, including an upgrade guide for 4.x and 5.x, and a page for the abstract factory.
 - The cache documentation describes a PSR-6 cache pool (`Psr\Cache\CacheItemPoolInterface`) instead of `doctrine/cache` drivers.
 - The README and docs show the `@Service` annotation in a docblock (`/**`).
+- Temporary: `phpunit.xml` sets `ignoreIndirectDeprecations="true"` on `<source>`, because `laminas/laminas-servicemanager` calls `spl_object_hash()`, which is deprecated in PHP 8.6. Remove it once a fixed release of `laminas/laminas-servicemanager` is available.
 
 ### Added
 
