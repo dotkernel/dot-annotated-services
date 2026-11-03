@@ -9,7 +9,9 @@ Follow the section that matches the version you are coming from.
 ### Requirements
 
 - PHP `8.3` or newer is required. PHP `8.2` is no longer supported.
-- `doctrine/cache` is no longer a requirement of this package. If your application uses its classes, require it yourself.
+- `doctrine/orm` `^3.0` and `doctrine/annotations` `^2.0` are required. Applications still on Doctrine ORM `2.x` or `doctrine/annotations` `1.x` must upgrade those first, or stay on `4.x`.
+- `doctrine/cache` is no longer a requirement of this package, and `doctrine/orm` `3.x` does not install it. If your application uses its classes, require it yourself.
+- `laminas/laminas-servicemanager` `^3.22.1 || ^4.0` is accepted (`4.x` is new in `6.0`), and so is PSR-11 version `2`.
 - `psr/cache` and `psr/container` are now declared as direct requirements.
 
 ### Changes that can break your code
@@ -107,7 +109,8 @@ Replace the factory class names in your `ConfigProvider`, and add `Dot\Annotated
 
 ### Differences to be aware of
 
-- `6.0` supports PSR-11 version `1` only. `5.x` also supported version `2`.
+- `6.0` requires Doctrine ORM `3.x`. `5.x` also supported `2.x`.
+- `6.0` requires `laminas/laminas-servicemanager` (`^3.22.1` or `^4.0`), because it builds on its factory interfaces. `5.x` only needed `psr/container`.
 - `6.0` has no check for services that inject themselves. A service listed in its own `@Inject` is not reported as a recursion.
 - `6.0` additionally supports `@Service` (see [Create services without a factory](factories/abstract.md)), `@Inject` on setters, and caching the parsed annotations (see [Cache](cache.md)).
 - `6.0` requires `doctrine/annotations` and a PSR-6 pool if you want to cache annotations.

@@ -10,6 +10,8 @@ Version `6.0.0` continues the annotation-based API of `4.x`.
 ### Changed
 
 - Minimum PHP version is now 8.3. Supported versions: 8.3, 8.4, 8.5 and 8.6.
+- `doctrine/orm` is now required as `^3.0` (was `^2.20`) and `doctrine/annotations` as `^2.0` (was `^1.14.3`).
+- `laminas/laminas-servicemanager` constraint widened from `^3.22.1` to `^3.22.1 || ^4.0`, and PSR-11 version 2 is supported (`psr/container` `^1.1 || ^2.0`).
 - `AnnotatedRepositoryFactory` now throws a `RuntimeException` when the entity manager returns a repository that is not an instance of the requested class. Set `repositoryClass` on the entity to the registered repository.
 - `AnnotatedServiceFactory::__invoke()` and `AnnotatedServiceFactory::createObject()` now return `object` instead of `mixed`.
 - `AbstractAnnotatedFactory::CACHE_SERVICE` is now a typed constant (`public const string`).
@@ -35,7 +37,8 @@ Version `6.0.0` continues the annotation-based API of `4.x`.
 ### Removed
 
 - PHP 8.2 support.
-- `doctrine/cache` as a requirement. It is still installed through `doctrine/orm`, but your own code should require it if it uses its classes.
+- `doctrine/cache` as a requirement. `doctrine/orm` 3.x does not install it either, so your own code should require it if it uses its classes.
+- Support for Doctrine ORM 2.x and `doctrine/annotations` 1.x.
 
 ### Fixed
 
