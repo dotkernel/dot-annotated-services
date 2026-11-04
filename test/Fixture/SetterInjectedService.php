@@ -10,6 +10,7 @@ class SetterInjectedService
 {
     public static int $constructed = 0;
     public static int $staticCalls = 0;
+    public static int $plainCalls  = 0;
 
     public ?Dependency $dependency = null;
 
@@ -30,6 +31,16 @@ class SetterInjectedService
     public function setDependency(Dependency $dependency): void
     {
         $this->dependency = $dependency;
+    }
+
+    /**
+     * Public method that carries no injection annotation: the factory must never call it.
+     */
+    public function process(string $input): string
+    {
+        self::$plainCalls++;
+
+        return $input;
     }
 
     /**
