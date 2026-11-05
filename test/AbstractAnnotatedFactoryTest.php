@@ -8,8 +8,8 @@ use Doctrine\Common\Annotations\AnnotationReader;
 use Doctrine\Common\Annotations\PsrCachedReader;
 use Doctrine\Common\Annotations\Reader;
 use Dot\AnnotatedServices\Factory\AbstractAnnotatedFactory;
+use DotTest\AnnotatedServices\Fixture\ArrayContainer;
 use DotTest\AnnotatedServices\Fixture\ExposedAnnotatedFactory;
-use Laminas\ServiceManager\ServiceManager;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use Psr\Cache\CacheItemPoolInterface;
@@ -27,9 +27,9 @@ class AbstractAnnotatedFactoryTest extends TestCase
     /**
      * @param array<string, mixed> $services
      */
-    private function container(array $services = []): ServiceManager
+    private function container(array $services = []): ArrayContainer
     {
-        return new ServiceManager(['services' => $services]);
+        return new ArrayContainer($services);
     }
 
     public function testUsesPlainReaderWhenNoCacheIsRegistered(): void

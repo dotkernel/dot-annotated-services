@@ -4,29 +4,17 @@ declare(strict_types=1);
 
 namespace Dot\AnnotatedServices;
 
-use Dot\AnnotatedServices\Factory\AnnotatedServiceAbstractFactory;
-
+/**
+ * Kept so that applications which add it to their configuration aggregator keep working.
+ * The factories are registered per class in your own configuration, there is nothing to register globally.
+ */
 class ConfigProvider
 {
     /**
-     * @return array{dependencies: array{abstract_factories: list<class-string>}}
+     * @return array<string, mixed>
      */
     public function __invoke(): array
     {
-        return [
-            'dependencies' => $this->getDependenciesConfig(),
-        ];
-    }
-
-    /**
-     * @return array{abstract_factories: list<class-string>}
-     */
-    public function getDependenciesConfig(): array
-    {
-        return [
-            'abstract_factories' => [
-                AnnotatedServiceAbstractFactory::class,
-            ],
-        ];
+        return [];
     }
 }

@@ -1,6 +1,6 @@
 # Factories
 
-`dot-annotated-services` is based on three reusable factories - `AnnotatedRepositoryFactory`, `AnnotatedServiceFactory` and `AnnotatedServiceAbstractFactory` - able to inject any dependency into a class.
+`dot-annotated-services` is based on two reusable factories - `AnnotatedRepositoryFactory` and `AnnotatedServiceFactory` - able to inject any dependency into a class.
 
 ## AnnotatedRepositoryFactory
 
@@ -16,7 +16,7 @@ The repository class returned by the entity manager must be the registered class
 - `Dot\AnnotatedServices\Exception\RuntimeException` if repository does not have `@Entity` annotation
 - `Dot\AnnotatedServices\Exception\RuntimeException` if the entity manager returns a repository that is not an instance of the requested class
 - `Psr\Container\NotFoundExceptionInterface` if `Doctrine\ORM\EntityManagerInterface` does not exist in the service container
-- `Psr\Container\ContainerExceptionInterface` if service manager is unable to provide an instance of `Doctrine\ORM\EntityManagerInterface`
+- `Psr\Container\ContainerExceptionInterface` if the container is unable to provide an instance of `Doctrine\ORM\EntityManagerInterface`
 
 ## AnnotatedServiceFactory
 
@@ -42,11 +42,4 @@ The constructor is only called once, and static methods are ignored.
 - `Dot\AnnotatedServices\Exception\InvalidArgumentException` if a key of a dotted dependency does not exist, including when the path is longer than the data
 - `ReflectionException` on failure of creating a ReflectionClass of the dependency
 - `Psr\Container\NotFoundExceptionInterface` if a dependency does not exist in the service container
-- `Psr\Container\ContainerExceptionInterface` if service manager is unable to provide an instance of a dependency
-
-## AnnotatedServiceAbstractFactory
-
-Creates every class annotated with `@Service`, without any service manager configuration.
-See [Create services without a factory](factories/abstract.md).
-
-It never throws when asked whether it can create a class (for example through `$container->has()`): classes it cannot read, such as classes with unknown annotations, are reported as not creatable.
+- `Psr\Container\ContainerExceptionInterface` if the container is unable to provide an instance of a dependency

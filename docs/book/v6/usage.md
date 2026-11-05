@@ -11,6 +11,5 @@ You can use it to:
 
 - [Inject class dependencies](factories/service.md)
 - [Inject entity repositories](factories/repository.md)
-- [Create services without writing a factory](factories/abstract.md)
 
 Coming from `4.x` or `5.x`? Read the [upgrade guide](upgrading.md).

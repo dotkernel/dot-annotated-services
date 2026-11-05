@@ -11,8 +11,10 @@ use Dot\AnnotatedServices\Exception\ExceptionInterface;
 use Dot\AnnotatedServices\Exception\InvalidArgumentException;
 use Dot\AnnotatedServices\Exception\RuntimeException;
 use Dot\AnnotatedServices\Factory\AnnotatedServiceFactory;
+use DotTest\AnnotatedServices\Fixture\ArrayContainer;
 use DotTest\AnnotatedServices\Fixture\ClassStringService;
 use DotTest\AnnotatedServices\Fixture\ConfigService;
+use DotTest\AnnotatedServices\Fixture\ContainerFailureException;
 use DotTest\AnnotatedServices\Fixture\Dependency;
 use DotTest\AnnotatedServices\Fixture\DottedConfigService;
 use DotTest\AnnotatedServices\Fixture\InheritedSetterService;
@@ -28,9 +30,6 @@ use DotTest\AnnotatedServices\Fixture\SetterInjectedService;
 use DotTest\AnnotatedServices\Fixture\ThrowingConstructorService;
 use DotTest\AnnotatedServices\Fixture\UnbracedInjectService;
 use DotTest\AnnotatedServices\Fixture\UnknownRootKeyService;
-use Laminas\ServiceManager\Exception\ServiceNotCreatedException;
-use Laminas\ServiceManager\ServiceManager;
-use LogicException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use stdClass;
@@ -51,9 +50,9 @@ class AnnotatedServiceFactoryTest extends TestCase
     /**
      * @param array<string, mixed> $services
      */
-    private function container(array $services = []): ServiceManager
+    private function container(array $services = []): ArrayContainer
     {
-        return new ServiceManager(['services' => $services]);
+        return new ArrayContainer($services);
     }
 
     public function testThrowsExceptionClassNotFound(): void
@@ -309,15 +308,13 @@ class AnnotatedServiceFactoryTest extends TestCase
 
     public function testContainerExceptionsAreNotWrapped(): void
     {
-        $container = new ServiceManager([
-            'factories' => [
-                'config' => static function (): never {
-                    throw new LogicException('boom');
-                },
-            ],
+        $container = new ArrayContainer([], [
+            'config' => static function (): never {
+                throw new ContainerFailureException('boom');
+            },
         ]);
 
-        $this->expectException(ServiceNotCreatedException::class);
+        $this->expectException(ContainerFailureException::class);
         $this->expectExceptionMessage('boom');
 
         ($this->subject)($container, ConfigService::class);

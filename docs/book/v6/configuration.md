@@ -1,12 +1,12 @@
 # Configuration
 
-After installation, register `dot-annotated-services` in your project by adding the below line to your configuration aggregator (usually: `config/config.php`):
+`dot-annotated-services` needs no global registration.
+The factories are registered per class, under `factories` in your own `ConfigProvider`.
+See [Inject class dependencies](factories/service.md) and [Inject entity repositories](factories/repository.md).
 
-```php
-Dot\AnnotatedServices\ConfigProvider::class,
-```
+`Dot\AnnotatedServices\ConfigProvider` is still provided, but it returns an empty configuration.
+You can keep it in your configuration aggregator (usually: `config/config.php`) if it is already there, or leave it out.
 
-This registers `AnnotatedServiceAbstractFactory`, which creates every class marked with the `@Service` annotation without further configuration.
-`AnnotatedServiceFactory` and `AnnotatedRepositoryFactory` are registered per class under `factories` in your own `ConfigProvider`.
+The factories only depend on `psr/container`, so they work with any PSR-11 container that accepts a factory callable per service key, such as Laminas Service Manager.
 
 See [Factories](factories.md) for details and [Cache](cache.md) to cache the parsed annotations.

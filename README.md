@@ -1,7 +1,6 @@
 # dot-annotated-services
 
-Dotkernel component used to create services through [Laminas Service Manager](https://github.com/laminas/laminas-servicemanager) and inject them with dependencies just using method annotations.
-It can also create services without the need to write factories.
+Dotkernel component used to create services through any PSR-11 container, such as [Laminas Service Manager](https://github.com/laminas/laminas-servicemanager), and inject them with dependencies just using method annotations.
 Annotation parsing can be cached to improve performance.
 
 This package can clean up your code by getting rid of all the factories you write, sometimes just to inject a dependency or two.
@@ -46,13 +45,11 @@ Run the following command in your project directory
 composer require dotkernel/dot-annotated-services
 ```
 
-After installing, add the `ConfigProvider` class to your configuration aggregate.
-
 ## Usage
 
 ### Using the AnnotatedServiceFactory
 
-You can register services in the service manager using the `AnnotatedServiceFactory` as below.
+You can register services in the container using the `AnnotatedServiceFactory` as below.
 
 ```php
 return [
@@ -85,9 +82,9 @@ public function __construct(
 ```
 
 The annotation `@Inject` is telling the factory to inject the services between curly braces.
-Valid service names should be provided, as registered in the service manager.
+Valid service names should be provided, as registered in the container.
 
-To inject an array value from the service manager, you can use dot notation as below.
+To inject an array value from the container, you can use dot notation as below.
 
 ```php
 use Dot\AnnotatedServices\Annotation\Inject;
@@ -132,27 +129,6 @@ class ExampleRepository extends EntityRepository
 {
 }
 ```
-
-### Using the abstract factory
-
-Using this approach, no service manager configuration is required. It uses the registered abstract factory to create annotated services.
-
-To tell the abstract factory which services are to be created, you need to annotate the service class with the `@Service` annotation.
-The annotation must be in a docblock, which starts with `/**`.
-
-```php
-use Dot\AnnotatedServices\Annotation\Service;
-
-/**
- * @Service
- */
-class ServiceClass
-{
-    // configure injections as described in the previous section
-}
-```
-
-And that's it, you don't need to configure the service manager with this class, creation will happen automatically.
 
 ## Cache annotations
 

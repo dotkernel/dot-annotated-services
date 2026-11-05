@@ -9,11 +9,11 @@ use Doctrine\ORM\EntityRepository;
 use Dot\AnnotatedServices\Annotation\Entity;
 use Dot\AnnotatedServices\Exception\RuntimeException;
 use Dot\AnnotatedServices\Factory\AnnotatedRepositoryFactory;
+use DotTest\AnnotatedServices\Fixture\ArrayContainer;
 use DotTest\AnnotatedServices\Fixture\ExampleEntity;
 use DotTest\AnnotatedServices\Fixture\ExampleRepository;
 use DotTest\AnnotatedServices\Fixture\PlainClass;
 use DotTest\AnnotatedServices\Fixture\RepositoryWithoutAnnotation;
-use Laminas\ServiceManager\ServiceManager;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
@@ -27,9 +27,9 @@ class AnnotatedRepositoryFactoryTest extends TestCase
         $this->subject = new AnnotatedRepositoryFactory();
     }
 
-    private function container(EntityManagerInterface $entityManager): ServiceManager
+    private function container(EntityManagerInterface $entityManager): ArrayContainer
     {
-        return new ServiceManager(['services' => [EntityManagerInterface::class => $entityManager]]);
+        return new ArrayContainer([EntityManagerInterface::class => $entityManager]);
     }
 
     public function testThrowsExceptionClassNotFound(): void

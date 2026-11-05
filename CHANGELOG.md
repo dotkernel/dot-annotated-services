@@ -11,25 +11,23 @@ Version `6.0.0` continues the annotation-based API of `4.x`.
 
 - Minimum PHP version is now 8.3. Supported versions: 8.3, 8.4, 8.5 and 8.6.
 - `doctrine/orm` is now required as `^3.0` (was `^2.20`) and `doctrine/annotations` as `^2.0` (was `^1.14.3`).
-- `laminas/laminas-servicemanager` constraint widened from `^3.22.1` to `^3.22.1 || ^4.0`, and PSR-11 version 2 is supported (`psr/container` `^1.1 || ^2.0`).
+- `laminas/laminas-servicemanager` is no longer a requirement. The factories only depend on `psr/container`, which is now allowed as `^1.1 || ^2.0` (PSR-11 versions 1 and 2).
+- `Dot\AnnotatedServices\ConfigProvider` returns an empty configuration. It no longer registers an abstract factory.
 - `AnnotatedRepositoryFactory` now throws a `RuntimeException` when the entity manager returns a repository that is not an instance of the requested class. Set `repositoryClass` on the entity to the registered repository.
 - `AnnotatedServiceFactory::__invoke()` and `AnnotatedServiceFactory::createObject()` now return `object` instead of `mixed`.
 - `AbstractAnnotatedFactory::CACHE_SERVICE` is now a typed constant (`public const string`).
 - `Inject` accepts a single unbraced service, e.g. `@Inject("config")`.
 - `Entity::getName()` is typed as `class-string`.
-- `AnnotatedServiceAbstractFactory::canCreate()` returns `false` for classes whose annotations cannot be read, and the abstract factory reuses a single `AnnotatedServiceFactory`.
 - Array and generic types are specified in docblocks, so the code passes PHPStan level 8.
 - Development tooling: PHPUnit 12, PHPStan level 8, GitHub Actions run PHP 8.3 to 8.6 with updated `actions/checkout`, `actions/cache` and `codecov/codecov-action`, and the Laminas backward-compatibility check is disabled for this major version.
-- Documentation for 6.0 is available in `docs/book/v6`, including an upgrade guide for 4.x and 5.x, and a page for the abstract factory.
+- Documentation for 6.0 is available in `docs/book/v6`, including an upgrade guide for 4.x and 5.x.
 - The cache documentation describes a PSR-6 cache pool (`Psr\Cache\CacheItemPoolInterface`) instead of `doctrine/cache` drivers.
-- The README and docs show the `@Service` annotation in a docblock (`/**`).
-- Temporary: `phpunit.xml` sets `ignoreIndirectDeprecations="true"` on `<source>`, because `laminas/laminas-servicemanager` calls `spl_object_hash()`, which is deprecated in PHP 8.6. Remove it once a fixed release of `laminas/laminas-servicemanager` is available.
 
 ### Added
 
 - `RuntimeException::repositoryMismatch()`.
 - `psr/cache` and `psr/container` as direct requirements, and a `suggest` entry for a PSR-6 cache implementation.
-- A test suite with fixtures, a real annotation reader and a real service manager, covering the factories, the abstract factory, the annotation reader selection, the annotations and the exceptions.
+- A test suite with fixtures, a real annotation reader and a minimal PSR-11 container, covering the factories, the annotation reader selection, the annotations and the exceptions.
 
 ### Deprecated
 
@@ -40,6 +38,7 @@ Version `6.0.0` continues the annotation-based API of `4.x`.
 - PHP 8.2 support.
 - `doctrine/cache` as a requirement. `doctrine/orm` 3.x does not install it either, so your own code should require it if it uses its classes.
 - Support for Doctrine ORM 2.x and `doctrine/annotations` 1.x.
+- `AnnotatedServiceAbstractFactory` and the `@Service` annotation, together with the `laminas/laminas-servicemanager` dependency they needed. Register classes with `AnnotatedServiceFactory` instead (see the upgrade guide).
 
 ### Fixed
 
@@ -47,7 +46,6 @@ Version `6.0.0` continues the annotation-based API of `4.x`.
 - A dotted dependency such as `config.key` failed when the value was `null`. It is now injected as `null`.
 - A dotted dependency longer than the data (e.g. `config.a.b` where `config['a']` is a string) returned an intermediate value. It now throws an `InvalidArgumentException`.
 - `@Inject("config")` without curly braces failed with a creation error.
-- `has()` and `get()` on the container threw an `AnnotationException` for unrelated classes that contain annotations unknown to the annotation reader, when the abstract factory was registered.
 - Static methods annotated with `@Inject` are no longer called during setter injection.
 
 ## 5.2.0 - 2024-10-23

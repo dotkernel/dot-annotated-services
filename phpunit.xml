@@ -5,8 +5,7 @@
       <directory>./test</directory>
     </testsuite>
   </testsuites>
-  <!-- Temporary: laminas-servicemanager calls spl_object_hash(), deprecated in PHP 8.6. Remove ignoreIndirectDeprecations once a fixed release is out. -->
-  <source ignoreIndirectDeprecations="true">
+  <source>
     <include>
       <directory suffix=".php">./src</directory>
     </include>

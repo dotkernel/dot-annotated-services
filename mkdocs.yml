@@ -20,7 +20,6 @@ nav:
       - Reference:
           - "Inject class dependencies": v6/factories/service.md
           - "Inject entity repositories": v6/factories/repository.md
-          - "Create services without a factory": v6/factories/abstract.md
   - v5:
       - Discontinued: v5/overview.md
   - v4:

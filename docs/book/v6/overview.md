@@ -12,7 +12,6 @@ See the [upgrade guide](upgrading.md) if you are coming from `4.x` or `5.x`.
 
 - PHP `8.3`, `8.4`, `8.5` or `8.6`
 - PSR-11 version `1` or `2`
-- `laminas/laminas-servicemanager` `^3.22.1` or `^4.0`
 - `doctrine/annotations` `^2.0`
 - `doctrine/orm` `^3.0`
 
