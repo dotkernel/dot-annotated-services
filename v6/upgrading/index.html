@@ -1,0 +1,699 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        
+        <meta name="description" content="Dotkernel's dependency injection service, based on Doctrine annotations">
+        
+        
+
+        
+        
+            
+        
+        <meta name="docsearch:version" content="6.0.0,latest">
+        <meta name="docsearch:language" content="en">
+        <meta name="docsearch:component" content="dot-annotated-services">
+
+        <meta property="og:title"        content="Dotkernel Documentation"/>
+        <meta property="og:description"  content="Official Dotkernel documentation covering APIs, Admin, Queue, developer tools, packages, and modern PHP application development"/>
+        <meta property="og:image"        content="https://docs.dotkernel.org/img/open-graph/twitter-card-docs.png"/>
+        <meta property="og:type"         content="website"/>
+        <meta property="og:site_name"    content="Dotkernel Documentation"/>
+        <meta property="og:url"          content="https://docs.dotkernel.org/"/>
+        <meta property="og:locale"       content="en_US"/>
+        <meta name="twitter:card"        content="summary_large_image"/>
+        <meta name="twitter:site"        content="@dotkernel"/>
+        <meta name="twitter:title"       content="Dotkernel Documentation"/>
+        <meta name="twitter:description" content="Official Dotkernel documentation covering APIs, Admin, Queue, developer tools, packages, and modern PHP application development"/>
+        <meta name="twitter:image"       content="https://docs.dotkernel.org/img/open-graph/twitter-card-docs.png"/>
+
+        
+        <link rel="canonical" href="https://docs.dotkernel.org/dot-annotated-services/v6/upgrading/">
+        
+        <link rel="shortcut icon" href="https://docs.dotkernel.org/img/dk_docs_favicon_white.svg">
+
+        <title>Upgrading - dot-annotated-services - Dotkernel Documentation</title>
+
+        <link rel="stylesheet" href="https://docs.dotkernel.org/css/bootstrap.css">
+        <link rel="stylesheet" href="https://docs.dotkernel.org/css/bootstrap-icons.min.css">
+        <link rel="stylesheet" href="https://docs.dotkernel.org/css/docs.css">
+        <script src="https://docs.dotkernel.org/js/bootstrap.js" defer></script>
+        <script src="https://docs.dotkernel.org/js/docs.js" defer></script>
+        <script src="https://docs.dotkernel.org/js/scripts.js" defer></script>
+    </head>
+    <body data-bs-spy="scroll" data-bs-target=".toc" data-bs-offset="100">
+
+        
+        <nav class="navbar navbar-expand-lg dk-docs-nav py-2" data-bs-theme="dark">
+    <div class="container-fluid dk-docs-nav__inner">
+        <a class="navbar-brand dk-docs-nav__brand" href="https://docs.dotkernel.org/">
+            <img alt="Dotkernel" class="d-inline-block align-text-top" height="28"
+                 src="https://docs.dotkernel.org/img/dk_logo_2024_white.svg" width="152"/>
+        </a>
+
+        <ul class="dk-docs-nav__projects list-unstyled d-none d-lg-flex align-items-center mb-0">
+            
+            <li class="">
+                <a href="https://docs.dotkernel.org/api-documentation/">API</a>
+            </li>
+            
+            <li class="">
+                <a href="https://docs.dotkernel.org/admin-documentation/">Admin</a>
+            </li>
+            
+            <li class="">
+                <a href="https://docs.dotkernel.org/frontend-documentation/">Frontend</a>
+            </li>
+            
+            <li class="">
+                <a href="https://docs.dotkernel.org/light-documentation/">Light</a>
+            </li>
+            
+            <li class="">
+                <a href="https://docs.dotkernel.org/queue-documentation/">Queue</a>
+            </li>
+            
+            <li class="dk-docs-nav__projects-item--active">
+                <a href="https://docs.dotkernel.org/packages/">Packages</a>
+            </li>
+            
+            <li class="">
+                <a href="https://docs.dotkernel.org/development/">Development</a>
+            </li>
+            
+            <li class="">
+                <a href="https://docs.dotkernel.org/headless-documentation/">Headless Platform</a>
+            </li>
+            
+            <li class="">
+                <a href="https://docs.dotkernel.org/dotboost/">Dotboost</a>
+            </li>
+            
+        </ul>
+
+        <div class="flex-grow-1"></div>
+
+        <a href="#" class="dk-docs-nav__search d-none d-md-flex align-items-center" data-bs-toggle="modal" data-bs-target="#mkdocs_search_modal" title="Open search">
+            <i class="bi bi-search"></i>
+            <span>Search docs</span>
+            <span class="dk-docs-nav__search-key">/</span>
+        </a>
+
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarText" aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse flex-grow-0" id="navbarText">
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0 dk-docs-nav__projects dk-docs-nav__projects--collapsed d-lg-none">
+                
+                <li class="">
+                    <a href="https://docs.dotkernel.org/api-documentation/">API</a>
+                </li>
+                
+                <li class="">
+                    <a href="https://docs.dotkernel.org/admin-documentation/">Admin</a>
+                </li>
+                
+                <li class="">
+                    <a href="https://docs.dotkernel.org/frontend-documentation/">Frontend</a>
+                </li>
+                
+                <li class="">
+                    <a href="https://docs.dotkernel.org/light-documentation/">Light</a>
+                </li>
+                
+                <li class="">
+                    <a href="https://docs.dotkernel.org/queue-documentation/">Queue</a>
+                </li>
+                
+                <li class="dk-docs-nav__projects-item--active">
+                    <a href="https://docs.dotkernel.org/packages/">Packages</a>
+                </li>
+                
+                <li class="">
+                    <a href="https://docs.dotkernel.org/development/">Development</a>
+                </li>
+                
+                <li class="">
+                    <a href="https://docs.dotkernel.org/headless-documentation/">Headless Platform</a>
+                </li>
+                
+                <li class="">
+                    <a href="https://docs.dotkernel.org/dotboost/">Dotboost</a>
+                </li>
+                
+            </ul>
+            <ul class="navbar-nav ms-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link fw-bold text-white" href="https://github.com/dotkernel/dot-annotated-services" title="Go to dot-annotated-services repository" target="_blank">
+                        <i class="bi bi-github"></i>
+                        GitHub
+                    </a>
+                </li>
+                <li class="nav-item">
+                    
+    
+    <div class="version-selector">
+        <div class="btn-group">
+            <button type="button" class="btn dropdown-toggle bg-light" data-bs-toggle="dropdown" data-bs-display="static" aria-haspopup="true" aria-expanded="false" id="version-selector-dropdown">
+                
+                    v6
+                
+            </button>
+            <div class="dropdown-menu dropdown-menu-end" aria-labelledby="version-selector-dropdown">
+                
+                
+                <a href="../overview/" class="dropdown-item active">
+                    
+                        v6 (latest)
+                    
+                </a>
+                
+                
+                
+                <a href="../../v5/overview/" class="dropdown-item">
+                    
+                        v5
+                    
+                </a>
+                
+                
+                
+                <a href="../../v4/overview/" class="dropdown-item">
+                    
+                        v4
+                    
+                </a>
+                
+                
+            </div>
+        </div>
+    </div>
+    
+
+                </li>
+            </ul>
+        </div>
+    </div>
+</nav>
+
+        
+        <div class="container-fluid docs-shell">
+            <div class="row gx-0">
+                <div class="col-lg-3 col-xl-2 right_sidebar">
+                    
+                    
+    <div class="subnavigation hidden-print">
+<!--        <h4 class="subnavigation__title">-->
+<!--            <a href="../..">dot-annotated-services</a>-->
+<!--        </h4>-->
+
+        <h5 class="subnavigation__title">Table of Contents</h5>
+
+        <ul class="subnavigation__list">
+            
+
+                
+                
+                    
+                        
+<li class="subnavigation__list-item ">
+    <a href="../overview/" class="subnavigation__link">Overview</a>
+</li>
+
+                    
+                        
+<li class="subnavigation__list-item ">
+    <a href="../installation/" class="subnavigation__link">Installation</a>
+</li>
+
+                    
+                        
+<li class="subnavigation__list-item ">
+    <a href="../configuration/" class="subnavigation__link">Configuration</a>
+</li>
+
+                    
+                        
+<li class="subnavigation__list-item ">
+    <a href="../usage/" class="subnavigation__link">Usage</a>
+</li>
+
+                    
+                        
+<li class="subnavigation__list-item ">
+    <a href="../factories/" class="subnavigation__link">Factories</a>
+</li>
+
+                    
+                        
+<li class="subnavigation__list-item ">
+    <a href="../cache/" class="subnavigation__link">Cache</a>
+</li>
+
+                    
+                        
+<li class="subnavigation__list-item subnavigation__list-item--active">
+    <a href="./" class="subnavigation__link">Upgrading</a>
+</li>
+
+                    
+                        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<li class="subnavigation__list-item">
+    <a data-bs-toggle="collapse" href="#reference" role="button" class="collapsed" aria-expanded="false" aria-controls="reference">
+        <span class="subnavigation__headline">Reference</span>
+    </a>
+    <ul class="subnavigation__list collapse" id="reference">
+        
+        
+<li class="subnavigation__list-item ">
+    <a href="../factories/service/" class="subnavigation__link">Inject class dependencies</a>
+</li>
+
+        
+        
+<li class="subnavigation__list-item ">
+    <a href="../factories/repository/" class="subnavigation__link">Inject entity repositories</a>
+</li>
+
+        
+    </ul>
+</li>
+
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                
+            
+
+                
+                
+
+                    
+                    
+                
+            
+        </ul>
+    </div>
+
+                    
+                </div>
+                <div class="col-lg-9 col-xl-8 main_docs">
+                    
+                    <nav aria-label="breadcrumb" class="nav_breadcrumb">
+    <ol class="breadcrumb">
+        
+            <li class="breadcrumb-item"><a href="https://docs.dotkernel.org/">Overview</a></li>
+            
+
+            
+                <li class="breadcrumb-item"><a href="../..">dot-annotated-services</a></li>
+
+                
+                    
+                        
+                        
+                    
+                
+
+                <li class="breadcrumb-item active" aria-current="page">Upgrading</li>
+            
+        
+    </ol>
+</nav>
+
+                    
+                    
+
+
+
+
+    
+    
+
+    
+    
+        
+        
+            
+        
+        
+        <div class="md-actions-bar">
+            <div class="md-actions">
+                <button type="button" class="md-actions-toggle" aria-haspopup="true" aria-expanded="false"
+                        onclick="toggleMdActionsMenu(this)">
+                    <span class="md-actions-toggle-label">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h9l7 7v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M13 4v6h6"/></svg>
+                        <span>Copy Page</span>
+                    </span>
+                    <span class="md-actions-toggle-chev">
+                        <svg class="chev" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 9l6 6 6-6"/></svg>
+                    </span>
+                </button>
+                <div class="md-actions-menu" role="menu">
+                    <button type="button" class="md-actions-item" role="menuitem" data-copy-url="../upgrading.md"
+                            onclick="copyMarkdownPage(this)">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="11" height="11" rx="2"/><path d="M5 15V5a2 2 0 0 1 2-2h10"/></svg>
+                        <span class="label">Copy Page (as Markdown)</span>
+                    </button>
+                    <a href="../upgrading.md" target="_blank" rel="alternate noopener noreferrer" type="text/markdown"
+                       class="md-actions-item" role="menuitem" title="View the Markdown source of this page">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h9l7 7v9a2 2 0 0 1-2 2H4a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2z"/><path d="M13 4v6h6"/><path d="M8 15h8M8 11h4"/></svg>
+                        <span class="label">View as Markdown</span>
+                    </a>
+                    <a href="https://claude.ai/new?q=Read%20from%20https%3A//docs.dotkernel.org/dot-annotated-services/v6/upgrading.md%20so%20I%20can%20ask%20questions%20about%20it." target="_blank" rel="noopener noreferrer"
+                       class="md-actions-item" role="menuitem" title="Open this page in Claude">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 3l2.5 5.5L20 11l-5.5 2.5L12 19l-2.5-5.5L4 11l5.5-2.5z"/></svg>
+                        <span class="label">Open in Claude</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    
+
+    <h1 id="upgrading-to-60">Upgrading to 6.0</h1>
+<p>Version <code>6.0</code> continues the annotation-based API of <code>4.x</code>.
+The <code>5.x</code> releases are a separate, attribute-based package line.
+Follow the section that matches the version you are coming from.</p>
+<h2 id="from-4x">From 4.x</h2>
+<h3 id="requirements">Requirements</h3>
+<ul>
+<li>PHP <code>8.3</code> or newer is required. PHP <code>8.2</code> is no longer supported.</li>
+<li><code>doctrine/orm</code> <code>^3.0</code> and <code>doctrine/annotations</code> <code>^2.0</code> are required. Applications still on Doctrine ORM <code>2.x</code> or <code>doctrine/annotations</code> <code>1.x</code> must upgrade those first, or stay on <code>4.x</code>.</li>
+<li><code>doctrine/cache</code> is no longer a requirement of this package, and <code>doctrine/orm</code> <code>3.x</code> does not install it. If your application uses its classes, require it yourself.</li>
+<li><code>laminas/laminas-servicemanager</code> is no longer a requirement. The factories only depend on <code>psr/container</code>, version <code>1.1</code> or <code>2</code>. If your application uses Laminas Service Manager, require it yourself.</li>
+<li><code>psr/cache</code> and <code>psr/container</code> are now declared as direct requirements.</li>
+</ul>
+<h3 id="changes-that-can-break-your-code">Changes that can break your code</h3>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th>Change</th>
+<th>Symptom</th>
+<th>Fix</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>AnnotatedServiceAbstractFactory</code> and the <code>@Service</code> annotation are removed</td>
+<td>Class not found, or the service is no longer created automatically</td>
+<td>Register the class under <code>factories</code> with <code>AnnotatedServiceFactory</code>, and remove <code>@Service</code> and the abstract factory registration. See below</td>
+</tr>
+<tr>
+<td><code>Dot\AnnotatedServices\ConfigProvider</code> no longer registers the abstract factory</td>
+<td><code>abstract_factories</code> is no longer filled by this package</td>
+<td>None, unless you read that configuration key</td>
+</tr>
+<tr>
+<td>The constructor is no longer called a second time when it carries <code>@Inject</code></td>
+<td>Code that relied on the constructor running twice no longer does</td>
+<td>Remove that reliance. Classes with <code>readonly</code> promoted properties now work</td>
+</tr>
+<tr>
+<td><code>AnnotatedRepositoryFactory</code> throws if the entity manager returns a repository that is not an instance of the registered class</td>
+<td><code>Dot\AnnotatedServices\Exception\RuntimeException: Entity manager returned a repository of type ...</code></td>
+<td>Set <code>repositoryClass</code> on the entity to the registered repository, or register the class the entity manager returns</td>
+</tr>
+<tr>
+<td>A dotted dependency whose path is longer than the data now throws</td>
+<td><code>InvalidArgumentException</code> where <code>config.a.b</code> used to inject the value of <code>config.a</code></td>
+<td>Fix the key path</td>
+</tr>
+<tr>
+<td><code>AnnotatedServiceFactory::__invoke()</code> and <code>createObject()</code> return <code>object</code> instead of <code>mixed</code></td>
+<td>Fatal error in subclasses that override them with an incompatible return type</td>
+<td>Return an <code>object</code> from the override</td>
+</tr>
+<tr>
+<td><code>AbstractAnnotatedFactory::CACHE_SERVICE</code> is a typed constant (<code>string</code>)</td>
+<td>Fatal error in subclasses that redeclare it untyped</td>
+<td>Declare it as <code>public const string</code></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="behavior-that-now-works">Behavior that now works</h3>
+<ul>
+<li><code>@Inject("config")</code> without curly braces is accepted.</li>
+<li>A dotted key whose value is <code>null</code> is injected as <code>null</code>. It used to throw.</li>
+</ul>
+<h3 id="replacing-service">Replacing <code>@Service</code></h3>
+<p>Before, on <code>4.x</code>:</p>
+<pre class="highlight"><code class="language-php">/**
+ * @Service
+ */
+class ExampleService
+{
+}</code></pre>
+<p>After, on <code>6.0</code>: remove the annotation and register the class with the factory in your <code>ConfigProvider</code>:</p>
+<pre class="highlight"><code class="language-php">'dependencies' =&gt; [
+    'factories' =&gt; [
+        ExampleService::class =&gt; Dot\AnnotatedServices\Factory\AnnotatedServiceFactory::class,
+    ],
+],</code></pre>
+<p>Also remove <code>Dot\AnnotatedServices\Factory\AnnotatedServiceAbstractFactory</code> from <code>abstract_factories</code> if you registered it yourself.</p>
+<h3 id="documentation-changes">Documentation changes</h3>
+<ul>
+<li>The cache documentation of <code>4.x</code> described <code>doctrine/cache</code> drivers. The package has always required a PSR-6 cache pool. See <a href="../cache/">Cache</a>.</li>
+</ul>
+<h2 id="from-5x">From 5.x</h2>
+<p><code>5.x</code> uses PHP attributes. <code>6.0</code> uses annotations, and adds setter injection and an annotation cache.
+Migrating from <code>5.x</code> to <code>6.0</code> means moving back from attributes to annotations.</p>
+<h3 id="classes">Classes</h3>
+<div class="table-responsive"><table>
+<thead>
+<tr>
+<th>5.x</th>
+<th>6.0</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>Dot\AnnotatedServices\Attribute\Inject</code></td>
+<td><code>Dot\AnnotatedServices\Annotation\Inject</code></td>
+</tr>
+<tr>
+<td><code>Dot\AnnotatedServices\Attribute\Entity</code></td>
+<td><code>Dot\AnnotatedServices\Annotation\Entity</code></td>
+</tr>
+<tr>
+<td><code>Dot\AnnotatedServices\Factory\AttributedServiceFactory</code></td>
+<td><code>Dot\AnnotatedServices\Factory\AnnotatedServiceFactory</code></td>
+</tr>
+<tr>
+<td><code>Dot\AnnotatedServices\Factory\AttributedRepositoryFactory</code></td>
+<td><code>Dot\AnnotatedServices\Factory\AnnotatedRepositoryFactory</code></td>
+</tr>
+</tbody>
+</table></div>
+<h3 id="syntax">Syntax</h3>
+<p>Before, on <code>5.x</code>:</p>
+<pre class="highlight"><code class="language-php">use Dot\AnnotatedServices\Attribute\Entity;
+use Dot\AnnotatedServices\Attribute\Inject;
+
+#[Entity(name: Example::class)]
+class ExampleRepository extends EntityRepository
+{
+}
+
+class ExampleService
+{
+    #[Inject(ExampleRepository::class, 'config')]
+    public function __construct(
+        protected ExampleRepository $repository,
+        protected array $config,
+    ) {
+    }
+}</code></pre>
+<p>After, on <code>6.0</code>:</p>
+<pre class="highlight"><code class="language-php">use Dot\AnnotatedServices\Annotation\Entity;
+use Dot\AnnotatedServices\Annotation\Inject;
+
+/**
+ * @Entity(name="App\Entity\Example")
+ */
+class ExampleRepository extends EntityRepository
+{
+}
+
+class ExampleService
+{
+    /**
+     * @Inject({
+     *     ExampleRepository::class,
+     *     "config"
+     * })
+     */
+    public function __construct(
+        protected ExampleRepository $repository,
+        protected array $config,
+    ) {
+    }
+}</code></pre>
+<h3 id="registration">Registration</h3>
+<p>Replace the factory class names in your <code>ConfigProvider</code>. Nothing needs to be added to your configuration aggregator.</p>
+<h3 id="differences-to-be-aware-of">Differences to be aware of</h3>
+<ul>
+<li><code>6.0</code> requires Doctrine ORM <code>3.x</code>. <code>5.x</code> also supported <code>2.x</code>.</li>
+<li><code>6.0</code> has no check for services that inject themselves. A service listed in its own <code>@Inject</code> is not reported as a recursion.</li>
+<li><code>6.0</code> additionally supports <code>@Inject</code> on setters, and caching the parsed annotations (see <a href="../cache/">Cache</a>).</li>
+<li><code>6.0</code> requires <code>doctrine/annotations</code> and a PSR-6 pool if you want to cache annotations.</li>
+</ul>
+
+
+
+
+    <nav>
+    <ul class="list-unstyled page-nav row w-100 mt-5 mb-3 pt-5 pb-3">
+        
+        <li class="col text-nowrap text-md-start">
+            
+                <a rel="prev" class="page-nav__link page-nav__link--prev" href="../cache/">
+                    <i class="bi bi-chevron-left"></i>
+                    Cache
+                </a>
+            
+        </li>
+
+        
+        <li class="col text-nowrap text-md-end pe-0">
+            
+                <a rel="next" class="page-nav__link page-nav__link--next" href="../factories/service/">
+                    Inject class dependencies
+                    <i class="bi bi-chevron-right"></i>
+                </a>
+            
+        </li>
+    </ul>
+</nav>
+
+
+
+                    
+                </div>
+
+                
+                
+                <div class="col-xl-2 d-none d-xl-block page_toc">
+                    
+    
+
+    
+    
+        <div class="toc">
+            <h6 class="toc__headline">On this page</h6>
+            <ul class="toc__list">
+            
+                <li class="toc__entry">
+                    <a href="#from-4x" class="toc__link nav-link">From 4.x</a>
+                </li>
+            
+                <li class="toc__entry">
+                    <a href="#from-5x" class="toc__link nav-link">From 5.x</a>
+                </li>
+            
+            </ul>
+        </div>
+    
+
+                </div>
+                
+            </div>
+        </div>
+
+        
+        <footer class="dk-home-footer">
+    <div class="dk-home-footer__grid">
+        <div class="dk-home-footer__col">
+            <div class="dk-home-footer__label">Products</div>
+            <a href="https://docs.dotkernel.org/api-documentation/">API</a>
+            <a href="https://docs.dotkernel.org/admin-documentation/">Admin</a>
+            <a href="https://docs.dotkernel.org/queue-documentation/">Queue</a>
+            <a href="https://docs.dotkernel.org/light-documentation/">Light</a>
+        </div>
+        <div class="dk-home-footer__col">
+            <div class="dk-home-footer__label">Resources</div>
+            <a href="https://docs.dotkernel.org/dotboost/">Dotboost</a>
+            <a href="https://docs.dotkernel.org/headless-documentation/">Architecture</a>
+            <a href="https://www.dotkernel.com/dotkernel-packages-oss-lifecycle/">Packages Lifecycle</a>
+            <a href="https://docs.dotkernel.org/development/">WSL2 Dev Stack</a>
+        </div>
+        <div class="dk-home-footer__col">
+            <div class="dk-home-footer__label">More</div>
+            <a href="https://www.dotkernel.com/">Categories</a>
+            <a href="https://www.dotkernel.com/blog/">Blog</a>
+            <a href="https://github.com/orgs/dotkernel/discussions">Discussion</a>
+            <a href="https://www.dotkernel.com/about/">About</a>
+            <a href="https://www.dotkernel.com/contact/">Contact us</a>
+        </div>
+        <div class="dk-home-footer__col">
+            <div class="dk-home-footer__label">Follow</div>
+            <a href="https://github.com/dotkernel" target="_blank">GitHub</a>
+            <a href="https://www.dotkernel.com/feed/" target="_blank">Dotkernel RSS Feed</a>
+            <div class="dk-home-footer__note">Open-source tooling supported by JetBrains.</div>
+        </div>
+    </div>
+
+    <div class="dk-home-footer__bottom">
+        <img src="https://docs.dotkernel.org/img/dk_logo_2024_white.svg" alt="Dotkernel Logo" width="112" height="21" style="opacity:.75" />
+        <div class="dk-home-footer__tagline">Built with Mezzio, Laminas &amp; Doctrine - for PHP developers, by PHP developers. The Laminas logo is copyright of the Laminas Foundation.</div>
+        <div class="flex-grow-1"></div>
+        <div class="dk-home-footer__copyright">&#169; Copyright Dotkernel <span id="current-year"></span>. All rights reserved.</div>
+    </div>
+</footer>
+
+        <script>
+            let base_url = '../..',
+                project  = "packages",
+                siteName = 'dot-annotated-services';
+        </script>
+        
+        <div class="modal" id="mkdocs_search_modal" tabindex="-1" role="dialog" aria-labelledby="Search Modal" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Search</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form role="form">
+                    <div class="form-group">
+                        <input type="text" class="form-control" placeholder="Search in dot-annotated-services" id="mkdocs-search-query">
+                    </div>
+                </form>
+                <div id="mkdocs-search-results"></div>
+            </div>
+        </div>
+    </div>
+</div>
+    </body>
+</html>
