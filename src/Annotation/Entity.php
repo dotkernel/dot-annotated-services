@@ -16,14 +16,23 @@ use Doctrine\Common\Annotations\Annotation\Target;
  */
 class Entity
 {
-    /** @Required */
+    /**
+     * @Required
+     * @var class-string
+     */
     private string $name;
 
+    /**
+     * @param class-string $name
+     */
     public function __construct(string $name)
     {
         $this->name = $name;
     }
 
+    /**
+     * @return class-string
+     */
     public function getName(): string
     {
         return $this->name;

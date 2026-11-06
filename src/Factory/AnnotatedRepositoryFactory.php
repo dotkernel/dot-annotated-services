@@ -19,6 +19,7 @@ use function class_exists;
 class AnnotatedRepositoryFactory extends AbstractAnnotatedFactory
 {
     /**
+     * @return EntityRepository<object>
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      * @throws ReflectionException
@@ -30,9 +31,11 @@ class AnnotatedRepositoryFactory extends AbstractAnnotatedFactory
     }
 
     /**
+     * @return EntityRepository<object>
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      * @throws ReflectionException
+     * @throws RuntimeException
      */
     public function createObject(ContainerInterface $container, string $requestedName): EntityRepository
     {
@@ -45,13 +48,19 @@ class AnnotatedRepositoryFactory extends AbstractAnnotatedFactory
             throw RuntimeException::doesNotExtend(EntityRepository::class);
         }
 
-        $annotationReader = $this->createAnnotationReader($container);
-        $entity           = $annotationReader->getClassAnnotation($reflectionClass, Entity::class);
-        if (! $entity) {
+        $entity = $this->createAnnotationReader($container)->getClassAnnotation($reflectionClass, Entity::class);
+        if (! $entity instanceof Entity) {
             throw RuntimeException::annotationNotFound(Entity::class, $requestedName, static::class);
         }
 
+        /** @var EntityManagerInterface $entityManager */
         $entityManager = $container->get(EntityManagerInterface::class);
-        return $entityManager->getRepository($entity->getName());
+        $repository    = $entityManager->getRepository($entity->getName());
+
+        if (! $repository instanceof $requestedName) {
+            throw RuntimeException::repositoryMismatch($requestedName, $repository::class);
+        }
+
+        return $repository;
     }
 }

@@ -20,17 +20,20 @@
         "service-manager"
     ],
     "require": {
-        "php": "~8.2.0 || ~8.3.0 || ~8.4.0 || ~8.5.0",
-        "doctrine/annotations": "^1.14.3",
-        "doctrine/cache": "^1.12.1 || ^2.1.1",
-        "doctrine/orm" : "^2.20",
-        "laminas/laminas-servicemanager": "^3.22.1"
+        "php": "~8.3.0 || ~8.4.0 || ~8.5.0 || ~8.6.0",
+        "doctrine/annotations": "^2.0",
+        "doctrine/orm" : "^3.0",
+        "psr/cache": "^1.0 || ^2.0 || ^3.0",
+        "psr/container": "^1.1 || ^2.0"
+    },
+    "suggest": {
+        "symfony/cache": "A PSR-6 pool to cache parsed annotations"
     },
     "require-dev": {
         "laminas/laminas-coding-standard": "^3.0",
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-phpunit": "^2.0",
-        "phpunit/phpunit": "^10.5.9"
+        "phpunit/phpunit": "^12.0"
     },
     "autoload": {
         "psr-4": {

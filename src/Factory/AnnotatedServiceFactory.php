@@ -15,6 +15,7 @@ use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
 
+use function array_key_exists;
 use function array_shift;
 use function class_exists;
 use function count;
@@ -28,8 +29,9 @@ class AnnotatedServiceFactory extends AbstractAnnotatedFactory
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      * @throws ReflectionException
+     * @throws RuntimeException
      */
-    public function __invoke(ContainerInterface $container, string $requestedName): mixed
+    public function __invoke(ContainerInterface $container, string $requestedName): object
     {
         return $this->createObject($container, $requestedName);
     }
@@ -38,14 +40,13 @@ class AnnotatedServiceFactory extends AbstractAnnotatedFactory
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      * @throws ReflectionException
+     * @throws RuntimeException
      */
-    public function createObject(ContainerInterface $container, string $requestedName): mixed
+    public function createObject(ContainerInterface $container, string $requestedName): object
     {
         if (! class_exists($requestedName)) {
             throw RuntimeException::classNotFound($requestedName);
         }
-
-        $service = null;
 
         $annotationReader = $this->createAnnotationReader($container);
         $refClass         = $this->getReflectionClass($requestedName);
@@ -55,7 +56,7 @@ class AnnotatedServiceFactory extends AbstractAnnotatedFactory
             $service = new $requestedName();
         } else {
             $inject = $annotationReader->getMethodAnnotation($constructor, Inject::class);
-            if ($inject === null && $constructor->getNumberOfRequiredParameters() > 0) {
+            if (! $inject instanceof Inject && $constructor->getNumberOfRequiredParameters() > 0) {
                 throw RuntimeException::annotationNotFound(
                     Inject::class,
                     $requestedName,
@@ -63,27 +64,30 @@ class AnnotatedServiceFactory extends AbstractAnnotatedFactory
                 );
             }
 
-            $services = [];
-            if ($inject) {
-                $services = $this->getServicesToInject($container, $inject);
-            }
+            $services = $inject instanceof Inject ? $this->getServicesToInject($container, $inject) : [];
 
             $service = new $requestedName(...$services);
         }
 
-        $methods = $refClass->getMethods(ReflectionMethod::IS_PUBLIC);
-        foreach ($methods as $method) {
-            $inject = $annotationReader->getMethodAnnotation($method, Inject::class);
-            if ($inject) {
-                $services = $this->getServicesToInject($container, $inject);
-                $method->invoke($service, ...$services);
+        foreach ($refClass->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
+            // The constructor was already called above with its injected services
+            if ($method->isConstructor() || $method->isStatic()) {
+                continue;
             }
+
+            $inject = $annotationReader->getMethodAnnotation($method, Inject::class);
+            if (! $inject instanceof Inject) {
+                continue;
+            }
+
+            $method->invoke($service, ...$this->getServicesToInject($container, $inject));
         }
 
         return $service;
     }
 
     /**
+     * @return list<mixed>
      * @throws ContainerExceptionInterface
      * @throws NotFoundExceptionInterface
      */
@@ -108,30 +112,47 @@ class AnnotatedServiceFactory extends AbstractAnnotatedFactory
                 throw RuntimeException::classNotFound($serviceKey);
             }
 
-            $services[] = empty($parts) ? $service : $this->readKeysFromArray($parts, $service);
+            $services[] = $parts === [] ? $service : $this->readKeysFromArray($parts, $service);
         }
 
         return $services;
     }
 
+    /**
+     * @param non-empty-list<string> $keys
+     * @throws InvalidArgumentException
+     */
     protected function readKeysFromArray(array $keys, mixed $array): mixed
     {
         $key = array_shift($keys);
-        // When one of the provided keys is not found, throw an exception
-        if (! isset($array[$key])) {
+
+        if (is_array($array)) {
+            $exists = array_key_exists($key, $array);
+        } elseif ($array instanceof ArrayAccess) {
+            $exists = $array->offsetExists($key);
+        } else {
+            $exists = false;
+        }
+
+        // Also thrown when the path is longer than the data, e.g. "config.a.b" where "a" is a scalar
+        if (! $exists) {
             throw new InvalidArgumentException(sprintf(
                 'The key "%s" provided in the dotted notation could not be found in the array service',
                 $key
             ));
         }
+
         $value = $array[$key];
-        if (! empty($keys) && (is_array($value) || $value instanceof ArrayAccess)) {
-            $value = $this->readKeysFromArray($keys, $value);
+        if ($keys === []) {
+            return $value;
         }
-        return $value;
+
+        return $this->readKeysFromArray($keys, $value);
     }
 
     /**
+     * @param class-string $requestedName
+     * @return ReflectionClass<object>
      * @throws ReflectionException
      */
     protected function getReflectionClass(string $requestedName): ReflectionClass

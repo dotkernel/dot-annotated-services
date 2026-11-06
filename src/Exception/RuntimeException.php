@@ -31,6 +31,17 @@ class RuntimeException extends \RuntimeException implements ExceptionInterface
         ));
     }
 
+    public static function repositoryMismatch(string $requestedName, string $actualClass): self
+    {
+        return new self(sprintf(
+            'Entity manager returned a repository of type "%s", but "%s" was requested. '
+            . 'Set "%s" as the repositoryClass of the entity.',
+            $actualClass,
+            $requestedName,
+            $requestedName
+        ));
+    }
+
     public static function invalidAnnotation(string $requestedName): self
     {
         return new self(sprintf(

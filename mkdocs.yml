@@ -2,11 +2,26 @@ docs_dir: docs/book
 site_dir: docs/html
 extra:
   project: Packages
-  current_version: v4
+  current_version: v6
   versions:
+    - v6
+    - v5
     - v4
 nav:
   - Home: index.md
+  - v6:
+      - Overview: v6/overview.md
+      - Installation: v6/installation.md
+      - Configuration: v6/configuration.md
+      - Usage: v6/usage.md
+      - Factories: v6/factories.md
+      - Cache: v6/cache.md
+      - Upgrading: v6/upgrading.md
+      - Reference:
+          - "Inject class dependencies": v6/factories/service.md
+          - "Inject entity repositories": v6/factories/repository.md
+  - v5:
+      - Discontinued: v5/overview.md
   - v4:
       - Overview: v4/overview.md
       - Installation: v4/installation.md

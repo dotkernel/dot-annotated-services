@@ -4,118 +4,90 @@ declare(strict_types=1);
 
 namespace DotTest\AnnotatedServices;
 
-use Doctrine\Common\Annotations\Reader;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\EntityRepository;
 use Dot\AnnotatedServices\Annotation\Entity;
 use Dot\AnnotatedServices\Exception\RuntimeException;
-use Dot\AnnotatedServices\Factory\AnnotatedRepositoryFactory as Subject;
-//use DotTest\AnnotatedServices\TestClass;
-use PHPUnit\Framework\MockObject\Exception;
-use PHPUnit\Framework\MockObject\MockObject;
+use Dot\AnnotatedServices\Factory\AnnotatedRepositoryFactory;
+use DotTest\AnnotatedServices\Fixture\ArrayContainer;
+use DotTest\AnnotatedServices\Fixture\ExampleEntity;
+use DotTest\AnnotatedServices\Fixture\ExampleRepository;
+use DotTest\AnnotatedServices\Fixture\PlainClass;
+use DotTest\AnnotatedServices\Fixture\RepositoryWithoutAnnotation;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use Psr\Container\ContainerExceptionInterface;
-use Psr\Container\ContainerInterface;
-use Psr\Container\NotFoundExceptionInterface;
-use ReflectionException;
 
-use function get_class;
-
+#[CoversClass(AnnotatedRepositoryFactory::class)]
 class AnnotatedRepositoryFactoryTest extends TestCase
 {
-    private MockObject&ContainerInterface $container;
-    private MockObject&Subject $subject;
-    private MockObject&Reader $annotationReader;
+    private AnnotatedRepositoryFactory $subject;
 
-    /**
-     * @throws Exception
-     */
-    public function setUp(): void
+    protected function setUp(): void
     {
-        $this->container        = $this->createMock(ContainerInterface::class);
-        $this->annotationReader = $this->createMock(Reader::class);
-        $this->subject          = $this->createPartialMock(Subject::class, ['createAnnotationReader']);
+        $this->subject = new AnnotatedRepositoryFactory();
     }
 
-    /**
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     * @throws ReflectionException
-     */
-    public function testThrowsExceptionClassNotFound()
+    private function container(EntityManagerInterface $entityManager): ArrayContainer
     {
-        $requestedName = 'TestRepository';
+        return new ArrayContainer([EntityManagerInterface::class => $entityManager]);
+    }
+
+    public function testThrowsExceptionClassNotFound(): void
+    {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage(RuntimeException::classNotFound($requestedName)->getMessage());
+        $this->expectExceptionMessage(RuntimeException::classNotFound('TestRepository')->getMessage());
 
-        $this->subject->__invoke($this->container, $requestedName);
+        ($this->subject)($this->container($this->createStub(EntityManagerInterface::class)), 'TestRepository');
     }
 
-    /**
-     * @throws ContainerExceptionInterface
-     * @throws ReflectionException
-     * @throws NotFoundExceptionInterface
-     */
-    public function testThrowsExceptionClassNotExtendsEntityRepository()
+    public function testThrowsExceptionClassDoesNotExtendEntityRepository(): void
     {
-        $requestedName = TestClass::class;
-
-        $this->getMockBuilder($requestedName)->getMock();
-
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage(RuntimeException::doesNotExtend(EntityRepository::class)->getMessage());
-        $this->subject->__invoke($this->container, $requestedName);
+
+        ($this->subject)($this->container($this->createStub(EntityManagerInterface::class)), PlainClass::class);
     }
 
-    /**
-     * @throws ContainerExceptionInterface
-     * @throws NotFoundExceptionInterface
-     * @throws Exception
-     * @throws ReflectionException
-     */
-    public function testCreateObjectThrowsExceptionAnnotationNotFound()
+    public function testThrowsExceptionWhenEntityAnnotationIsMissing(): void
     {
-        $repository = $this->createMock(EntityRepository::class);
-        $this->annotationReader->method('getClassAnnotation')->willReturn(null);
-
-        $this->subject->method('createAnnotationReader')->willReturn($this->annotationReader);
-
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage(RuntimeException::annotationNotFound(
             Entity::class,
-            $repository::class,
-            get_class($this->subject)
+            RepositoryWithoutAnnotation::class,
+            AnnotatedRepositoryFactory::class
         )->getMessage());
 
-        $this->subject->__invoke($this->container, $repository::class);
+        ($this->subject)(
+            $this->container($this->createStub(EntityManagerInterface::class)),
+            RepositoryWithoutAnnotation::class
+        );
     }
 
-    /**
-     * @throws ContainerExceptionInterface
-     * @throws Exception
-     * @throws NotFoundExceptionInterface
-     * @throws ReflectionException
-     */
-    public function testCreateObjectReturnsEntityRepository()
+    public function testReturnsRepositoryFromEntityManager(): void
     {
-        $repository    = $this->createMock(EntityRepository::class);
-        $annotation    = new Entity('test');
+        $repository    = $this->createStub(ExampleRepository::class);
         $entityManager = $this->createMock(EntityManagerInterface::class);
+        $entityManager->expects($this->once())
+            ->method('getRepository')
+            ->with(ExampleEntity::class)
+            ->willReturn($repository);
 
+        $result = ($this->subject)($this->container($entityManager), ExampleRepository::class);
+
+        $this->assertSame($repository, $result);
+    }
+
+    public function testThrowsExceptionWhenEntityManagerReturnsADifferentRepositoryClass(): void
+    {
+        $repository    = $this->createStub(EntityRepository::class);
+        $entityManager = $this->createStub(EntityManagerInterface::class);
         $entityManager->method('getRepository')->willReturn($repository);
 
-        $this->annotationReader->method('getClassAnnotation')->willReturn($annotation);
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage(
+            RuntimeException::repositoryMismatch(ExampleRepository::class, $repository::class)->getMessage()
+        );
 
-        $this->container->method('get')
-            ->with(EntityManagerInterface::class)
-            ->willReturn($entityManager);
-
-        $this->subject
-            ->method('createAnnotationReader')
-            ->willReturn($this->annotationReader);
-
-        $object = $this->subject->__invoke($this->container, $repository::class);
-
-        $this->assertContainsOnlyInstancesOf(EntityRepository::class, [$object]);
+        ($this->subject)($this->container($entityManager), ExampleRepository::class);
     }
 }
